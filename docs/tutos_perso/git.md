@@ -6,28 +6,23 @@
 
 First create a directory, go within it, and initialize git using `git init`. If you want to be able to edit the project on this computer, do not use `git init --bare`, which is used to create a server in which there is only the `.git` repository.
 
-If necessary:
-
+Add files to git tracking with
 ```bash
-git config --global color.diff auto
-git config --global color.status auto
-git config --global color.branch auto
-git config --global user.name "hoellinger"
-git config --global user.email tristan.hoellinger@inserm.fr
-git config --global alias.st "status"
+git add <file name>
 ```
 
-To add files to git's tracking: `git add <file name>`.
+Then:
+```bash
+git commit -m "Initial comit"
+```
 
-Then: `git commit -m "Initial comit"`.
+## How I use Git to pull/push changes between my personal laptop, my professional laptot and the Genotoul cluster
 
-## Use git to pull/push changes between my 2 laptops and Genotoul
+The shared repository is named `shared`, and contains the `.git/`.
 
-The shared repository shall be named `shared`, and contains a `.git/` repository (see "Create a new project").
+Get status: `git status`. Track new files: `git add <file name>`. To stop the tracking of a file: `git rm <file name>`. Remember to check whether new files are tracked before submitting a commit.
 
-Get status: `git status` or `git st` with the alias. To track new files: `git add <file name>`. To remove some: `git rm <file name>`. Remember to check whether new files are tracked before submitting a commit.
-
-The following command shall be used to commit all changes that have been done (except untracked files) and automatically untrack the files that have been deleted:
+The following command could be used to commit all changes that have been done (except untracked files) and automatically untrack the files that have been deleted:
 
 ```bash
 git commit -a -m "<short description>"
@@ -75,11 +70,11 @@ To start keeping track again:
  git update-index --no-assume-unchanged notes_perso/site/
 ```
 
-### Git push (from local to genotoul)
+### Git push (from local to Genotoul)
 
-Only push once a day or so (when changes has been pushed, it's a lot harder to reverse them than after a commit). **Push on the `swap` branch of genotoul**, then go on genotoul and merge. It is not possible to push directly on master if the host is not configured as a server (`--bare` when initializing, which we shall not have used as we wanted to be able to edit files directly on Genotoul).
+Only push once a day or so (when changes has been pushed, it's harder to reverse them than after a simple commit). **Push on the `swap` branch of Genotoul**, then go on the `master` branch on Genotoul and merge with `swap`. Note that it is not possible to push directly on master if the host is not configured as a server (`--bare` when initializing, which we shall not have used as we wanted to be able to edit files directly on Genotoul).
 
-On the local computer:
+Speaking concretely, the following commands shall be used to push changes from my personal laptop to Genotoul:
 
 1. `git st`
 
@@ -101,23 +96,9 @@ Then on Genotoul:
 
 6. `git merge swap`
 
-> ```bash
-> thoellinger@genologin2 /work2/project/regenet/workspace/thoellinger/shared $ git checkout master 
-> Switched to branch 'master'
-> thoellinger@genologin2 /work2/project/regenet/workspace/thoellinger/shared $ git branch
-> * master
->   swap
-> thoellinger@genologin2 /work2/project/regenet/workspace/thoellinger/shared $ git merge swap
-> Updating 9d23ca9..065f626
-> Fast-forward
-> notes_perso/git.md | 80 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---
-> 1 file changed, 77 insertions(+), 3 deletions(-)
-> ```
-> 
+After step 6 is done, it is better to pull (Genotoul -> local), because since we did not push to `main` but to `swap`, it is as if we were still ahead by at least last commit of `main`.
 
-After step 6 is done, it is better to pull (genotoul -> local), because as we did not push to `main` but to `swap`, git considers we are still ahead by at least last commit of `main`.
-
-So back on the local computer:
+So back on the local computer simply do:
 
 7. `git pull`
 
@@ -129,22 +110,7 @@ I should pull at 2 occasions: either when modification have been done on Genotou
 git pull
 ```
 
-> ```bash
-> $ git pull
-> thoellinger@genologin.toulouse.inra.fr's password: 
-> remote: Counting objects: 7, done.
-> remote: Compressing objects: 100% (4/4), done.
-> remote: Total 4 (delta 3), reused 0 (delta 0)
-> Unpacking objects: 100% (4/4), 589 bytes | 589.00 KiB/s, done.
-> From genologin.toulouse.inra.fr:/work2/project/regenet/workspace/thoellinger/shared
->    e22e231..3791f57  master     -> origin/master
-> Updating 065f626..3791f57
-> Fast-forward
->  notes_perso/git.md | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> ```
-
-## Connect to a remote project (found on Github for instance)
+## Connect to a remote project
 
 To clone a project, first create a directory, go within it, and initialize git using `git init`.
 
@@ -160,17 +126,18 @@ Finally: `git pull <remote> <branch>` for instance `git pull upstream master`.
 
 One can visualize all branches using `git branch`.
 
-## "Push" the `mkdocs` site
+## "Push" the `mkdocs` site (outdated)
 
 (Outdated guidelines - better use the custom push scripts now).
+(Outdated once again: there is no push script anymore, now we use the `mkdocs gh-deploy` command).
 
-No need to track it at the moment (maybe we will track it when it starts being too heavy for ssh copy to be quick enough). Use `rsync` (the best) instead, or `scp` if ever there is a problem with `rsync`.
+Better not to track the `site/`folder. Use `rsync` to push the `site/` folder to wherever you want it to be (e.g. on the Genotoul server).
 
 ```bash
 rsync -avz notes_perso/site/ thoellinger@genologin.toulouse.inra.fr:/home/thoellinger/public_html/notes_perso/
 ```
 
-If there is a problem with `rsync`, first delete all files on genotoul, then:
+In case `rsync` is not working, you can still delete all files on Genotoul and then use `scp`:
 
 ```bash
 scp -r notes_perso/site/ thoellinger@genologin.toulouse.inra.fr:/home/thoellinger/public_html/notes_perso/

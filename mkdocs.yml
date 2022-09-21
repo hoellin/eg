@@ -1,8 +1,7 @@
 site_name: Notes
 site_author: Tristan Hoellinger
 copyright: 2020 - 2022 Tristan Hoellinger
-#site_url: http://127.0.0.1:8000/
-site_url: http://genoweb.toulouse.inra.fr/~thoellinger/notes/
+site_url: https://hoellin.github.io
 nav:
   - Guidebooks:
     - Introduction: guidebooks/introduction.md
@@ -74,8 +73,8 @@ nav:
         - (OLD) ABC over K562: notes_ABC/K562/abc_on_whole_K562.md
         - (OLD) ABC over GM12878: notes_ABC/GM12878/ABC_on_GM12878.md  
     - Meld of results over chr22 vs authors' results: notes_ABC/differences_example_chr22.md
-  - Tutos perso (fr):
-    - Genotoul: tutos_perso/genotoul.md
+  - Tutorials:
+    - Genotoul cluster: tutos_perso/genotoul.md
     - Compute summary stats of a bedpe: tutos_perso/script_bedpe_summary/script_bedpe_summary.md
     - Basics:
       - Shell: tutos_perso/unix/shell.md
@@ -106,3 +105,10 @@ markdown_extensions:
 extra:
   #disqus: hoellinger # enable comments for all pages except indexes:
   disqus: "" # disable comments
+  social:
+    - icon: fontawesome/brands/twitter 
+      link: https://twitter.com/TristanHoellin1
+    - icon: fontawesome/brands/linkedin 
+      link: https://fr.linkedin.com/in/tristan-hoellinger
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:hoellinger.tristan@gmail.com

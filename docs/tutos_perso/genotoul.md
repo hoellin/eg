@@ -1,10 +1,16 @@
-# Genotoul
+# Genotoul cluster
+
+Detailed information about Genotoul can be found on the [Genotoul website](http://www.genotoul.fr/en/).
+
+## Basic usage
+
+Connect through SSH to the Genotoul server:
 
 ```bash
 ssh thoellinger@genologin.toulouse.inra.fr
 ```
 
-Account infos: `saccount_info thoellinger`  
+Get account infos: `saccount_info thoellinger`  
 List all available modules: `module av`  
 Load one of them: `module load <name>`
 
@@ -23,19 +29,21 @@ pip install --user <package>
 
 To update a package for user only: `pip install --user --upgrade <package>`
 
-Connect to a node before launching any resources-demanding program:
+Remember to connect to a computation node before launching any resources-demanding program:
 
 ```bash
 srun --pty bash
 ```
 
-No more than 1 cpu core and 8 gb of ram by default with `srun` though. But one can increase limits using, for instance:
+1 cpu core and 8 gb of ram by default with `srun` (2021). One may increase limits using, for instance:
 
 ```bash
 srun --mem=64G --pty bash
 ```
 
-For more resources-demanding tasks, it might be better to write a dedicated script then to execute it using `sbatch`. Example:
+## Submitting a script using `sbatch`
+
+For more resources-demanding tasks or complex pipelines, it is better to write a dedicated script and to submit it to the queue using `sbatch`. Example:
 
 ```bash
 echo "script content" | awk 'BEGIN{print "\#\!\/bin\/sh"} {print}' > script.sh
@@ -48,5 +56,7 @@ sbatch --mem=4G --cpus-per-task=1 -J <job name> --mail-user=tristan.hoellinger@i
 ```
 
 One can visualize what is in the queue with: `squeue -A thoellinger`
+
+More sophisticated examples can be found on the notebooks over here, or on Genotoul's [wiki](https://wiki.genotoul.fr/wiki/Slurm).
 
 [Resources available detailed here](http://bioinfo.genotoul.fr/index.php/faq/default_resources_faq/).

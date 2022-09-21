@@ -1,28 +1,84 @@
 # Shell basics
 
-## Download files with `wget`
+## File system
+
+### Recursively find files
+
+```bash
+find -type f -name '*text*'
+```
+
+One can also delete them using:
+```bash
+find -type f -name '*text*' -delete
+```
+
+### Download files with `wget`
 Recursively download files, without the ones with a .html extension:
 
 ```bash
 wget -np -r -R html http://genoweb.toulouse.inra.fr/~sdjebali/material/
 ```
 
-Note that even when there are no subfolders, the option -r is required to download the files. One can specify the depth limit with `--cut-dirs`.
+Note that even when there are no subfolders, the option -r is required to download the files. Also note that one can specify the depth limit with `--cut-dirs`.
 
-Recursively find and delete files that contain "text" in their name:
+### Parsing files
+
+Sort a tabular-separated file wrt column 4:
 
 ```bash
-find -type f -name '*text*' -delete
+sort -t$'\t' -nk4 <file>
 ```
 
-## SSH, SCP
+Sort a ","-separated file wrt column 4:
+
+```bash
+sort -t, -nk4 <file>
+```
+
+or `sort -t ',' -nk4 <file>`.
+
+Warning:
+
+* use `-h` to sort human-readable numbers (1K, 2G, etc)
+* **use `-n` to compare strings according to their numerical (base 10) value!**
+
+Example:
+
+```bash
+awk '$4!="0"' example_chr22/ABC_output/Neighborhoods/EnhancerList.txt |sort -t$'\t' -nk4
+```
+
+### Copy files with `rsync`
+
+When copying files from a distant machine to the local machine (resp. from distant to local) on a regular basis, each time with a few modifications, `rsync` is a lot faster than `scp`.
+
+Example:
+
+```bash
+rsync -avz notes_perso/site/ thoellinger@genologin.toulouse.inra.fr:/home/thoellinger/public_html/notes_perso/
+```
+
+### Miscellaneous
+
+Get size of file/repertory: 
+
+```bash
+du -sh <file>
+```
+
+The `h` in `-sh` is for human-readable size.
+
+## SSH
+
+### Basics
+
+Connect to a Genotoul login node using:
 ```bash
 ssh thoellinger@genologin.toulouse.inra.fr
 ```
 
-Or use the `genologin` alias.
-
-### Copy from local to distant
+### SCP - copy from local to distant
 
 ```bash
 scp <file> <username>@<ip adress>:<destination directory>
@@ -50,7 +106,7 @@ Example:
 scp catalogue_GWAS.html thoellinger@genologin.toulouse.inra.fr:/home/thoellinger/public_html/autoupdate/GWAS_catalog.html
 ```
 
-### Copy from distant to local
+### SCP - copy from distant to local
 ```bash
 scp <username>@<ip of distant machine>:<source directory> <destination directory on the local machine>
 ```
@@ -61,61 +117,21 @@ Example:
 scp thoellinger@genologin.toulouse.inra.fr:/home/thoellinger/work/tutorial/DATA/*.zip .
 ```
 
-## Copy files with `rsync`
+## Jupyter notebook
 
-Example:
-
-```bash
-rsync -avz notes_perso/site/ thoellinger@genologin.toulouse.inra.fr:/home/thoellinger/public_html/notes_perso/
-```
-
-
-
-## Parsing files
-
-Sort a tabular-separated file wrt column 4:
-
-```bash
-sort -t$'\t' -nk4 <file>
-```
-
-Sort a ","-separated file wrt column 4:
-
-```bash
-sort -t, -nk4 <file>
-```
-
-or `sort -t ',' -nk4 <file>`.
-
-Warning:
-
-* use `-h` to sort human-readable numbers (1K, 2G, etc)
-* **use `-n` to comparing strings according to their numerical (base 10) value!** 
-
-Example:
-
-```bash
-awk '$4!="0"' example_chr22/ABC_output/Neighborhoods/EnhancerList.txt |sort -t$'\t' -nk4
-```
-
-## Misc
-
-Get size of file/repertory: 
-
-```bash
-du -sh <file>
-```
-
-The `h` in `-sh` is for human-readable size.
-
-### System and network
-
-Get ip adresses: `ifconfig`
-
-### Jupyter notebook
-
-Increase I/O size limit:
+### Increase I/O size limit
 
 ```bash
 jupyter notebook --NotebookApp.iopub_data_rate_limit=1.0e10
+```
+
+## Useful aliases
+
+I always include the following aliases in my `.bash_aliases`:
+
+```bash
+alias c='clear'
+alias genologin='ssh -Y thoellinger@genologin.toulouse.inra.fr'
+alias mgeno='sshfs thoellinger@genologin.toulouse.inra.fr:/home/thoellinger /home/hoellinger/mnt/ge\
+notoul -o uid=1000,gid=1000,follow_symlinks,allow_other,workaround=rename'
 ```
