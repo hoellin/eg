@@ -7,15 +7,15 @@ hide:
 
 # Jupyter notebooks through ssh tunneling
 
-One can launch a test server to check whether everything is working correctly, using the following command:
+> One can launch a test server to check whether everything is working correctly, using the following command:
+> 
+> ```bash
+> python -m http.server 8080
+> ```
 
-```bash
-python -m http.server 8080
-```
+## Main steps
 
-## Launch Jupyter
-
-To start ssh tunneling, run the following on the local computer:
+To start ssh tunneling, run the following on your (local) computer:
 
 ```bash
 ssh -L 8080:localhost:8080 thoellinger@genologin.toulouse.inra.fr
@@ -27,17 +27,9 @@ Then launch Jupyter on the server (Genotoul here):
 module load system/Anaconda3-5.2.0 && cd /work2/project/regenet/workspace/thoellinger/shared/notebooks && jupyter notebook --no-browser --port 8080
 ```
 
-or try another port:
+(One could also try with another port - for instance 8081).
 
-```bash
-ssh -L 8081:localhost:8081 thoellinger@genologin.toulouse.inra.fr
-```
-
-```bash
-module load system/Anaconda3-5.2.0 && cd /work2/project/regenet/workspace/thoellinger/shared/notebooks && jupyter notebook --no-browser --port 8081
-```
-
-Now you can open `localhost:8080` (resp. `localhost:8081`) in a browser and enter the required token to access the notebook.
+Then, on your local computer, open a browser and go to `localhost:8080` (resp. `localhost:8081`). Enter the required token when prompted to access the notebook.
 
 Note that one cannot run the notebook from a node (`srun --pty bash` then `jupyter notebook` does not work, because of denied permission). Instead, one can launch the notebook from standard user, then specify in the notebooks the cells that shall be launched from a node or on slurm. For instance, this is what is done [here](../../notes_ABC/generic_notebooks/turnkey_notebook_to_run_ABC_with_example_over_GM12878/#use-abc-makecandidateregionspy-to-define-candidate-regions).
 
@@ -49,7 +41,7 @@ One can simply use:
 jupyter nbconvert --to html test_notebooks/first_notebook.ipynb
 ```
 
-Or use a dedicated script such as:
+Or create a dedicated script (e.g. `convert_notebooks_to_html.sh`) with a content like:
 
 > ```bash
 > #!/bin/sh                                                                          
@@ -63,19 +55,19 @@ Or use a dedicated script such as:
 
 ## Use a custom theme with `jt`
 
-For instance I use:
+I personally use thfollowing theme:
 
 ```bash
 jt -t monokai -f fira -fs 10 -nf ptsans -nfs 11 -N -kl -cursw 2 -cursc r -cellw 95% -T
 ```
 
-One can always restore the default theme with:
+The default theme can be restored with:
 
 ```bash
 jt -r
 ```
 
-Note that one can execute these commands directly in a notebook / when jupyter is running, but the page has to be refreshed for the changes to apply.
+Note that these commands can be directly executed inside a notebook, using the `!` prefix, but the page needs to be reloaded to see the changes.
 
 More info available here: https://github.com/dunovank/jupyter-themes
 

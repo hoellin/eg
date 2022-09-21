@@ -1,8 +1,15 @@
-# Tristan Hoellinger
+# How to navigate through these pages
 
-MS Student in Mathematics and Hybrid AI - [INSA Toulouse](https://www.insa-toulouse.fr/en/) and [INP-ENSEEIHT](https://www.enseeiht.fr/en/)<br />
-Internship under the direction of Sarah Djebali, permanent researcher at [Inserm](https://www.inserm.fr/en)<br />
+These pages were first intented for my personal use to organize my notes, and to share them with my colleagues. Now they could be used as guidelines to help going through the data and scripts used to reproduce the results presented in the [paper](...) paper.
 
-Team: [Genetics and regulation of iron metabolism](https://www.irsd.fr/en/research/teams/genetics-and-regulation-of-iron-metabolism/) @[IRSD](https://www.irsd.fr/en/)<br />
+***Work in progress...***
 
-Feel free to contact me at: hoellinger (dot) tristan (at) gmail.com
+## Context
+
+## Main sections
+
+### ABC
+
+### BENGI
+
+### Tutorials

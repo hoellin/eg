@@ -1,4 +1,4 @@
-# On recent methods for genome-wide cell type specific identification of enhancer/gene relationships
+# Genome-wide identification of enhancer/gene interactions
 
 ## Introduction
 

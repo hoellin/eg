@@ -1,11 +1,17 @@
-site_name: Notes
+site_name: Genome-wide identification of E/G interactions
 site_author: Tristan Hoellinger
 copyright: 2020 - 2022 Tristan Hoellinger
 site_url: https://hoellin.github.io
 nav:
   - Guidebooks:
     - Introduction: guidebooks/introduction.md
-    - How to use Jupyter through ssh tunneling?: guidebooks/notebooks_ssh.md
+    - Compute summary stats of a bedpe: tutos_perso/script_bedpe_summary/script_bedpe_summary.md
+    - Basics:
+      - Shell: tutos_perso/unix/shell.md
+      - Conda basics: tutos_perso/conda_environments.md
+      - Git: tutos_perso/git.md
+      - Genotoul cluster: tutos_perso/genotoul.md
+      - How to use Jupyter through ssh tunneling?: guidebooks/notebooks_ssh.md
   - Haemochromatosis:
     - Introduction: haemochromatosis/introduction.md
     - Data format: haemochromatosis/data_format.md
@@ -73,14 +79,9 @@ nav:
         - (OLD) ABC over K562: notes_ABC/K562/abc_on_whole_K562.md
         - (OLD) ABC over GM12878: notes_ABC/GM12878/ABC_on_GM12878.md  
     - Meld of results over chr22 vs authors' results: notes_ABC/differences_example_chr22.md
-  - Tutorials:
-    - Genotoul cluster: tutos_perso/genotoul.md
-    - Compute summary stats of a bedpe: tutos_perso/script_bedpe_summary/script_bedpe_summary.md
-    - Basics:
-      - Shell: tutos_perso/unix/shell.md
-      - Conda basics: tutos_perso/conda_environments.md
-      - Git: tutos_perso/git.md
-  - About: index.md
+  - About:
+    - Getting started: index.md
+    - About me: about_me.md
 
 theme:
   name: material
