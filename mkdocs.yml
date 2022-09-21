@@ -1,0 +1,108 @@
+site_name: Notes
+site_author: Tristan Hoellinger
+copyright: 2020 - 2022 Tristan Hoellinger
+#site_url: http://127.0.0.1:8000/
+site_url: http://genoweb.toulouse.inra.fr/~thoellinger/notes/
+nav:
+  - Guidebooks:
+    - Introduction: guidebooks/introduction.md
+    - How to use Jupyter through ssh tunneling?: guidebooks/notebooks_ssh.md
+  - Haemochromatosis:
+    - Introduction: haemochromatosis/introduction.md
+    - Data format: haemochromatosis/data_format.md
+    - Custom script GO: haemochromatosis/ABC/custom_go.md
+    - Main results: haemochromatosis/main_results.md
+    - CHiC data:
+        - Preprocessing: haemochromatosis/CHiC/preprocess_data.md
+        - Networks: haemochromatosis/CHiC/preliminary_analysis_chic_v2.md
+        - GO enrichment: haemochromatosis/CHiC/go_enrichment.md
+    - ABC data:
+        - Preprocessing: haemochromatosis/ABC/data_processing.md        
+        - Networks: haemochromatosis/ABC/preliminary_analysis_v9.md
+        - Summary statistics enhancers: haemochromatosis/ABC/summary_statistics_eg_pairs.md
+        - GO enrichment: haemochromatosis/ABC/go_enrichment.md
+        - GOrilla: haemochromatosis/ABC/gorilla.md
+        - Avg nb connections per gene /!\ only 10 genes: haemochromatosis/ABC/compute_avg_nb_of_connections_per_gene.md
+        - GWAS: haemochromatosis/ABC/gwas.md
+        - GWAS /!\ only 10 genes: haemochromatosis/ABC/gwas_10.md
+  - BENGI:
+    - Introduction: notes_BENGI/introduction.md
+    - Notebooks:
+        - Convert BENGI datasets to custom bedpe: notes_BENGI/BENGI_to_custom_bedpe.md
+    - Summary statistics:
+        - Summary statistics on BENGI GM12878 benchmarks: notes_BENGI/summary_statistics/summary_statistics.md
+        - (R code) Compute summary statistics over BENGI: notes_BENGI/summary_statistics_BENGI/summary_BENGI_bedpe.md
+    - Evaluation of a few methods over BENGI GM12878:
+        - Distance method:
+            - Full code: notes_BENGI/distance_method/distance_evaluation_with_code.md
+            - Results: notes_BENGI/distance_method/summary_distance_evaluation.md
+        - DNase-expression correlation method:
+            - Full code: notes_BENGI/dnase_expression_correlation/correlation_method_with_code.md
+            - Results: notes_BENGI/dnase_expression_correlation/summary_correlation_method.md
+        - Average rank method:
+            - Full code: notes_BENGI/avg_rank_method/avg_rank_method_with_code.md
+            - Results: notes_BENGI/avg_rank_method/summary_avg_rank_method.md
+    - Evaluation of a few methods over Fulco et al 2019 CRISPRi-FlowFISH:
+        - Distance method:
+            - Full code: notes_BENGI/CRISPRi_FlowFISH/distance_method/distance_over_fulco_et_al_crispri.md
+            - Results: notes_BENGI/CRISPRi_FlowFISH/distance_method/summary_distance_over_fulco_et_al_crispri.md
+        - DNase-expression correlation method:
+            - Full code: notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/correlation_method_with_code.md
+            - Results: notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/summary_correlation_method.md
+        - Average rank method:
+            - Full code: notes_BENGI/CRISPRi_FlowFISH/avg_rank_method/avg_rank_method_with_code.md
+            - Results: notes_BENGI/CRISPRi_FlowFISH/avg_rank_method/summary_avg_rank.md
+  - ABC:
+    - Introduction: notes_ABC/introduction.md
+    - ABC over BENGI for GM12878, main results: notes_ABC/BENGI/ABC_BENGI_results.md
+    - CRISPRi-FlowFISH:
+        - Original ABC predictions over K562: notes_ABC/K562/ABC_K562_CRISPRi_FlowFISH.md
+        - Summary ABC over CRiFF: notes_ABC/K562/recap_investigations_ABC_over_CRiFF.md
+    - Notebooks:
+        - ABC over K562 cCRiFF: notes_ABC/K562/april_K562_56_genes/april_K562_56_genes.md
+        - ABC over K562 CRiFF: notes_ABC/K562/april_K562_59_genes/april_K562_59_genes.md
+        - ABC over K562 cCRiFF, no whitelist: notes_ABC/K562/april_K562_candidates_not_in_whitelist_56_genes/april_K562_candidates_NOT_in_whitelist.md
+        - Generic notebook to run ABC method & Example over GM12878: notes_ABC/generic_notebooks/turnkey_notebook_to_run_ABC_with_example_over_GM12878.md
+        - ABC over GM12878 with same accessions as for BENGI: notes_ABC/BENGI/notebook_ABC_over_BENGI_GM12878.md
+        - ABC over GM12878 with same accessions as for BENGI, starting with ccRE-dELS: notes_ABC/BENGI/notebook_ABC_over_BENGI_GM12878_from_ccRE_ELSs.md
+    - Full codes:
+        - Test of ABC pipeline over chr22: notes_ABC/test_abc_pipeline.md
+        - ABC over GM12878 with same accessions as for BENGI: notes_ABC/BENGI/ABC_over_BENGI_GM12878.md
+    - Old runs (might be inaccurate):
+        - (OLD) Recomputing ABC predictions over K562: notes_ABC/K562/intersection_predictions_CRISPRi_FlowFISH.md
+        - (OLD) (Notebook) ABC over K562: notes_ABC/K562/ABC_over_K562.md
+        - (OLD) ABC over K562: notes_ABC/K562/abc_on_whole_K562.md
+        - (OLD) ABC over GM12878: notes_ABC/GM12878/ABC_on_GM12878.md  
+    - Meld of results over chr22 vs authors' results: notes_ABC/differences_example_chr22.md
+  - Tutos perso (fr):
+    - Genotoul: tutos_perso/genotoul.md
+    - Compute summary stats of a bedpe: tutos_perso/script_bedpe_summary/script_bedpe_summary.md
+    - Basics:
+      - Shell: tutos_perso/unix/shell.md
+      - Conda basics: tutos_perso/conda_environments.md
+      - Git: tutos_perso/git.md
+  - About: index.md
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.sections # ok but better remove sections if navigation panels are getting too large
+#    - navigation.expand # automatically expand left navigation panel
+  palette:
+      primary: black # "indigo", "light blue", "black"
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - meta
+  - toc:
+      permalink: true
+
+extra:
+  #disqus: hoellinger # enable comments for all pages except indexes:
+  disqus: "" # disable comments
