@@ -2,7 +2,7 @@
 
 ## Context
 
-We aim at finding new genes potentially related to haemochromatosis / involved in the severity of haemochromatosis, hopefully different  from the ones already known to be strongly involved in iron metabolism. To that purpose, we started from a list of up to 13 genes, 6 of which being the ones causally involved in haemochromatosis, and the other ones being involved in iron metabolism regulation in liver and intestine.
+We aim at finding new genes potentially related to haemochromatosis / involved in the severity of haemochromatosis. To that purpose, we started from a list of up to 13 genes, 6 of which being the ones known to be causally involved in haemochromatosis, and the other ones being strongly involved in iron metabolism regulation in liver and intestine.
 
 We worked with E-G pairs obtained with either ABC or CHiC data, and inferred new genes as follows:
 
@@ -11,18 +11,18 @@ We worked with E-G pairs obtained with either ABC or CHiC data, and inferred new
 
 In other words, if G is a gene inferred, it means it is regulated by an enhancer E that is also regulating a initial gene, so we have a relation of the form "I <- E -> G".
 
-So we worked with ABC and CHiC data, and obtained two separate list of inferred genes (of respective lengths 444 and 42). For more details on how those list have been obtained, one can refer to:
+We worked with both ABC and CHiC data, and obtained two separate list of inferred genes (of respective lengths 444 and 42). For more details on how those list have been obtained, one can refer to:
 
-- http://genoweb.toulouse.inra.fr/~thoellinger/2022/ABC_inferred_genes/preliminary_analysis_v9.html for ABC data
-- http://genoweb.toulouse.inra.fr/~thoellinger/2022/CHiC_ingerred_genes/preliminary_analysis_chic_v2.html for CHiC data
+- `data_and_results/haemochromatosis/networks_hemochromatosis/preliminary_analysis_v9.html` for ABC data
+- `data_and_results/haemochromatosis/promoter_capture_hic/preliminary_analysis_chic_v2.html` for CHiC data
 
-Now, we want to merge these list together, and to attribute a confidence label to each gene, according to multiple factors. The detailed process is explained below.
+Now, we want to merge these list together, and to attribute a confidence label to each gene, according to multiple factors. The exact process is explained below.
 
 ## Results
 
 At the end of the day, one can directly use the following file:
 
-`/work2/project/regenet/workspace/thoellinger/shared/2022/merged_inferred_genes_v1.csv`
+`data_and_results/haemochromatosis//merged_inferred_genes_v1.csv`
 
 ## Remarks
 
@@ -45,31 +45,31 @@ At the end of the day, one can directly use the following file:
 
 6. **abc.enhancer.intersect.label** Label between 0 and 2. Let us denote G the current gene, and I <- E -> G the way it has been obtained.
 
-   - 2 (the best) if E is a putative enhancer of the ABC data, and intersects >= 1 ccRE-ELS
-   - 1 if E is a putative enhancer of the ABC data, and intersects 0 ccRE-ELS but >=1 ccRE
-   - 0 otherwise (if the enhancer does not intersect any ccRE **or** if the gene G is not inferred from ABC element-Gene pairs)
+    - 2 (the best) if E is a putative enhancer of the ABC data, and intersects >= 1 ccRE-ELS
+    - 1 if E is a putative enhancer of the ABC data, and intersects 0 ccRE-ELS but >=1 ccRE
+    - 0 otherwise (if the enhancer does not intersect any ccRE **or** if the gene G is not inferred from ABC element-Gene pairs)
 
 7. **ABC.product.label** Label between 0 and 3. The higher the better. 0 if not inferred from ABC data, 1 if small ABC scores, 2 medium ABC score, 3 high ABC score ; according to the product of the ABC scores of:
 
-   - the initial gene - enhancer pair (I-E)
-   - the enhancer - gene pair (E-G)
+    - the initial gene - enhancer pair (I-E)
+    - the enhancer - gene pair (E-G)
 
-   See the dedicated R markdown for more details ("small", "medium" and "high" have been defined in an arbitrary manner).
+    See the dedicated R markdown for more details ("small", "medium" and "high" have been defined in an arbitrary manner).
 
 8. **chic.enhancer.intersect.label** Label between 0 and 2. Let us denote G the current gene, and I <- E -> G the way it has been obtained.
 
-   - 2 (the best) if E is a putative enhancer of the CHiC data, and intersects >= 1 ccRE-ELS
-   - 1 if E is a putative enhancer of the CHiC data, and  intersects 0 ccRE-ELS but >=1 ccRE
-   - 0 otherwise (if the enhancer does not intersect any ccRE **or** if the gene G is not inferred from CHiC element-Gene pairs)
+    - 2 (the best) if E is a putative enhancer of the CHiC data, and intersects >= 1 ccRE-ELS
+    - 1 if E is a putative enhancer of the CHiC data, and  intersects 0 ccRE-ELS but >=1 ccRE
+    - 0 otherwise (if the enhancer does not intersect any ccRE **or** if the gene G is not inferred from CHiC element-Gene pairs)
 
-   Remark: as a matter of fact, there are no "1" in the csv file, because, to define the list of genes inferred with CHiC data, we restricting ourselves to E-G pairs in which the enhancers intersects >= 1 ccRE-ELS. We did so because putative enhancers in CHiC data are pretty big, and it would be surprising not to intersect any ccRE-ELS for an actual enhancer that is so large.
+     Remark: as a matter of fact, there are no "1" in the csv file, because, to define the list of genes inferred with CHiC data, we restricted ourselves to E-G pairs in which the enhancers intersects >= 1 ccRE-ELS. We did so because putative enhancers in CHiC data are pretty big, and it would be surprising if such a large actual enhancer would not intersect any ccRE-ELS
 
 9. **contact.product.label** Label between 0 and 3. The higher the better. 0 if not inferred from CHiC data, 1 if small contact probability, 2 medium contact probability, 3 high contact probability ; according to the product of the contact probabilities of:
 
-   - the initial gene - enhancer pair (I-E)
-   - the enhancer - gene pair (E-G)
+    - the initial gene - enhancer pair (I-E)
+    - the enhancer - gene pair (E-G)
 
-   See the dedicated R markdown for more details ("small", "medium" and "high" have been defined in an arbitrary manner).
+    See the dedicated R markdown for more details ("small", "medium" and "high" have been defined in an arbitrary manner).
 
 10. **count** Label by the total number of E-G pairs involving the current gene (irrespective of if they are obtained from ABC or CHiC data). Note that this is nothing but the number of enhancers in $12.
 
@@ -83,7 +83,7 @@ The file is sorted by value of column $3.
 
 ### Compute list of ABC-inferred genes
 
-In order to do so, we started with a dedicated R markdown. Details here: http://genoweb.toulouse.inra.fr/~thoellinger/2022/ABC_inferred_genes/preliminary_analysis_v9.html
+In order to do so, we started with a dedicated R markdown. Details to be found here: `data_and_results/haemochromatosis/networks_hemochromatosis/preliminary_analysis_v9.html`
 
 It produces an output file looking as follows
 
@@ -103,15 +103,12 @@ First, we compute:
     - `ccRE-ELS.bed`
     - `hg19-cCREs.bed`
 
-    We copy them in our current working directory, namely, `/work2/project/regenet/workspace/thoellinger/shared/2022/data`.
+    We copy them in our current working directory, namely, `data_and_results/haemochromatosis/networks_hemochromatosis/data`. Now, we run the following commands:
 
     ```bash
     conda activate base && module load bioinfo/bedtools-2.27.1
+    bedtools intersect -c -a list_all_enhancers.merged.bed -b ccRE-ELS.bed |awk 'BEGIN{FS="\t"; OFS="\t"} {nbs[$4]++} END{for(u in nbs){print u, nbs[u]}}' |sort -nrk2,2	
     ```
-
-    > ```bash
-    > bedtools intersect -c -a list_all_enhancers.merged.bed -b ccRE-ELS.bed |awk 'BEGIN{FS="\t"; OFS="\t"} {nbs[$4]++} END{for(u in nbs){print u, nbs[u]}}' |sort -nrk2,2	
-    > ```
 
     ```bash
     bedtools intersect -c -a list_all_abc_enhancers.merged.bed -b ccRE-ELS.bed |awk '$4>=1 {print $1":"$2"-"$3}' > list_all_abc_enhancers_intersecting_ccRE_ELS.bed
@@ -119,9 +116,9 @@ First, we compute:
 
   - a table which indicates, for every ABC enhancers id in our ABC data, whether the enhancer intersects >= 1 ccRE
 
-```bash
-bedtools intersect -c -a list_all_abc_enhancers.merged.bed -b hg19-cCREs.bed |awk '$4>=1 {print $1":"$2"-"$3}' > list_all_abc_enhancers_intersecting_ccRE.bed
-```
+    ```bash
+    bedtools intersect -c -a list_all_abc_enhancers.merged.bed -b hg19-cCREs.bed |awk '$4>=1 {print $1":"$2"-"$3}' > list_all_abc_enhancers_intersecting_ccRE.bed
+    ```
 
   - starting from those 2 tables, a table which associates to each ABC enhancer id:
     - 2 if it intersects >= 1 ccRE-ELS
@@ -134,13 +131,10 @@ Well, let us compute this table only for enhancers actually found in our data:
 awk -F "\t" 'BEGIN{OFS="\t"} {if(NR==FNR){els[$1]++; next}; if(els[$1]){print $1, 2} else{print $1, $2}}' data/list_all_abc_enhancers_intersecting_ccRE_ELS.bed <(awk -F "\t" 'BEGIN{OFS="\t"} {if(NR==FNR){ccre[$1]++; next}; if(ccre[$1]){print $1, 1} else{print $1, 0}}' data/list_all_abc_enhancers_intersecting_ccRE.bed networks_hemochromatosis/results/enhancers.new_genes.list) > networks_hemochromatosis/results/enhancers.new_genes.intersection_label.list
 ```
 
-> ```bash
-> cd /work2/project/regenet/workspace/thoellinger/shared/2022/networks_hemochromatosis/results
-> ```
->
-> ```bash
-> awk -F "\t" '{nb[$2]++} END{for(u in nb){print u, nb[u]}}' enhancers.new_genes.intersection_label.list
-> ```
+```bash
+cd /work2/project/regenet/workspace/thoellinger/shared/2022/networks_hemochromatosis/results
+awk -F "\t" '{nb[$2]++} END{for(u in nb){print u, nb[u]}}' enhancers.new_genes.intersection_label.list
+```
 >
 > 0 51
 > 
@@ -153,7 +147,7 @@ Now, in awk, add a column ($4) to our output files, which contains the list of s
 > Note: let us remark that there are only 101 distinct enhancers in our data:
 > 
 > ```bash
->awk -F "\t" 'BEGIN{OFS="\t"} {split($2,liste,","); for(i in liste){e=liste[i]; enhancers[e]++}} END{for(u in enhancers){print u, enhancers[u]}}' <(tail -n+2 new_genes_abc_v9_more_info.list) |wc -l
+> awk -F "\t" 'BEGIN{OFS="\t"} {split($2,liste,","); for(i in liste){e=liste[i]; enhancers[e]++}} END{for(u in enhancers){print u, enhancers[u]}}' <(tail -n+2 new_genes_abc_v9_more_info.list) |wc -l
 > ```
 >
 > 101
@@ -162,9 +156,9 @@ Now, in awk, add a column ($4) to our output files, which contains the list of s
 awk -F "\t" 'BEGIN{OFS="\t"} {print $1, $2, "enhancer.intersect", $3, $4}' <(head -n 1 new_genes_abc_v9_more_info.list) && awk -F "\t" 'BEGIN{OFS="\t"} {if(NR==FNR){label[$1]=$2; next}; split($2,liste,","); labs=""; for(i in liste){e=liste[i]; labs=labs""label[e]}; print $1, $2, labs, $3, $4}' enhancers.new_genes.intersection_label.list <(tail -n+2 new_genes_abc_v9_more_info.list) |head
 ```
 
-> ```bash
-> awk -F "\t" 'BEGIN{OFS="\t"} {print $1, $2, "enhancer.intersect", $3, $4}' <(head -n 1 new_genes_abc_v9_more_info.list) && awk -F "\t" 'BEGIN{OFS="\t"} {if(NR==FNR){label[$1]=$2; next}; split($2,liste,","); labs=""; for(i in liste){e=liste[i]; labs=labs""label[e]}; print $1, $2, labs, $3, $4}' enhancers.new_genes.intersection_label.list <(tail -n+2 new_genes_abc_v9_more_info.list) |awk -F "\t" 'BEGIN{OFS="\t"} {split($3,liste,""); max=0; for(i in liste){e=liste[i]; if(e>max){max=e}}; print $1, $2, max, $4, $5}' |head
-> ```
+```bash
+awk -F "\t" 'BEGIN{OFS="\t"} {print $1, $2, "enhancer.intersect", $3, $4}' <(head -n 1 new_genes_abc_v9_more_info.list) && awk -F "\t" 'BEGIN{OFS="\t"} {if(NR==FNR){label[$1]=$2; next}; split($2,liste,","); labs=""; for(i in liste){e=liste[i]; labs=labs""label[e]}; print $1, $2, labs, $3, $4}' enhancers.new_genes.intersection_label.list <(tail -n+2 new_genes_abc_v9_more_info.list) |awk -F "\t" 'BEGIN{OFS="\t"} {split($3,liste,""); max=0; for(i in liste){e=liste[i]; if(e>max){max=e}}; print $1, $2, max, $4, $5}' |head
+```
 
 ```bash
 (awk -F "\t" 'BEGIN{OFS="\t"} {print $1, "gene.id", $2, "enhancer.intersect", $3, $4}' <(head -n 1 new_genes_abc_v9_more_info.list) && awk -F "\t" 'BEGIN{OFS="\t"} {if(NR==FNR){label[$1]=$2; next}; split($2,liste,","); labs=""; for(i in liste){e=liste[i]; labs=labs""label[e]}; print $1, $2, labs, $3, $4}' enhancers.new_genes.intersection_label.list <(tail -n+2 new_genes_abc_v9_more_info.list) |awk -F "\t" 'BEGIN{OFS="\t"} {split($3,liste,""); max=0; for(i in liste){e=liste[i]; if(e>max){max=e}}; print $1, ".", $2, max, $4, $5}') > abc_eg.details.list
@@ -251,7 +245,7 @@ so that it looks like:
 > <gene symbol>	.	<list_of_enhancers_ids>	.	<max_validity_score_of_ABC_enhaner>	<label_product_ABC_scores>	0	0	<nb_of_enhancers>	ABC
 > ```
 
-So, go to `/work2/project/regenet/workspace/thoellinger/shared/2022/networks_hemochromatosis/results/` and do:
+So, go to `data_and_results/haemochromatosis/networks_hemochromatosis/results/` and do:
 
 ```bash
 (echo -e "gene\tgene.id\tsources\tabc.enhancer.intersect.label\tABC.product.label\tchic.enhancer.intersect.label\tcontact.product.label\tcount" && awk -F "\t" 'BEGIN{OFS="\t"} {print $1, $2, $3, $4, $5, 0, 0, $6, "ABC"}' <(tail -n+2 abc_eg.details.list)) > abc_part.list

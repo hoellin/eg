@@ -2,11 +2,7 @@
 
 We use `GO_enrichment_FDR.R` which allows us to choose between multiple procedures for multiple testing correction. Here we are interested in controlling the FDR ; we can use either `pAdjustMethod = "BH"` (Benjamini-Hochberg, default parameter) or `pAdjustMethod = "fdr"`.
 
-All results (list of genes and detailed GO enrichment) can be found here:
-
-```
-/work2/project/regenet/workspace/thoellinger/shared/2022/networks_hemochromatosis
-```
+All results (list of genes and detailed GO enrichment) can be found in [main repository](https://github.com/hoellin/hoellin.github.io.git) in `docs/data_and_resuls/haemochromatosis/networks_hemochromatosis`.
 
 ## Dependencies
 

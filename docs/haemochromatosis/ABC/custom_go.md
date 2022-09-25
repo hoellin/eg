@@ -4,11 +4,13 @@ We adapt `GO_enrichment.R` so that the multiple testing correction is less strin
 
 We name our script `GO_enrichment_FDR.R`.
 
-We should look at the `enrichGO` function from the `clusterProfiler` library: https://rdrr.io/bioc/clusterProfiler/man/enrichGO.html
+We should look at the `enrichGO` function from the `clusterProfiler` library: 
 
-https://www.rdocumentation.org/packages/clusterProfiler/versions/3.0.4/topics/enrichGO
+[https://rdrr.io/bioc/clusterProfiler/man/enrichGO.html](https://rdrr.io/bioc/clusterProfiler/man/enrichGO.html)
 
-https://yulab-smu.top/biomedical-knowledge-mining-book/clusterprofiler-go.html
+[https://www.rdocumentation.org/packages/clusterProfiler/versions/3.0.4/topics/enrichGO](https://www.rdocumentation.org/packages/clusterProfiler/versions/3.0.4/topics/enrichGO)
+
+[https://yulab-smu.top/biomedical-knowledge-mining-book/clusterprofiler-go.html](https://yulab-smu.top/biomedical-knowledge-mining-book/clusterprofiler-go.html)
 
 ## Dependencies
 
@@ -64,7 +66,7 @@ We use R 4.0. We need the `clusterProfiler` package.
 >
 > Still does not work. It appears that the problem is the dependency in the `rvcheck` library, that contained the `get_fun_from_pkg` up to version 1.8 but does not contain it anymore ; and the authors of `clusterProfiler` have not updated their dependencies: https://www.biostars.org/p/9491480/
 
-We need to install an older version of `rvcheck`, namely, the version 1.8. See https://cran.microsoft.com/snapshot/2020-04-20/web/packages/rvcheck/index.html. We download it and install it from source. On the IRSD computer:
+We need to install an older version of `rvcheck`, namely, the version 1.8. See [details here](https://cran.microsoft.com/snapshot/2020-04-20/web/packages/rvcheck/index.html). We download it and install it from source.
 
 ```bash
 cd Documents/shared/sources

@@ -2,9 +2,9 @@
 
 If GWAS have identified hundreds of variants associated to a broad range of traits and diseases, little insight has been gained about the biological mechanisms underlying these associations. Part of this gap in knowledge is likely explained by the fact that the large majority of these variants do not impact protein-coding regions but are rather located in regulatory regions active in disease-related cell types, and in particular in enhancers.
 
-Therefore it is crucial to be able to better identify E-G relationships. In particular, identifying E-G relationhsips seems crucial for a better understanding of complex genetic disorders such as Parkinson’s [Farh et al. 2015], and might be of great importance towards a better understanding of the severity of haemochromatosis.
+Therefore it is crucial to be able to better identify E-G relationships. In particular, identifying E-G relationhsips seems crucial for a better understanding of complex genetic disorders such as Parkinson’s [[1]](#1), and might be of great importance towards a better understanding of the severity of haemochromatosis.
 
-Hence, we proposed to used E-G relationships obtained from [Nasser et al.  2021] in order to identify genes sharing enhancers with those known to cause haemochromatosis or to regulate iron metabolism in liver and intestine, aiming at identifying new genes potentially involved in the severity of haemochromatosis.
+Hence, we proposed to used E-G relationships obtained from [[2]](#2) in order to identify genes sharing enhancers with those known to cause haemochromatosis or to regulate iron metabolism in liver and intestine, aiming at identifying new genes potentially involved in the severity of haemochromatosis.
 
 ## Objectives
 
@@ -19,9 +19,9 @@ In other words, if G is a gene inferred, it means it is regulated by an enhancer
 
 ## Results
 
-We finally obtained a list of 453 putative new genes potentially involved in haemochromatosis. The list is available here: `/work2/project/regenet/workspace/thoellinger/shared/2022/merged_inferred_genes_v1.csv`
+We finally obtained a list of 453 putative new genes potentially involved in haemochromatosis. The list is available in the main [GitHub repository of this project](https://github.com/hoellin/hoellin.github.io) in `data_and_results/haemochromatosis/merged_inferred_genes_v1.csv`.
 
-Those 453 genes are ranked according to a custom confidence index again, so according to the min confidence index by which we want to filter our results, we obtain a smaller list:
+Those 453 genes are ranked according to a custom confidence index:
 
 - 1 gene at the maximum confidence index (namely 15) : *COQ9*
 - 11 genes at a confidence index >= 11 :
@@ -38,4 +38,14 @@ Those 453 genes are ranked according to a custom confidence index again, so acco
 - 453 genes at a confidence index >= 2
 
 
+## References
 
+<a id="1">[1]</a> 
+Farh, KH., Marson, A., Zhu, J. et al. (2015).
+Genetic and epigenetic fine mapping of causal autoimmune disease variants. 
+Nature 518, 337–343.
+
+<a id="2">[2]</a>
+Nasser, S., Farh, K.H., Zhu, J. et al. (2021).
+Genome-wide mapping of enhancer-gene relationships in human cells.
+Nature 591, 1–7.

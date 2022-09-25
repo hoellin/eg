@@ -6,6 +6,8 @@ These pages were first intented for my personal use to organize my notes, and to
 
 ## Context
 
+## Organization
+
 ## Main sections
 
 ### ABC

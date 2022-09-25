@@ -69,6 +69,5 @@ jt -r
 
 Note that these commands can be directly executed inside a notebook, using the `!` prefix, but the page needs to be reloaded to see the changes.
 
-More info available here: https://github.com/dunovank/jupyter-themes
-
+More info available [here](https://github.com/dunovank/jupyter-themes).
 

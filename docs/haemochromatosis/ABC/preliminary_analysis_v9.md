@@ -23,7 +23,7 @@ background-color: #C9DDE4;
 
 # Notice
 
-The current page essentially corresponds to a markdown knitted from a Rmd document. It does not render very well because of html widgets not handled, so one should better refer to the correct rendering available here: [https://genoweb.toulouse.inra.fr/~thoellinger/2022/ABC_inferred_genes/preliminary_analysis_v9.html](https://genoweb.toulouse.inra.fr/~thoellinger/2022/ABC_inferred_genes/preliminary_analysis_v9.html)
+The current page essentially corresponds to a markdown knitted from a Rmd document. It does not render very well because of html widgets not handled, so one should better refer to the correct rendering available in [preliminary_analysis_v9.html](../../../data_and_results/haemochromatosis/networks_hemochromatosis/preliminary_analysis_v9.html).
 
 
 
@@ -83,13 +83,13 @@ loaded via a namespace (and not attached):
 
 # Preliminary work
 
-Have a look https://datastorm-open.github.io/visNetwork/nodes.html for documentation on `visNetwork`.
+Documentation on `visNetwork` can be found [here](https://datastorm-open.github.io/visNetwork/nodes.html).
 
 ## Data importation
 
 All the files imported here can be found on Genotoul, in `/work2/project/regenet/results/multi/abc.model/Nasser2021`.
 
-The full code itself is available here: `/work2/project/regenet/workspace/thoellinger/shared/automne_2021/networks_hemochromatosis/` (as `preliminary_analysis_v6.Rmd`), which is also the working directory we used. Please do not modify directly this repository as it is backed up between multiple computers on a regular basis.
+The full code itself is available here: [`preliminary_analysis_v10.Rmd`](../../../data_and_results/haemochromatosis/networks_hemochromatosis/preliminary_analysis_v10.Rmd).
 
 
 ```{.r .badCode}

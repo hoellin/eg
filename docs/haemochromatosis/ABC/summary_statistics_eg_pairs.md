@@ -4,11 +4,11 @@
 
 ### Data
 
-All data we use are available in `/work2/project/regenet/results/multi/abc.model/Nasser2021/`.
+All data we use are available in `/work2/project/regenet/results/multi/abc.model/Nasser2021/` (private).
 
 ### Code
 
-We use Sarah's `bedpe.sumstats.sh` script. See example here: http://genoweb.toulouse.inra.fr/~thoellinger/notes/tutos_perso/script_bedpe_summary/script_bedpe_summary.html#using-bedpesumstatssh
+We use Sarah Djebali's `bedpe.sumstats.sh` script. See example [here](../../../guidebooks/script_bedpe_summary/script_bedpe_summary/#using-bedpesumstatssh).
 
 R packages `optparse` and `reshape2` are required. It suffices to load the following module:
 

@@ -1,20 +1,12 @@
 # GO enrichment with GOrilla
 
-We use `GOrilla` to compute GO enrichment of inferred genes: http://cbl-gorilla.cs.technion.ac.il/
+We use `GOrilla` to compute GO enrichment of inferred genes: [http://cbl-gorilla.cs.technion.ac.il/](http://cbl-gorilla.cs.technion.ac.il/).
 
 ***We performed all analysis below on January 5th, 2022. At this time, the GOrilla database had last been updated on March 6th, 2021 (using the GO database and other sources)***
 
-All results (list of genes and detailed GO enrichment) can be found here:
-
-```
-/work2/project/regenet/workspace/thoellinger/shared/2022/networks_hemochromatosis
-```
+All results (list of genes and detailed GO enrichment) can be found in [main repository](https://github.com/hoellin/hoellin.github.io.git) in `docs/data_and_resuls/haemochromatosis/networks_hemochromatosis`.
 
 ## Collecting the list of genes of interest
-
-```bash
-cd /work2/project/regenet/workspace/thoellinger/shared/2022/networks_hemochromatosis
-```
 
 We obtained this list using our R markdown doing network analysis of E-G pairs starting from genes directly involved in hemochromatosis or involved in the regulation of iron metabolism.
 
@@ -78,7 +70,7 @@ Note that we set the p-value threshold to the largest possible value in GOrilla,
 
 #### Results
 
-We saved the results in: `/work2/project/regenet/workspace/thoellinger/shared/2022/networks_hemochromatosis/results/GO_FDR/all_genes/GOrilla_all_genes.xls`
+We saved the results in: `/work2/project/regenet/workspace/thoellinger/shared/2022/networks_hemochromatosis/results/GO_FDR/all_genes/GOrilla_all_genes.xls` (private).
 
 | **GO term**                                                  | **Description**                                              | **[P-value](http://cbl-gorilla.cs.technion.ac.il/GOrilla/dbhyqsac/GOResults.html#p_value_info)** | **[FDR q-value](http://cbl-gorilla.cs.technion.ac.il/GOrilla/dbhyqsac/GOResults.html#fdr_info)** | **[ Enrichment (N, B, n, b) ](http://cbl-gorilla.cs.technion.ac.il/GOrilla/dbhyqsac/GOResults.html#enrich_info)** |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |

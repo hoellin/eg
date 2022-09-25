@@ -384,7 +384,7 @@ So there is only one more overlap:
 chr6	26103318	26105346	#ENSG00000197061 (H4C3), ENSG00000187475 (HIST1H4C)
 ```
 
-We can retrieve what genes these enhancers regulate according to the ABC model, in the following file: `/work2/project/regenet/workspace/thoellinger/shared/automne_2021/networks_hemochromatosis/eg_dist2.bedpe`.
+We can retrieve what genes these enhancers regulate according to the ABC model, in the following file: [`eg_dist2.bedpe`](../../../data_and_results/haemochromatosis/networks_hemochromatosis/results/eg_dist2.bedpe).
 
 ```bash
 awk -F "\t" '$1=="chr6" && $2=="26103318" && $3=="26105346"' /work2/project/regenet/workspace/thoellinger/shared/automne_2021/networks_hemochromatosis/eg_dist2.bedpe

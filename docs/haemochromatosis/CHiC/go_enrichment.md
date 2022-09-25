@@ -10,7 +10,7 @@ All results (list of genes and detailed GO enrichment) can be found here:
 
 ## Dependencies
 
-We use R 4.0. We need the `clusterProfiler` package. See `custom_go.md` for installation details.
+We use R 4.0. We need the `clusterProfiler` package. See [`custom_go.md`](../ABC/custom_go.md) for installation details.
 
 ## Main remarks
 
@@ -176,7 +176,7 @@ Rscript GO_enrichment_FDR.R -k "SYMBOL" -G results/genes_inferred_from_that_expr
 
 Those are: DCYTB (CYBRD1) / DMT1 (SLC11A2) / SLC40A1
 
-Note: there are no inferred genes from CYBRD1 nor SLC40A1 => so the GO enrichment is basically that of SLC11A2. Please refer to the above section.
+Note: there are no inferred genes from CYBRD1 nor SLC40A1 => so the GO enrichment is basically that of SLC11A2.
 
 ### Each original gene separately
 

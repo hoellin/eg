@@ -341,4 +341,4 @@ There is only one more overlap, namely:
 
 ## Are the genes regulated by the enhancers found to intersect a GWAS SNP, the same as those given in GWAS as associated to the SNP?
 
-We did this analysis starting from 10 instead of 13 genes, but as it conduces to only 1 more overlap, we do not re-perform it. So here is the analysis: https://genoweb.toulouse.inra.fr/~thoellinger/fall_2021/gwas.html
+We did this analysis starting from 10 instead of 13 genes, but as it conduces to only 1 more overlap, we do not re-perform it. So here is the analysis: [gwas.html](../../../data_and_results/haemochromatosis/gwas.html)

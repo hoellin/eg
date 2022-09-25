@@ -6,7 +6,7 @@
 
 All data are downloaded from [Nasser et al. 2021](https://www.engreitzlab.org/resources/) and available in `/work2/project/regenet/results/multi/abc.model/Nasser2021` on Genotoul.
 
-`AllPredictions.AvgHiC.ABC0.015.minus150.ForABCPaperV3.txt` contains predictions made with the ABC model over 131 biosamples from Nasser et al. 2021. See: https://www.engreitzlab.org/resources/.
+`AllPredictions.AvgHiC.ABC0.015.minus150.ForABCPaperV3.txt` contains [predictions made with the ABC model over 131 biosamples from Nasser et al. 2021](https://www.engreitzlab.org/resources/).
 
 > ```bash
 > wget ftp://ftp.broadinstitute.org/outgoing/lincRNA/ABC/AllPredictions.AvgHiC.ABC0.015.minus150.ForABCPaperV3.txt.gz -P /work2/project/regenet/results/multi/abc.model/Nasser2021/
@@ -62,7 +62,7 @@ conda activate base && module load bioinfo/bedtools-2.27.1
 
   ***Here we simply take the mean of the two ABC scores.*** 
 
-  Another option, which seems slightly better, would be to do as follows (do a drawing to re-understand when reading again): let E1 and E3 be the two enhancers, such that the intersection of them is F2 ; and denote F1 = E1-F2, F3 = E3-F2 and F = F1+F2+F3 = union of E1 and E3. Consider the following ratios, the sum of which is 1: r1 = F1/F, r2 = F2/F, r3 = F3/F. Then, the new ABC score could read as follows: ABC = r1 x ABC1 + r3 x ABC3 + r2 x (ABC1+ABC3)/2.
+A slightly better approach could be to do as follows (do a drawing to re-understand when reading again): let E1 and E3 be the two enhancers, such that the intersection of them is F2 ; and denote F1 = E1-F2, F3 = E3-F2 and F = F1+F2+F3 = union of E1 and E3. Consider the following ratios, the sum of which is 1: r1 = F1/F, r2 = F2/F, r3 = F3/F. Then, the new ABC score could read as follows: ABC = r1 x ABC1 + r3 x ABC3 + r2 x (ABC1+ABC3)/2.
 
 
 ## Extracting data of interest
@@ -187,7 +187,7 @@ Contains 269,254 enhancers.
 
 Now let's replace all enhancers coordinates in the result, by the coordinates of the corresponding merged enhancers in `list_all_enhancers.merged.bed`.
 
-WARNING: it is ***absolutely necessary** to have **at least** 32 GB of memory to run the code below. If the memory is not sufficient, the arrays indexed by `$11":::"$7` are not going to be stored but no error message will be yielded, which could make it pretty hard to debug the code.
+WARNING: it is **absolutely necessary** to have **at least** 32 GB of memory to run the code below. If the memory is not sufficient, the arrays indexed by `$11":::"$7` are not going to be stored but no error message will be yielded, which could make it pretty hard to debug the code.
 
 ```bash
 srun --mem=32G --pty bash
@@ -287,8 +287,6 @@ eg_reduced.to_csv(output_path, sep='\t', header=True, index=False)
 print("Done.")
 sys.exit(0)
 ```
-
-The advantage is that using the script, we can easily change with pandas dedicated functions the way everything is arranged, without having to re-think of the best manner to do those modifications with Awk.
 
 ```bash
 # requires a lot of memory, better use at least 32GB
@@ -716,7 +714,7 @@ So we do not need to replace all enhancers coordinates in the result, by that of
 
 #### All biosamples
 
-We already it: 
+We already did it in section [Main filters](#main-filters).
 
 * `Nasser2021ABCPredictions.all_biosamples.all_putative_enhancers.merged_enhancers.sorted.bedpe` for merged enhancers
 * `Nasser2021ABCPredictions.all_biosamples.all_putative_enhancers.merged_enhancers.sorted.uniques_eg.bedpe` for merged enhancers (with 2 rows = 2 distinct unique E-G pairs)

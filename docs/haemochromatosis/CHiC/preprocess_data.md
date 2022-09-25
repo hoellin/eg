@@ -1,4 +1,4 @@
-# Explore and prepare data for further analysis of E-G network with genes involved in hemochromatosis, with E-G pairs based on CHiC data
+# Explore and prepare data for further analysis of E-G network with genes involved in hemochromatosis, based on CHiC data
 
 ## Requirements
 
@@ -178,7 +178,7 @@ Also, let us note that there are some duplicates, ie in a few cases (279), multi
 
 More precisely, there are 2 new entries that both match 3 old entries, and 277 new entries matching 2 old entries each.
 
-The reason must be (I did not verify though, but this is the only explanation I see) that for some given putative enhancer, let us say for E, the are multiple promoters in the original file, let's say P1 and P2, each one overlapping the same TSS+- 500 bp of a gene G.
+The reason must be (I did not verify though) that for some given putative enhancer, let us say for E, there are multiple promoters in the original file, let's say P1 and P2, each one overlapping the same TSS+- 500 bp of a gene G.
 
 Well, for now we don't care.
 

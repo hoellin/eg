@@ -23,7 +23,7 @@ background-color: #C9DDE4;
 
 # Notice
 
-The current page essentially corresponds to a markdown knitted from a Rmd document. It does not render very well because of html widgets not handled, so one should better refer to the correct rendering available here: [https://genoweb.toulouse.inra.fr/~thoellinger/2022/CHiC_inferred_genes/preliminary_analysis_chic_v2.html](https://genoweb.toulouse.inra.fr/~thoellinger/2022/CHiC_inferred_genes/preliminary_analysis_chic_v2.html)
+The current page essentially corresponds to a markdown knitted from a Rmd document. It does not render very well because of html widgets not handled, but one should better refer to the correct rendering available [here](../../../data_and_results/haemochromatosis/promoter_capture_hic/preliminary_analysis_chic_v2.html).
 
 
 # Libraries & Version
@@ -80,15 +80,15 @@ loaded via a namespace (and not attached):
 
 # Preliminary work
 
-Have a look https://datastorm-open.github.io/visNetwork/nodes.html for documentation on `visNetwork`.
+The documentation on `visNetwork` is available [here](https://datastorm-open.github.io/visNetwork/nodes.html).
 
 ## Data importation
 
-All the files imported here can be found on Genotoul, in `/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/` and `/work2/project/regenet/results/phic/homo_sapiens/hg19/jung.ren.2019/LI11/nofilter/pp`.
+All the files imported here can be found on Genotoul, in (private access) `/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/` and (private access) `/work2/project/regenet/results/phic/homo_sapiens/hg19/jung.ren.2019/LI11/nofilter/pp`, or for some [here (public access)](../../../data_and_results/haemochromatosis/promoter_capture_hic/).
 
 The full code itself is available here: `/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/` (as `preliminary_analysis_v1.Rmd`). Please do not modify directly this repository as it is backed up between multiple computers on a regular basis.
 
-
+ 
 ```{.r .badCode}
 rm(list = ls())
 

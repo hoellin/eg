@@ -5,12 +5,12 @@ site_url: https://hoellin.github.io
 nav:
   - Guidebooks:
     - Introduction: guidebooks/introduction.md
-    - Compute summary stats of a bedpe: tutos_perso/script_bedpe_summary/script_bedpe_summary.md
+    - Compute summary stats of a bedpe: guidebooks/script_bedpe_summary/script_bedpe_summary.md
     - Basics:
-      - Shell: tutos_perso/unix/shell.md
-      - Conda basics: tutos_perso/conda_environments.md
-      - Git: tutos_perso/git.md
-      - Genotoul cluster: tutos_perso/genotoul.md
+      - Shell: guidebooks/shell.md
+      - Conda basics: guidebooks/conda_environments.md
+      - Git: guidebooks/git.md
+      - Genotoul cluster: guidebooks/genotoul.md
       - How to use Jupyter through ssh tunneling?: guidebooks/notebooks_ssh.md
   - Haemochromatosis:
     - Introduction: haemochromatosis/introduction.md
@@ -27,9 +27,9 @@ nav:
         - Summary statistics enhancers: haemochromatosis/ABC/summary_statistics_eg_pairs.md
         - GO enrichment: haemochromatosis/ABC/go_enrichment.md
         - GOrilla: haemochromatosis/ABC/gorilla.md
-        - Avg nb connections per gene /!\ only 10 genes: haemochromatosis/ABC/compute_avg_nb_of_connections_per_gene.md
-        - GWAS: haemochromatosis/ABC/gwas.md
-        - GWAS /!\ only 10 genes: haemochromatosis/ABC/gwas_10.md
+        - Avg nb connections per gene: haemochromatosis/ABC/compute_avg_nb_of_connections_per_gene.md
+        - GWAS (13 initial genes): haemochromatosis/ABC/gwas.md
+        - GWAS (10 initial genes): haemochromatosis/ABC/gwas_10.md
   - BENGI:
     - Introduction: notes_BENGI/introduction.md
     - Notebooks:

@@ -1,0 +1,300 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>preprocess_data</title>
+</head>
+<body><h1 id='explore-and-prepare-data-for-further-analysis-of-e-g-network-with-genes-involved-in-hemochromatosis-with-e-g-pairs-based-on-chic-data'>Explore and prepare data for further analysis of E-G network with genes involved in hemochromatosis, with E-G pairs based on CHiC data</h1>
+<h2 id='requirements'>Requirements</h2>
+<h3 id='data-availability'>Data availability</h3>
+<p>All data can be found here:</p>
+<p><code>/work2/project/regenet/results/phic/homo_sapiens/hg19/jung.ren.2019/LI11/score2/pall/LI11.pall.score2.gninfo.bedpe</code></p>
+<pre><code class='language-shell' lang='shell'>cd /work2/project/regenet/results/phic/homo_sapiens/hg19/jung.ren.2019/LI11/score2/pall/
+mkdir networks &amp;&amp; cd networks
+ln -s ../LI11.pall.score2.gninfo.bedpe raw_data_liver.full.bedpe
+</code></pre>
+<h3 id='bedtools'><code>bedtools</code></h3>
+<p>One can load the appropriate modules with:</p>
+<pre><code class='language-shell' lang='shell'>conda activate base &amp;&amp; module load bioinfo/bedtools-2.27.1	
+</code></pre>
+<h3 id='summary-statistics-with-r'><code>Summary statistics with R</code></h3>
+<p>We need to load a module containing R to be able to launch the <code>compute_summary_stats_enhancer_list.R</code> script:</p>
+<pre><code class='language-shell' lang='shell'>module load system/R-4.1.1_gcc-9.3.0
+</code></pre>
+<pre><code class='language-shell' lang='shell'>cp /work2/project/regenet/results/multi/abc.model/Nasser2021/compute_summary_stats_enhancer_list.R .
+</code></pre>
+<p>We can execute the R script with:</p>
+<pre><code class='language-shell' lang='shell'>Rscript compute_summary_stats_enhancer_list.R &lt;relative_path_to_enhancers_list&gt;
+</code></pre>
+<h2 id='extracting-data-of-interest'>Extracting data of interest</h2>
+<p>Note that the <code>LI11</code> repository already corresponds to putative E-G pairs in <code>liver</code> cells. The list of all available cell types can be found here; <code>/work2/project/regenet/results/phic/homo_sapiens/hg19/jung.ren.2019/metadata.tsv</code>.</p>
+<p>There are 12 columns:</p>
+<blockquote><pre><code class='language-shell' lang='shell'>head -n 1 raw_data_liver.full.bedpe
+</code></pre>
+<pre><code class='language-shell' lang='shell'>chr1	943049	965801	chr1	1183838	1209657	chr1:943049:965801,chr1:1183838:1209657	2.76719343781528..	pp	11837	22511	7	242322	1.9015	3.6813	1.1317	2.1959	2	chr1:948802:949920:+:ENSG00000187608.5:ISG15,chr1:955502:991496:+:ENSG00000188157.9:AGRN,	1	chr1:1189288:1209265:-:ENSG00000160087.16:UBE2J2,	elt2B	218037
+</code></pre>
+<pre><code class='language-shell' lang='shell'>1 chr1 # promoter of the gene
+2 start1 # 0-based
+3 end1 # 1-based
+4 chr2 # elt2 (putative enhancer)
+5 start2 # 0-based
+6 end2 # 1-based
+7 short name &lt;chr1:start1:end1, chr2:start2:end2&gt; # &lt;prom_coord, elt2_coord&gt;
+8 strand1 # promoter
+9 strand2 # elt2
+10 score (does not matter because all p-values are small enough in those files)
+11 type of relation (pp or po)  # I think that
+								# pp stands for promoter-promoter
+								# po stands for promoter-other
+12-19 does not matter # cf mail &quot;sens des champs des *gninfo.bedpe.gz&quot; for details
+20 number of genes whose tss+-500bp overlaps the prom parts
+21 list of such genes in the form &lt;chr1:start1:end1:strand1:gene_id:gene_symbol,chr2:...,...&gt;
+22 number of genes whose tss+-500bp overlaps the elt2 part
+23 the list of such genes in the same form as for prom (21)
+24 type of elt2 # two possible values:
+				# elt2A if the element 2 is never a promoter anywhere else in the file
+				# elt2B otherwise, that is if the element 2 also appears as a promoter somewhere else in the file
+25 interfragment distance (from end to beg)
+</code></pre>
+</blockquote>
+<blockquote><pre><code class='language-shell' lang='shell'>awk -F &quot;\t&quot; &#39;{types[$24]++} END{for(u in types){print u, types[u]}}&#39; raw_data_liver.full.bedpe |sort -nrk2,2
+</code></pre>
+<pre><code class='language-shell' lang='shell'>elt2A 33553
+elt2B 4706
+</code></pre>
+</blockquote>
+<h3 id='exploration'>Exploration</h3>
+<h4 id='are-there-self-promoters--if-so-we-have-to-remove-them-for-comparison-purpose-with-abc-data'>Are there self-promoters ? If so, we have to remove them for comparison purpose with ABC data</h4>
+<blockquote><pre><code class='language-shell' lang='shell'>awk -F &quot;\t&quot; &#39;$24~/(^elt2B$)/ {if($1&quot;:&quot;$2&quot;:&quot;$3==$4&quot;:&quot;$5&quot;:&quot;$6){print $0}}&#39; raw_data_liver.bedpe |wc -l
+</code></pre>
+<pre><code>0
+</code></pre>
+</blockquote>
+<p>=&gt; No. OK.</p>
+<h3 id='main-filters'>Main filters</h3>
+<h4 id='remove-entries-for-which-no-gene-tss-500-bp-overlaps-the-promoter'>Remove entries for which no gene TSS+-500 bp overlaps the promoter</h4>
+<p>This is the case for 46 entires:</p>
+<blockquote><pre><code class='language-shell' lang='shell'>awk -F &quot;\t&quot; &#39;{nb[$20]++} END{for(u in nb){print u, nb[u]}}&#39; raw_data_liver.full.bedpe |sort -nrk2,2
+</code></pre>
+<pre><code class='language-shell' lang='shell'>1 30065
+2 6672
+3 1114
+4 286
+0 46
+5 39
+6 30
+7 7
+</code></pre>
+</blockquote>
+<pre><code class='language-shell' lang='shell'>awk -F &quot;\t&quot; &#39;$20&gt;0&#39; raw_data_liver.full.bedpe &gt; temp.bedpe
+mv temp.bedpe raw_data_liver.full.bedpe
+</code></pre>
+<blockquote><pre><code class='language-shell' lang='shell'>awk -F &quot;\t&quot; &#39;{nb[$20]++} END{for(u in nb){print u, nb[u]}}&#39; raw_data_liver.full.bedpe |sort -nrk2,2
+</code></pre>
+<pre><code class='language-shell' lang='shell'>1 30065
+2 6672
+3 1114
+4 286
+5 39
+6 30
+7 7
+</code></pre>
+</blockquote>
+<h4 id='deal-with-pp-type-of-relation'>Deal with <code>pp</code> type of relation</h4>
+<p>Well there should be no problem keeping them:</p>
+<blockquote><pre><code class='language-shell' lang='shell'>awk -F &quot;\t&quot; &#39;{type[$11]++} END{for(u in type){print u, type[u]}}&#39; raw_data_liver.full.bedpe |sort -nrk2,2
+</code></pre>
+<pre><code class='language-shell' lang='shell'>po 33506
+pp 4707
+</code></pre>
+</blockquote>
+<h4 id='duplicates-entries-for-which-the-e-prom-pair-is-associated-to-multiple-e-g-pairs-and-modify-file-structure'>Duplicates entries for which the E-Prom pair is associated to multiple E-G pairs, and modify file structure</h4>
+<pre><code class='language-shell' lang='shell'>awk -F &quot;\t&quot; &#39;BEGIN{OFS=&quot;\t&quot;} {split($21,genes,&quot;,&quot;); i=0; n=length(genes)-1; while(i&lt;n){i=i+1; gene=genes[i]; split(gene,parts,&quot;:&quot;); entry[$4&quot;\t&quot;$5&quot;\t&quot;$6&quot;\t&quot;parts[1]&quot;\t&quot;parts[2]&quot;\t&quot;parts[3]&quot;\t&quot;parts[6]&quot;\t&quot;parts[5]]=$4&quot;\t&quot;$5&quot;\t&quot;$6&quot;\t&quot;parts[1]&quot;\t&quot;parts[2]&quot;\t&quot;parts[3]&quot;\t&quot;$4&quot;:&quot;$5&quot;-&quot;$6&quot;::&quot;parts[5]&quot;::&quot;parts[6]&quot;\t&quot;$8&quot;\t&quot;$10&quot;\t&quot;$9&quot;\tliver\t&quot;parts[6]&quot;\t&quot;$25&quot;\t&quot;parts[5]}} END{for(u in entry){print entry[u]}}&#39; raw_data_liver.full.bedpe &gt; liver.all_putative_enhancers.bedpe
+</code></pre>
+<p>OK.</p>
+<p><strong>Warning</strong>:</p>
+<ul>
+<li>in <code>raw_data_liver.full.bedpe</code>, element 1 is the promoter and element 2 is the putative enhancer</li>
+<li>in <code>liver.all_putative_enhancers.bedpe</code>, element 1 is the putative enhancer and element 2 is the gene</li>
+
+</ul>
+<p>Also, let us note that there are some duplicates, ie in a few cases (279), multiple entries in the original raw file, correspond to the same &quot;id&quot; (coordinates of the putative enhancer + coordinates, id and name of the gene) in the new file:</p>
+<blockquote><pre><code class='language-shell' lang='shell'>awk -F &quot;\t&quot; &#39;BEGIN{OFS=&quot;\t&quot;} {split($21,genes,&quot;,&quot;); i=0; n=length(genes)-1; while(i&lt;n){i=i+1; gene=genes[i]; split(gene,parts,&quot;:&quot;); entry[$4&quot;:&quot;$5&quot;:&quot;$6&quot;::&quot;parts[1]&quot;:&quot;parts[2]&quot;:&quot;parts[3]&quot;::&quot;parts[6]&quot;::&quot;parts[5]]++}} END{for(u in entry){if(entry[u]&gt;1){print u, entry[u]}}}&#39; raw_data_liver.full.bedpe |sort -nrk2,2 |wc -l
+</code></pre>
+<p>279</p>
+</blockquote>
+<p>More precisely, there are 2 new entries that both match 3 old entries, and 277 new entries matching 2 old entries each.</p>
+<p>The reason must be (I did not verify though, but this is the only explanation I see) that for some given putative enhancer, let us say for E, the are multiple promoters in the original file, let&#39;s say P1 and P2, each one overlapping the same TSS+- 500 bp of a gene G.</p>
+<p>Well, for now we don&#39;t care.</p>
+<pre><code class='language-shell' lang='shell'>cp /work2/project/regenet/results/multi/abc.model/Nasser2021/chr_sizes chr_sizes
+</code></pre>
+<pre><code class='language-shell' lang='shell'>bedtools sort -faidx chr_sizes -i liver.all_putative_enhancers.bedpe &gt; liver.all_putative_enhancers.sorted.bedpe
+</code></pre>
+<h4 id='extract-enhancers'>Extract enhancers</h4>
+<p>Now we extract the list of all enhancers in our liver biosample:</p>
+<pre><code class='language-shell' lang='shell'>awk &#39;BEGIN{FS=&quot;\t&quot;; OFS=&quot;\t&quot;} {print $1, $2, $3}&#39; liver.all_putative_enhancers.sorted.bedpe |uniq &gt; list_all_enhancers.bed
+</code></pre>
+<p>OK. Contains 31,749 enhancers.</p>
+<p>And we define the list of merged enhancers, such that none are overlapping:</p>
+<pre><code class='language-shell' lang='shell'>bedtools merge -i list_all_enhancers.bed &gt; list_all_enhancers.merged_liver.bed
+</code></pre>
+<p>It did not change anything, so there was no overlap, which is expected as we are focused on only 1 biosample.</p>
+<pre><code class='language-shell' lang='shell'>rm list_all_enhancers.merged_liver.bed
+</code></pre>
+<p>Here are the summary statistics on those enhancers:</p>
+<pre><code class='language-r' lang='r'>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1111    4247    5596    7007    7756 1553733
+</code></pre>
+<p><strong>Note that they are pretty large!</strong></p>
+<h4 id='overlap-between-enhancers-and-ccre-els'>Overlap between enhancers and ccRE-ELS</h4>
+<p>We take the ccRE from <code>/work2/project/regenet/results/multi/bengi/Annotations/hg19-cCREs.bed</code>.</p>
+<pre><code class='language-shell' lang='shell'>ln -s /work2/project/regenet/results/multi/bengi/Annotations/hg19-cCREs.bed .
+</code></pre>
+<pre><code class='language-shell' lang='shell'>awk -F &quot;\t&quot; &#39;$6~/(^Enhancer-like$)/&#39; hg19-cCREs.bed &gt; ccRE-ELS.bed
+</code></pre>
+<p>989,712 ccRE-ELS</p>
+<pre><code class='language-r' lang='r'>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   50.0   247.0   352.0   423.4   519.0 16633.0
+</code></pre>
+<pre><code class='language-shell' lang='shell'>bedtools intersect -c -a list_all_enhancers.bed -b ccRE-ELS.bed |awk &#39;BEGIN{FS=&quot;\t&quot;; OFS=&quot;\t&quot;} {nbs[$4]++} END{for(u in nbs){print u, nbs[u]}}&#39; |sort -nrk2,2	
+</code></pre>
+<blockquote><pre><code class='language-shell' lang='shell'>0	6149
+1	4355
+2	4238
+3	3869
+4	3302
+5	2650
+6	1975
+7	1402
+8	1040
+9	744
+10	568
+11	363
+12	247
+13	176
+14	148
+15	105
+16	90
+17	73
+18	48
+19	34
+20	31
+22	19
+23	18
+21	18
+25	13
+24	13
+26	9
+34	7
+30	7
+28	7
+27	5
+32	4
+29	4
+33	3
+49	2
+39	2
+37	2
+36	2
+31	2
+51	1
+42	1
+41	1
+40	1
+35	1
+</code></pre>
+</blockquote>
+<p>6,149 (19%) of putative enhancers, do not match any ccRE-ELS. Only 4,355 (14%) of putative enhancers match exactly one ccRE-ELS. </p>
+<h4 id='overlap-between-enhancers-and-all-ccre'>Overlap between enhancers and all ccRE</h4>
+<pre><code class='language-shell' lang='shell'>bedtools intersect -c -a list_all_enhancers.bed -b hg19-cCREs.bed |awk &#39;BEGIN{FS=&quot;\t&quot;; OFS=&quot;\t&quot;} {nbs[$4]++} END{for(u in nbs){print u, nbs[u]}}&#39; |sort -nrk2,2
+</code></pre>
+<blockquote><pre><code class='language-shell' lang='shell'>3	3962
+2	3805
+4	3629
+1	3524
+0	3184
+5	3010
+6	2443
+7	1757
+8	1397
+9	998
+10	785
+11	589
+12	435
+13	351
+14	292
+15	237
+16	198
+17	162
+19	131
+18	120
+20	93
+21	76
+22	75
+24	63
+23	56
+26	36
+28	34
+25	34
+29	32
+27	25
+30	24
+33	22
+31	22
+32	16
+36	13
+35	13
+38	12
+37	12
+34	12
+41	11
+40	6
+39	5
+53	4
+52	4
+51	4
+45	4
+42	4
+50	3
+49	3
+44	3
+43	3
+48	2
+46	2
+79	1
+76	1
+74	1
+69	1
+64	1
+61	1
+60	1
+58	1
+57	1
+55	1
+54	1
+47	1
+</code></pre>
+</blockquote>
+<p>3,184 (10%) of all putative enhancers, do not match any ccRE.</p>
+<h4 id='intersect-enhancers-with-nasser2021-enhancers'>Intersect enhancers with Nasser2021 enhancers</h4>
+<p>TODO. Not essential.</p>
+<h4 id='keep-only-putative-enhancers-that-overlap-at-least-one-ccre-els'>Keep only putative enhancers that overlap at least one ccRE-ELS</h4>
+<p>At the end of the day we chose to cast out putative enhancers that do not overlap any ccRE-ELS, in order to remove element-Gene pairs in which the element is highly suspected not to be an enhancer. Note that we have not done so for Nasser2021 enhancers (instead, for Nasser2021 enhancers, we will create a confidence label on the resulting predictions according to whether the enhancer overlaps a ccRE-ELS or not), but for the ones here it is necessary given the important size of elements: if they do not overlap any ccRE-ELS despite their large size, they are very unlikely to be actual enhancers.</p>
+<p>Doing so, we lost 19% of our enhancers, resulting in a list of 31,749−6,149 = 25,600 enhancers:</p>
+<pre><code class='language-shell' lang='shell'>bedtools intersect -wa -a list_all_enhancers.bed -b ccRE-ELS.bed |uniq &gt; list_all_enhancers.overlapping_ccRE-ELS.bed
+</code></pre>
+<blockquote><pre><code class='language-shell' lang='shell'>wc -l list_all_enhancers.overlapping_ccRE-ELS.bed
+</code></pre>
+<p>25,600</p>
+</blockquote>
+<p>Then, over 48,038 initial putative E-G pairs in liver, there are 39,252 remaining pairs for which the enhancer overlaps at least one ccRE-ELS.</p>
+<pre><code class='language-shell' lang='shell'>awk -F &quot;\t&quot; &#39;BEGIN{OFS=&quot;\t&quot;} {if(NR==FNR){found[$1&quot;:&quot;$2&quot;-&quot;$3]++; next}; if(found[$1&quot;:&quot;$2&quot;-&quot;$3]){print $0}}&#39; list_all_enhancers.overlapping_ccRE-ELS.bed liver.all_putative_enhancers.sorted.bedpe &gt; liver.all_putative_enhancers.overlapping_ccRE-ELS.sorted.bedpe
+</code></pre>
+<blockquote><pre><code class='language-shell' lang='shell'>wc -l liver.all_putative_enhancers.overlapping_ccRE-ELS.sorted.bedpe
+</code></pre>
+<p>39,252</p>
+</blockquote>
+<p>The file <code>liver.all_putative_enhancers.overlapping_ccRE-ELS.sorted.bedpe</code> is the one we will use from now.</p>
+<p>&nbsp;</p>
+</body>
+</html>

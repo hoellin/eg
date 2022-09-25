@@ -2,40 +2,34 @@
 
 To answer this question, we need to compute:
 
-* A table indicating for each gene of our annotation, the list of enhancers regulating it
+* A table indicating for each gene of our annotation, the list of enhancers regulating it (easy with Awk)
 
-  -> Easily computed with Awk
+* Another table indicating for each enhancer of our annotation, the list of genes regulated by it (easy with Awk)
 
-* Another table indicating for each enhancer of our annotation, the list of genes regulated by it
-
-  -> Easily computed with Awk too
-
-Then, we compute:
+Then, we compute, with R:
 
 * The distribution of the number of connections made by our 10 genes, with R (well, with 10 genes only, better compute only mean, min and max)
 * The distribution of the number of connections made by all genes
-
-That part will be easier with R.
 
 ## All genes
 
 ### Compute tables
 
 ```bash
-cd .../shared/automne_2021/networks_hemochromatosis/data
+cd .../networks_hemochromatosis/data
 ```
 
-> ```bash
-> awk 'BEGIN{FS="\t"; OFS="\t"} {split($7,parts,"::"); e=parts[1]; g=parts[2]; if(!new[e,g]++){if(reg[g]){reg[g]=reg[g]","e} else {reg[g]=e}}} END{for(g in reg){print g, reg[g]}}' <(head -n 1000 Nasser2021ABCPredictions.all_biosamples.all_putative_enhancers.merged_enhancers.sorted.bedpe) |head
-> ```
+```bash
+awk 'BEGIN{FS="\t"; OFS="\t"} {split($7,parts,"::"); e=parts[1]; g=parts[2]; if(!new[e,g]++){if(reg[g]){reg[g]=reg[g]","e} else {reg[g]=e}}} END{for(g in reg){print g, reg[g]}}' <(head -n 1000 Nasser2021ABCPredictions.all_biosamples.all_putative_enhancers.merged_enhancers.sorted.bedpe) |head
+```
 
 ```bash
 awk 'BEGIN{FS="\t"; OFS="\t"} {split($7,parts,"::"); e=parts[1]; g=parts[2]; if(!new[e,g]++){if(reg[g]){reg[g]=reg[g]","e} else {reg[g]=e}}} END{for(g in reg){print g, reg[g]}}' Nasser2021ABCPredictions.all_biosamples.all_putative_enhancers.merged_enhancers.sorted.bedpe |sort -dk1,1 > g_to_regE.tsv
 ```
 
-> ```bash
-> awk 'BEGIN{FS="\t"; OFS="\t"} {split($7,parts,"::"); e=parts[1]; g=parts[2]; if(!new[e,g]++){if(reg[e]){reg[e]=reg[e]","g} else {reg[e]=g}}} END{for(e in reg){print e, reg[e]}}' <(head -n 1000 Nasser2021ABCPredictions.all_biosamples.all_putative_enhancers.merged_enhancers.sorted.bedpe) |head
-> ```
+```bash
+awk 'BEGIN{FS="\t"; OFS="\t"} {split($7,parts,"::"); e=parts[1]; g=parts[2]; if(!new[e,g]++){if(reg[e]){reg[e]=reg[e]","g} else {reg[e]=g}}} END{for(e in reg){print e, reg[e]}}' <(head -n 1000 Nasser2021ABCPredictions.all_biosamples.all_putative_enhancers.merged_enhancers.sorted.bedpe) |head
+```
 
 ```bash
 awk 'BEGIN{FS="\t"; OFS="\t"} {split($7,parts,"::"); e=parts[1]; g=parts[2]; if(!new[e,g]++){if(reg[e]){reg[e]=reg[e]","g} else {reg[e]=g}}} END{for(e in reg){print e, reg[e]}}' Nasser2021ABCPredictions.all_biosamples.all_putative_enhancers.merged_enhancers.sorted.bedpe > e_to_regG.tsv
@@ -45,9 +39,9 @@ awk 'BEGIN{FS="\t"; OFS="\t"} {split($7,parts,"::"); e=parts[1]; g=parts[2]; if(
 
 By the way, we also computed a table giving, for each enhancer, the number of genes it is connected to.
 
-> ```bash
-> awk 'BEGIN{FS="\t"; OFS="\t"} {if(!new[$7]++){split($7,parts,"::"); nb[parts[1]]++}} END{for(e in nb){print e, nb[e]}}' <(head -n 1000 Nasser2021ABCPredictions.all_biosamples.all_putative_enhancers.merged_enhancers.sorted.bedpe) |head
-> ```
+```bash
+awk 'BEGIN{FS="\t"; OFS="\t"} {if(!new[$7]++){split($7,parts,"::"); nb[parts[1]]++}} END{for(e in nb){print e, nb[e]}}' <(head -n 1000 Nasser2021ABCPredictions.all_biosamples.all_putative_enhancers.merged_enhancers.sorted.bedpe) |head
+```
 
 ```bash
 awk 'BEGIN{FS="\t"; OFS="\t"} {if(!new[$7]++){split($7,parts,"::"); nb[parts[1]]++}} END{for(e in nb){print e, nb[e]}}' Nasser2021ABCPredictions.all_biosamples.all_putative_enhancers.merged_enhancers.sorted.bedpe > e_to_nbG.tsv
@@ -158,7 +152,7 @@ cd /work2/project/regenet/results/multi/abc.model/Nasser2021/
 >
 > 23,220
 
-Our RefSeq annotation is in `/work2/project/regenet/workspace/thoellinger/data/GRCh37/GRCh37.p13/genes.gtf`. We copy it here as `genes.refseq.gtf`
+Our RefSeq annotation is in `/work2/project/regenet/workspace/thoellinger/data/GRCh37/GRCh37.p13/genes.gtf` (private). We copy it here as `genes.refseq.gtf`
 
 ```bash
 cp /work2/project/regenet/workspace/thoellinger/data/GRCh37/GRCh37.p13/genes.gtf genes.refseq.gtf
