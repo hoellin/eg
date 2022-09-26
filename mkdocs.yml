@@ -90,8 +90,12 @@ theme:
     - navigation.tabs
     - navigation.sections # ok but better remove sections if navigation panels are getting too large
 #    - navigation.expand # automatically expand left navigation panel
+    - navigation.top
   palette:
       primary: black # "indigo", "light blue", "black"
+  icon:
+    repo: fontawesome/brands/github
+  logo: logo/logo-inserm-blc.png
 
 extra_css:
   - stylesheets/extra.css
@@ -113,3 +117,6 @@ extra:
       link: https://fr.linkedin.com/in/tristan-hoellinger
     - icon: fontawesome/solid/paper-plane
       link: mailto:hoellinger.tristan@gmail.com
+
+repo_url: https://github.com/hoellin/hoellin.github.io
+repo_name: hoellin/hoellin.github.io

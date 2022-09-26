@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Detailed procedure is explained here: [http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_BENGI/avg_rank_method/avg_rank_method_with_code.html](http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_BENGI/avg_rank_method/avg_rank_method_with_code.html)
+Detailed procedure is explained [here](/notes_BENGI/avg_rank_method/avg_rank_method_with_code).
 
 ## Not correcting the error in `Run-Average-Rank.sh` gives same results as in the paper
 

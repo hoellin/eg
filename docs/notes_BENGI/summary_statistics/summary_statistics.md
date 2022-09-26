@@ -4,11 +4,11 @@
 
 ## Context
 
-We compute summary statistics on the BENGI benchmarks (*Jill E. Moore, Henry E. Pratt, Michael J. Purcaro et Zhiping Weng*, [https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1924-8](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1924-8) in order to verify we find the same as those given by the authors.
+We computed summary statistics on the [BENGI benchmarks](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1924-8) in order to ensure that we find the same as the authors.
 
 ## Remarks
 
-The R code used to compute results below is detailed here: [http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_BENGI/summary_statistics_BENGI/summary_BENGI_bedpe.html](http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_BENGI/summary_statistics_BENGI/summary_BENGI_bedpe.html)
+The R code we used to compute the results below is detailed [here](../../../notes_BENGI/summary_statistics_BENGI/summary_BENGI_bedpe).
 
 ## Introduction
 
@@ -46,7 +46,7 @@ Remark: there are more (up to 4 times more) positives with natural ratio than wi
 
 > "For the fixed ratio datasets, we also excluded genes that were in the positi	ve pairs for the cCREs-ELS in other BENGI datasets before randomly selecting the negatives. **If a cCRE-ELS exhibited fewer than four negative pairs, then it was excluded from this fixed ratio set.**"
 
-Excluding positives from the other BENGI datasets before selecting the negatives possibly leads to less than 4 negatives remaining for each positive, meaning some positives must be excluded **(later on we shall verify this**)
+Excluding positives from the other BENGI datasets before selecting the negatives possibly leads to less than 4 negatives remaining for each positive, meaning some positives must be excluded **(later on we shall check this**).
 
 ***Natural ratio***
 
@@ -84,14 +84,14 @@ Clearly less overlapping between datasets with fixed ratio.
 
 *Distance distribution of enhancer-gene interactions*
 
-In order to have more reliable results and to facilitate further analysis, we reprocessed data to have all useful information in a unique `.bedpe` file per benchmark. We use a Python script to that purpose, `BENGI_to_bedpe.py` (see dedicated notebook/guidelines, for instance: http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_BENGI/BENGI_to_custom_bedpe.html).
+In order to have more reliable results and to facilitate further analysis, we reprocessed data to have all useful information in a unique `.bedpe` file per benchmark. We use a Python script to that purpose, `BENGI_to_bedpe.py` (see dedicated notebook/guidelines, for instance: [BENGI_to_custom_bedpe](../../../notes_BENGI/BENGI_to_custom_bedpe).
 
 #### Distance distributions using authors `calculate.distance.py`
 
 `Python2` required.
 
 ```bash
-cd ~/Documents/INSERM/BENGI && conda activate py2
+conda activate py2
 ```
 
 Warning: it is not possible to use the script directly without modifying it as the enhancer dictionary is built by default with rDHS accession instead of ccRE accession ([3] instead of [4]). So we first have to replace line 20:

@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-See detailed procedure here: [http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/correlation_method_with_code.html](http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/correlation_method_with_code.html)
+See detailed procedure [here](/notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/correlation_method_with_code).
 
 ## Results
 

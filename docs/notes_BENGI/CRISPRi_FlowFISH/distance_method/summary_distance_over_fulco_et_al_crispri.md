@@ -7,7 +7,7 @@ Our objectives were:
 * to ensure the AUPR of the Distance method remains approximately the same when we intersect the CRISPRi-FlowFISH validation dataset with ccRE (as Moore et al 's Distance method takes ccRE only as candidate regions)
 * to compute predictions with Distance method to later use them as input for the Average rank method
 
-See detailed procedure here: http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_BENGI/CRISPRi_FlowFISH/distance_method/distance_over_fulco_et_al_crispri.html
+See detailed procedure [here](/notes_BENGI/CRISPRi_FlowFISH/distance_method/distance_over_fulco_et_al_crispri).
 
 ## Results
 

@@ -4,11 +4,11 @@
 
 ### Step 1: run Distance method
 
-See dedicated guide: http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_BENGI/CRISPRi_FlowFISH/distance_method/distance_over_fulco_et_al_crispri.html
+See [dedicated guide](/notes_BENGI/CRISPRi_FlowFISH/distance_method/distance_over_fulco_et_al_crispri).
 
 ### Step 2: run DNase-expression correlation method
 
-See dedicated guide: http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/correlation_method_with_code.html
+See [dedicated guide](/notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/correlation_method_with_code).
 
 ## Partial reimplementation of `Run-Average-Rank.sh`
 
