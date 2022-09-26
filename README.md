@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This GitHub Pages summarize some of my investigations on recent methods for genome-wide cell type specific identification of enhancer/gene relationships.
+This GitHub Pages summarize some investigations on recent methods for genome-wide cell type specific identification of enhancer/gene relationships.
 
 ## How to contribute?
 

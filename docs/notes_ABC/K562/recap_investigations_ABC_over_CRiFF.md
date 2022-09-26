@@ -4,33 +4,33 @@
 
 ### Motivations
 
-In order to compare the performances of Fulco et al ‘s to other predictors over both Fulco et al ‘s CRISPRi-FlowFISH (CRiFF) reference dataset for enhancer-gene interactions, and Moore et al ‘s Benchmarks of Enhancers-Gene Interactions (BENGI), we performed several tests to ensure that we use the ABC model correctly. To that purpose, we tried to obtain similar AUPR to those given by Fulco et al ‘s, for the predictions made by their ABC model over their CRiFF validation dataset.
+In order to compare the performances of Fulco et al ‘s to other predictors over both Fulco et al ‘s CRISPRi-FlowFISH (CRiFF) reference dataset for enhancer-gene interactions, and Moore et al ‘s Benchmarks of Enhancers-Gene Interactions (BENGI), we performed several tests to ensure that we use the ABC model correctly. To that purpose, we tried to obtain similar AUPR to those given by Fulco et al ‘s, for the predictions made by their ABC model over their CRiFF validation dataset. At the end of the day, we obtained, indeed, a very similar performance.
 
 ### General remarks
 
-- We have done everything in our power to maximize the intersection between our accessions and reference annotations and those used by Fulco et al, **only for the fourth (RefSeq 59) and fifth (RefSeq 56) run. For all the other runs, we could have done better.** 
-- In the CRiFF dataset, containing 3863 element-gene pairs, of which 109 are considered as ground positives, and the other as ground negatives ; there are exactly 59 distinct genes involved. We found a change in the nature for 3 of them, which became non-coding in the RefSeq (p13) annotation we used.
+- We have done everything in our power to maximize the intersection between our accessions and reference annotations and those used by Fulco et al, **only for the [fourth (RefSeq 59)](#fourth-run-refseq-59) and [fifth (RefSeq 56)](#fifth-run-refseq-56) run. For all the other runs, we could have done better.** They are presented here only for archive purposes.
+- In the CRiFF dataset, containing 3863 element-gene pairs, of which 109 are considered as ground positives, and the other as ground negatives ; ***there are exactly 59 distinct genes involved***. We found a change in the nature for 3 of them, which became non-coding in the RefSeq (p13) annotation we used (here lies the difference between [fourth (RefSeq 59) run](#fourth-run-refseq-59) and [fifth (RefSeq 56) run](#fifth-run-refseq-56)).
 
-These 3 non-conding genes are involved in 6 ground positives of CRiFF, so that if we consider coding genes only, the CRiFF validation dataset restricts to exactly 103 ground positives, and a total of 3854 element-gene pairs.
+    These 3 non-conding genes are involved in 6 ground positives of CRiFF, so that if we consider coding genes only, the CRiFF validation dataset restricts to exactly 103 ground positives, and a total of 3854 element-gene pairs.
 
 - We did not use any includelist (not even containing only the 500 bp regions around the TSS of coding genes) when computing predictions over the BENGI datasets.
-- To ensure the ABC model computes predictions for the validations dataset we’re interested in, whatever it is ; we see two main methods, none of which is described in Fulco et al ‘s paper / Github:
-  1. forcibly include the regions of interest in candidate regions using the includelist
-  2. bypass step 1 by directly providing the ABC model with the regions of interest
+- To ensure the ABC model computes predictions for the validations dataset we’re interested in, whatever it is ; we see two main methods, none of which is described, to our knowledge, in Fulco et al ‘s paper / Github:
+    1. forcibly include the regions of interest in candidate regions using the includelist
+    2. bypass step 1 by directly providing the ABC model with the regions of interest
 
-This second way seems quite unnatural and biased, but this is the one we used when computing predictions with the ABC model over BENGI validation datasets. Maybe we should try to run new predictions over BENGI datasets using an includelist. Proceeding way 1 or 2 induced huge differences over the CRiFF set - that is likely the same with BENGI.
+      The second approach seems quite unnatural and biased, yet this is the one we used when computing predictions with the ABC model over BENGI validation datasets. In the future we should try to run new predictions over BENGI datasets using an includelist.
 
 ### Accessions we used when working with RefSeq (not with GENCODE)
 
 #### **Chromatin accessibility (****DNase-seq)**
 
-- dnase_rep1 = ENCFF001DOX see https://www.encodeproject.org/files/ENCFF001DOX/
+- dnase_rep1 = ENCFF001DOX see [https://www.encodeproject.org/files/ENCFF001DOX/](https://www.encodeproject.org/files/ENCFF001DOX/)
 
 The name given in Supplementary Table 4 is actually wgEncodeUwDnaseK562AlnRep1.bam, yet it is mentioned in the link given above that hg19/wgEncodeUwDnase/wgEncodeUwDnaseK562AlnRep1.bam is nothing but the original name given to the replicate which is now referred to as ENCFF001DOX.
 
 - dnase_rep2 = wgEncodeUwDnaseK562AlnRep2
 
-I did not manage to find a new name corresponding to replicate 2, wgEncodeUwDnaseK562AlnRep2.bam. Fortunately the replicate 2 was available for download under its old name here: http://hgdownload.cse.ucsc.edu/goldenpath/hg19/encodeDCC/wgEncodeUwDnase/
+I did not manage to find a new name corresponding to replicate 2, wgEncodeUwDnaseK562AlnRep2.bam. Fortunately the replicate 2 was available for download under its old name here: [http://hgdownload.cse.ucsc.edu/goldenpath/hg19/encodeDCC/wgEncodeUwDnase/](http://hgdownload.cse.ucsc.edu/goldenpath/hg19/encodeDCC/wgEncodeUwDnase/)
 
 #### **Histone marks h3k27ac (ChIP-seq)**
 
@@ -51,13 +51,13 @@ Fulco et al. give the [following GEO accession](https://www.ncbi.nlm.nih.gov/geo
 
 **Note that this accession is never (and shall not be!) used to compute the ABC predictions. The RNA-seq data are the one used to build the CRISPRi-FlowFISH validation dataset.**
 
-Yet gene expression is required to run the ABC model (only to distinguish between expressed and non expressed genes), and the authors did not provide the accession they used to that purpose (neither in the paper nor the Supplementary information). Hopefully, the accession name **ENCFF934YBO** appears in the small example they give in their Github over chr22. Based on this, we used the following:
+However gene expression is required to run the ABC model (only to distinguish between expressed and non expressed genes), and we could not find the accession the authors used to that purpose (neither in the paper nor the Supplementary information). Hopefully, the accession name **ENCFF934YBO** appears in the small example they give in their Github over chr22. Based on this, we used the following:
 
 - rnaseq = ENCFF934YBO # exp ENCSR000AEM
 
 #### **Gene annotation**
 
-- *gene_annotation*: we downloaded it from https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/hg19.refGene.gtf.gz
+- *gene_annotation*: we downloaded it from [https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/hg19.refGene.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/hg19.refGene.gtf.gz)
 
 and performed several filters, depending on the run.
 
@@ -67,13 +67,13 @@ Taking only coding genes we obtain a total of 19366 genes.
 
 Taking only coding genes, the full body of which is between 300 kbp and 2 Mbp, we obtain a total of 19323 genes.
 
-- *gnid_gname*: /work2/project/fragencode/data/species.bk/homo_sapiens/hg19.gencv19/homo_sapiens.gnid.gnname.tsv
+- *gnid_gname*: `/work2/project/fragencode/data/species.bk/homo_sapiens/hg19.gencv19/homo_sapiens.gnid.gnname.tsv` (private)
 
 required to create the expression table as counts as the RNA-seq TSV used contains Ensembl gene ids, not RefSeq gene names.
 
 #### **Blocklist**
 
-Provided by Fulco et al. https://github.com/Boyle-Lab/Blacklist/raw/master/lists/hg19-blacklist.v2.bed.gz
+Provided by Fulco et al. [https://github.com/Boyle-Lab/Blacklist/raw/master/lists/hg19-blacklist.v2.bed.gz](https://github.com/Boyle-Lab/Blacklist/raw/master/lists/hg19-blacklist.v2.bed.gz)
 
 It consists of regions described by their genomic loci, not gene names/ids.
 
@@ -81,13 +81,13 @@ It consists of regions described by their genomic loci, not gene names/ids.
 
 List provided by Fulco et al. It contains 847 gene names. Unfortunately, only 791 of these genes match our custom RefSeq annotation.
 
-Note that of those 847 gene names, only 831 match Fulco et al ‘s full (before filters) RefSeq annotation, so...
+Note that of those 847 gene names, only 831 match Fulco et al ‘s full (before filters) RefSeq annotation.
 
-For some runs, we directly used the 847 gene names or the 791 gene names that match our custom RefSeq annotation. For some others (fourth run, RefSeq59 ; and fifth run, RefSeq 56), we intersected the 831/847 gene names matching Fulco et al’s full annotation (and only these ones, for which we have the respective loci) with our custom RefSeq annotation. This resulted in a list of 844 ubiquitously expressed genes.
+For some runs, we directly used the 847 gene names or the 791 gene names that match our custom RefSeq annotation. For some others ([fourth run, RefSeq59](#fourth-run-refseq-59) ; and [fifth run, RefSeq 56](#fifth-run-refseq-56)), we intersected the 831/847 gene names matching Fulco et al’s full annotation (and only these ones, for which we have the respective loci) with our custom RefSeq annotation. This resulted in a list of 844 ubiquitously expressed genes.
 
 All these files can be found in
 
-/work2/project/regenet/workspace/thoellinger/ABC-Enhancer-Gene-Prediction/reference
+`/work2/project/regenet/workspace/thoellinger/ABC-Enhancer-Gene-Prediction/reference`(private)
 
 under the following names
 
@@ -99,13 +99,13 @@ under the following names
 
 One shall better focus on 4th and 5th runs. The other ones are only here for record and comparison purposes.
 
-Note that the reference should be run 5th. For run 4th willingly, I willingly included 3 non-coding genes "by hand" - therefore introduced a bias - in order to match the old annotation used by Fulco et al. (in which those 3 genes were still considered as coding, whereas now they aren't).
+Note that the reference should be run 5th. For run 4th, I willingly included 3 non-coding genes "by hand" - therefore introduced a bias - in order to match the old annotation used by Fulco et al. (in which those 3 genes were still considered as coding).
 
 ## First run (GENCODE)
 
 ### Notebook
 
-[http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_ABC/K562/ABC_over_K562.html](http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_ABC/K562/ABC_over_K562.html)
+[notes_ABC/K562/ABC_over_K562](/notes_ABC/K562/ABC_over_K562)
 
 ### Accessions
 
@@ -130,7 +130,7 @@ We have done so many inaccuracies that the results we obtained are not really re
 
 ### Notebook
 
-[http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_ABC/K562/april_K562_candidates_not_in_whitelist_56_genes/april_K562_candidates_NOT_in_whitelist.html](http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_ABC/K562/april_K562_candidates_not_in_whitelist_56_genes/april_K562_candidates_NOT_in_whitelist.html)
+[notes_ABC/K562/april_K562_candidates_not_in_whitelist_56_genes/april_K562_candidates_NOT_in_whitelist](/notes_ABC/K562/april_K562_candidates_not_in_whitelist_56_genes/april_K562_candidates_NOT_in_whitelist)
 
 ### Accessions
 
@@ -158,8 +158,6 @@ Over this reduced validation dataset containing 96 ground positives and 3585 gro
 
 Note that this AUPR can not strictly speaking be compared to the AUPR of 0,65 found by Fulco et al, as we work with a smaller validation dataset (with ~12% less ground positives).
 
-###  
-
 ## Third run (RefSeq 54 in whitelist)
 
 Irrelevant. Same as fifth run but of poorer quality (here we did not deal with the 2 coding genes, the name of which has changed, in the CRiFF set). Better see fourth and fifth runs.
@@ -168,7 +166,7 @@ Irrelevant. Same as fifth run but of poorer quality (here we did not deal with t
 
 ### Notebook
 
-[http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_ABC/K562/april_K562_59_genes/april_K562_59_genes.html](http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_ABC/K562/april_K562_59_genes/april_K562_59_genes.html)
+[notes_ABC/K562/april_K562_59_genes/april_K562_59_genes](/notes_ABC/K562/april_K562_59_genes/april_K562_59_genes)
 
 ### Accessions
 
@@ -201,7 +199,7 @@ We recall that over their whole CRiFF validation dataset, in very similar condit
 
 ### Notebook
 
-[http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_ABC/K562/april_K562_56_genes/april_K562_56_genes.html](http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_ABC/K562/april_K562_56_genes/april_K562_56_genes.html)
+[notes_ABC/K562/april_K562_56_genes/april_K562_56_genes](/notes_ABC/K562/april_K562_56_genes/april_K562_56_genes)
 
 ### Accessions
 

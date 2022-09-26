@@ -6,7 +6,7 @@ The Activity-by-contact model predicts which enhancers regulate which genes on a
 
 ## Characteristics for this run
 
-* Here we verify that we find the same AUPR as Fulco et al, based on their (109 ground positives, 3754 ground negatives) CRISPRi-FlowFISH dataset, available in `/work2/project/regenet/results/gscreen/homo_sapiens/hg19/crispr-flowfish/k562`
+* Here we verify that we find the same AUPR as Fulco et al, based on their (109 ground positives, 3754 ground negatives) CRISPRi-FlowFISH dataset, available in `/work2/project/regenet/results/gscreen/homo_sapiens/hg19/crispr-flowfish/k562` (private)
 * These tables already contain the ABC scores, so there should be no difference at all between the AUPR and Precision-Recall curves we compute and the ones in Fulco et al paper. The objective was only to ensure we used the expected data *(later on we shall verify that we obtain the same ABC scores if we re-run the ABC model starting with these data)*.
 
 ## Preprocessing
