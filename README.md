@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This GitHub Pages summarize some investigations on recent methods for genome-wide cell type specific identification of enhancer/gene relationships.
+This GitHub Pages summarize some investigations on recent methods for genome-wide cell type specific identification of enhancer/gene relationships. You can go to [hoellin.github.io/](https://hoellin.github.io/) to navigate the Pages.
 
 ## How to contribute?
 
@@ -24,6 +24,12 @@ Note that you need to install both `mkdocs` and `mkdocs-material` to build the d
 pip install mkdocs
 pip install mkdocs-material
 ```
+
+#### How to add a new file to the documentation?
+
+* Create a new file in the `docs` folder.
+* Add a reference to the file to the `mkdocs.yml` file.
+* Commit and push the changes.
 
 #### Syntax highlighting for `mkdocs`
 

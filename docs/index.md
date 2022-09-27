@@ -17,6 +17,8 @@ Here we reviewed 2 of the most recent methods to identify enhancer-gene relation
 
 ## Organization
 
+### This website
+
 The GitHub Pages site is organized as follows:
 
 - The [Guidebooks](/guidebooks/introduction) section contains basic technical guidelines that are referenced in the other sections.
@@ -25,6 +27,17 @@ The GitHub Pages site is organized as follows:
     - use the Average Rank method
     - evaluate the ABC model and the Average Rank method over the BENGI sets
 - In the [Haemochromatosis](/haemochromatosis/introduction) section we make use of the ABC method to identify putative genes involved in the severity of haemochromatosis based on the enhancers they are regulated by.
+
+### The GitHub repository
+
+The present website is generated from the [GitHub repository](https://github.com/hoellin/hoellin.github.io) of the project. At the same time, the repository contains most (hopefully all - don't hesitate to [contact me](/about_me) otherwise) of the resources required to reproduce the results presented in the paper. The repository itself is organized as follows:
+
+- The `docs/` directory contains
+    - the files used to generate the GitHub Pages site.
+    - the scripts and notebooks used to reproduce the results presented in the paper (`docs/scripts/`))
+    - some of the required data (`docs/data_and_results/`)
+- The `.github/workflows/` directory contains the configuration files for the GitHub Actions workflows that are used to automatically generate the GitHub Pages site. It shall not be modified.
+- The `mkdocs.yml` file contains the configuration and index of the GitHub Pages site. Any modification to the site structure should be done here (for instance if one adds a new file in `docs/`it should be referenced in `mkdocs.yml` to be accessible from the site - from then everything will be deployed automatically by GitHub Actions when pushing the commit).
 
 ## References
 
