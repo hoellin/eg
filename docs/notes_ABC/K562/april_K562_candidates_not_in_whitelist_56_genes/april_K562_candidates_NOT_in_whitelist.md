@@ -2,9 +2,9 @@
 # ABC over K562
 
 ## How to use this notebook?
-First, make a copy of [this notebook](http://genoweb.toulouse.inra.fr/~thoellinger/notebooks/ipynb/ABC/april_K562_candidates_NOT_in_whitelist.ipynb) on your computer / cluster.
+First, make a copy of [this notebook](/scripts/notebooks/ipynb/ABC/april_K562_candidates_NOT_in_whitelist.ipynb) on your computer / cluster.
 
-Then, to use this notebook, one should only have to carefully modify the content of the "Set working directory" section, then to execute the notebook cell by cell, in the correct order. After execution of each cell, remember to check for errors before executing the next one.
+Then, to use this notebook, one should only have to carefully modify the content of the [Set working directory](#set-working-directory) section, then to execute the notebook cell by cell, in the correct order. After execution of each cell, remember to check for errors before executing the next one.
 
 One can use the following to switch notebook theme:
 

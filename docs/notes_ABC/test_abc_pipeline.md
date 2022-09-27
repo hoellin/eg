@@ -1,6 +1,6 @@
 # Trying ABC pipeline on a small example
 
-We just verify on our own the pipeline in README, on the very same example, but starting without the output.
+We just verify on our own the pipeline of Moore et al. (2019) following the README file in their repository. We obtained nearly identical results ([up to least significant digits in some files](/notes_ABC/differences_example_chr22)).
 
 ## Running the ABC model
 
