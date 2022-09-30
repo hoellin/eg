@@ -10,7 +10,7 @@
 
 The others remain TODO:
 * `data_and_results` folder
-* `haemochromatosis` folder is OK when it comes to markdown (100% OK) BUT it contains a lot of results/data, which would better be in `data_and_results` folder, so I have to move them there
+* There are duplicates between `haemochromatosis`and `data_and_results/haemochromatosis`. I should remove the duplicates in `data_and_results/haemochromatosis`.
 
 ## Add new files
 

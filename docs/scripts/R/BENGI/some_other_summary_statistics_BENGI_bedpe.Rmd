@@ -1,0 +1,484 @@
+---
+title: "Summary statistics on BENGI GM12878 benchmarks (reprocessed data)"
+date : "décembre 2020"
+output:
+  md_document
+  #html_document:
+    #toc: true
+    #toc_float: true
+    #toc_depth : 4
+    #number_sections : true
+---
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+opts_knit$set(width=75)
+```
+
+```{r}
+library(corrplot)
+library(ggplot2)
+```
+
+## Data importation
+
+```{r, results="hide"}
+rm(list = ls())
+
+nb_benchmarks <- 6
+#Personal
+path_to_benchmarks <- "/home/hoellinger/Documents/INSERM/BENGI/Benchmark/All-Pairs.Natural-Ratio/"
+#MacOS
+#path_to_benchmarks <- "/Users/hoellinger/Documents/INSERM/BENGI/Benchmark/All-Pairs.Natural-Ratio/"
+#Inserm
+#path_to_benchmarks <- "/home/thoellinger/Documents/BENGI/Benchmark/All-Pairs.Natural-Ratio/"
+
+# All pairs, natural ratio, GM12878, with Moore et al 's TSSs
+ben1 <- "GM12878.CHiC-Benchmark.v3.new.bedpe"
+ben2 <- "GM12878.CTCF-ChIAPET-Benchmark.v3.new.bedpe"
+ben3 <- "GM12878.GEUVADIS-Benchmark.v3.new.bedpe"
+ben4 <- "GM12878.GTEx-Benchmark.v3.new.bedpe"
+ben5 <- "GM12878.HiC-Benchmark.v3.new.bedpe"
+ben6 <- "GM12878.RNAPII-ChIAPET-Benchmark.v3.new.bedpe"
+names <- c("CHiC", "CTCF", "GEUVADIS", "GTEx", "HiC", "RNAPII")
+
+# All pairs, natural ratio, GM12878, with our custom Gencode TSS list
+#ben1 <- "GM12878.CHiC-Benchmark.v3.new.all_TSS.bedpe"
+#ben2 <- "GM12878.CTCF-ChIAPET-Benchmark.v3.new.all_TSS.bedpe"
+#ben3 <- "GM12878.GEUVADIS-Benchmark.v3.new.all_TSS.bedpe"
+#ben4 <- "GM12878.GTEx-Benchmark.v3.new.all_TSS.bedpe"
+#ben5 <- "GM12878.HiC-Benchmark.v3.new.all_TSS.bedpe"
+#ben6 <- "GM12878.RNAPII-ChIAPET-Benchmark.v3.new.all_TSS.bedpe"
+#names <- c("CHiC", "CTCF", "GEUVADIS", "GTEx", "HiC", "RNAPII")
+
+list_of_files <- list(paste(path_to_benchmarks,ben1,sep=""), paste(path_to_benchmarks,ben2,sep=""), paste(path_to_benchmarks,ben3,sep=""), paste(path_to_benchmarks,ben4,sep=""), paste(path_to_benchmarks,ben5,sep=""), paste(path_to_benchmarks,ben6,sep=""))
+
+col_names <- c('chrom1', 'start1', 'end1', 'chrom2', 'start2', 'end2', 'name', 'interaction', 'strand1', 'strand2', 'TSSs')
+# chrom1, start1 and end1 are relative to genes ; chrom2, start2, end2 to candidate regulatory elements
+to_factor_benchmarks <- c(1,4,7,8,9,10) # indices of columns to be considered as factors
+
+benchmarks = lapply(list_of_files, function(file){
+  as.data.frame(read.table(file, sep="\t"))
+})
+benchmarks = sapply(benchmarks, simplify=FALSE, function(Df){
+  Df[to_factor_benchmarks] = lapply(Df[to_factor_benchmarks], factor)
+  names(Df) <- col_names
+  return(Df)
+})
+names(benchmarks) <- names
+```
+
+## Summary
+
+```{r}
+for(i in 1:nb_benchmarks){
+  print(names[[i]])
+  print(summary(benchmarks[[i]]))
+}
+```
+
+
+## Overlap coefficient
+
+```{r, results="hide"}
+positives <- list(nb_benchmarks)
+positives <- sapply(benchmarks, simplify=FALSE, function(Df){return(Df$interaction=="1")})
+nb_positives <- vector(length = nb_benchmarks)
+for(i in 1:nb_benchmarks){nb_positives[i] <- sum(positives[[i]])}
+
+length_benchmarks <- vector()
+for(i in 1:nb_benchmarks){length_benchmarks[i] <- nrow(benchmarks[[i]])}
+```
+
+```{r, results="hide"}
+Overlap <- as.matrix(diag(nb_benchmarks))
+rownames(Overlap) <- names
+colnames(Overlap) <- names
+
+if(nb_benchmarks>1){
+  for(i in 2:nb_benchmarks){
+    for(j in 1:(i-1)){
+      Overlap[i,j] = length(intersect(benchmarks[[i]][positives[[i]], 7], benchmarks[[j]][positives[[j]], 7]))/min(nb_positives[i], nb_positives[j])
+    }
+  }
+  Overlap[upper.tri(Overlap)] <- t(Overlap)[upper.tri(Overlap)]
+}
+```
+
+
+```{r}
+#png(file="/home/hoellinger/Documents/INSERM/shared/notes_perso/docs/moore2020/expA_all_pairs_fixed_ratio.png", width=700, height=700)
+corrplot(Overlap, method = "color", type = "full", is.corr=FALSE, diag=TRUE, outline=TRUE, addCoef.col="black", addCoefasPercent = FALSE, order="hclust", hclust.method="ward.D2")
+#dev.off()
+```
+
+## Distance distribution
+
+```{r}
+#convert all TSSs to integers
+benchmarks <- sapply(benchmarks, simplify=FALSE, USE.NAMES=TRUE, function(Df){
+  Df[[11]] <- sapply(Df[[11]], simplify=FALSE, USE.NAMES=TRUE, function(x){
+    x <- as.numeric(strsplit(as.character(x), ',')[[1]])
+    return(x)
+  })
+  return(Df)
+})
+```
+
+```{r}
+# min of min distance
+#benchmarks <- sapply(benchmarks, simplify=FALSE, USE.NAMES=TRUE, function(Df){
+#  Df$distance <- mapply(function(x,y,z) min(min(abs(x-y)), min(abs(x-z))), Df[[11]], Df[[5]], Df[[6]])
+#  return(Df)
+#})
+
+# max of max distance
+benchmarks <- sapply(benchmarks, simplify=FALSE, USE.NAMES=TRUE, function(Df){
+  Df$distance <- mapply(function(x,y,z) max(max(abs(x-y)), max(abs(x-z))), Df[[11]], Df[[5]], Df[[6]])
+  return(Df)
+})
+```
+
+```{r}
+# Distances of positives + negatives
+#Distances <- list()
+#for(k in 1:nb_benchmarks){
+#  Distances[[k]] <- data.frame(matrix(unlist(benchmarks[[k]]$distance), nrow=length_benchmarks[k], byrow=T), rep(names[k], length_benchmarks[k]))
+#  names(Distances[[k]]) <- c("distance", "group")
+#  Distances[[k]]$group <- as.factor(Distances[[k]]$group)
+#}
+
+# Distances of positives
+Distances <- list()
+for(k in 1:nb_benchmarks){
+  Distances[[k]] <- data.frame(matrix(unlist(benchmarks[[k]]$distance[positives[[k]]]), nrow=nb_positives[k], byrow=T), rep(names[k], nb_positives[k]))
+  names(Distances[[k]]) <- c("distance", "group")
+  Distances[[k]]$group <- as.factor(Distances[[k]]$group)
+}
+
+Df_distances <- rbind(Distances[[1]], Distances[[2]], Distances[[3]], Distances[[4]], Distances[[5]], Distances[[6]]) # should find a way to do this without having to manually write each element of the list
+```
+
+```{r}
+quantiles <- list()
+for(k in 1:nb_benchmarks){
+  quantiles[k] <- quantile(Distances[[k]]$distance,.95)
+}
+
+summary(Df_distances)
+print('0.95-quantiles:')
+print(names)
+t(quantiles)
+```
+
+```{r}
+max(benchmarks$GEUVADIS$distance)
+max(benchmarks$GTEx$distance)
+```
+
+
+```{r}
+#png(file="/home/hoellinger/Documents/INSERM/shared/notes_perso/docs/moore2020/distancesV1.png", width=700, height=700)
+#png(file="/home/thoellinger/Documents/shared/notes_perso/docs/moore2020/distances_with_negatives_min_min.png", width=700, height=700)
+#limits=c(1e-3,2e16)
+ggplot(Df_distances, aes(x=group, y=distance, fill=group)) + geom_violin() + scale_y_continuous(trans='log10') + geom_boxplot(width=0.1, outlier.colour="red", outlier.shape=8) + theme(legend.position="bottom") + scale_x_discrete(limits=c(names[6], names[2], names[5], names[1], names[3], names[4]))
+#dev.off()
+```
+
+## Intersection between HiC and distal element-gene pairs
+
+```{r}
+#max_proximal_distance = min(Distances[[5]]$distance)
+max_proximal_distance = mean(Distances[[3]]$distance)
+max_distal_distance = quantile(benchmarks$GEUVADIS$distance, c(0.95))[[1]]
+
+reduced_benchmarks <- sapply(benchmarks, simplify=FALSE, function(Df){
+  indices <- (Df$distance >= max_proximal_distance) & (Df$distance <= max_distal_distance)
+  Df <- Df[indices, ]
+})
+```
+
+
+```{r, results="hide"}
+positives <- list(nb_benchmarks)
+positives <- sapply(reduced_benchmarks, simplify=FALSE, function(Df){return(Df$interaction=="1")})
+nb_positives <- vector(length = nb_benchmarks)
+for(i in 1:nb_benchmarks){nb_positives[i] <- sum(positives[[i]])}
+
+length_benchmarks <- vector()
+for(i in 1:nb_benchmarks){length_benchmarks[i] <- nrow(reduced_benchmarks[[i]])}
+
+reduced_Overlap <- as.matrix(diag(nb_benchmarks))
+rownames(reduced_Overlap) <- names
+colnames(reduced_Overlap) <- names
+
+if(nb_benchmarks>1){
+  for(i in 2:nb_benchmarks){
+    for(j in 1:(i-1)){
+      reduced_Overlap[i,j] = length(intersect(reduced_benchmarks[[i]][positives[[i]], 7], reduced_benchmarks[[j]][positives[[j]], 7]))/min(nb_positives[i], nb_positives[j])
+    }
+  }
+  reduced_Overlap[upper.tri(reduced_Overlap)] <- t(reduced_Overlap)[upper.tri(reduced_Overlap)]
+}
+```
+
+
+```{r}
+#png(file="/home/hoellinger/Documents/INSERM/shared/notes_perso/docs/moore2020/expA_all_pairs_fixed_ratio.png", width=700, height=700)
+corrplot(reduced_Overlap, method = "color", type = "full", is.corr=FALSE, diag=TRUE, outline=TRUE, addCoef.col="black", addCoefasPercent = FALSE, order="hclust", hclust.method="ward.D2")
+#dev.off()
+```
+
+It does not make much difference.
+
+Let's take a look at the intersection between HiC or CHiC negatives, and the positives of other benchmarks, in order to estimate the false negatives of HiC or CHiC.
+
+```{r, results="hide"}
+positives <- list(nb_benchmarks)
+positives <- sapply(benchmarks, simplify=FALSE, function(Df){return(Df$interaction=="1")})
+nb_positives <- vector(length = nb_benchmarks)
+for(i in 1:nb_benchmarks){nb_positives[i] <- sum(positives[[i]])}
+negatives <- list(nb_benchmarks)
+negatives <- sapply(benchmarks, simplify=FALSE, function(Df){return(Df$interaction=="0")})
+nb_negatives <- vector(length = nb_benchmarks)
+for(i in 1:nb_benchmarks){nb_negatives[i] <- sum(negatives[[i]])}
+
+length_benchmarks <- vector()
+for(i in 1:nb_benchmarks){length_benchmarks[i] <- nrow(benchmarks[[i]])}
+
+Overlap <- as.matrix(diag(nb_benchmarks))
+rownames(Overlap) <- names 
+colnames(Overlap) <- names
+
+if(nb_benchmarks>1){
+  for(i in 1:nb_benchmarks){
+    for(j in 1:(nb_benchmarks)){
+      #Overlap[i,j] = length(intersect(benchmarks[[i]][negatives[[i]], 7], benchmarks[[j]][positives[[j]], 7]))/min(nb_negatives[i], nb_positives[j])
+      Overlap[i,j] = length(intersect(benchmarks[[i]][negatives[[i]], 7], benchmarks[[j]][positives[[j]], 7]))/nb_positives[j]
+    }
+  }
+}
+```
+
+Le plot ci dessous contient en ligne les négatifs et en colonne les positifs. Pour chaque ligne (ex. CHiC), il donne la part des positifs de chaque colonne (ex. GEUVADIS => 0.51) qui sont à tort considérés comme négatifs dans le dataset en ligne.
+
+```{r}
+#png(file="/home/hoellinger/Documents/INSERM/shared/notes_perso/docs/moore2020/expA_all_pairs_fixed_ratio.png", width=700, height=700)
+corrplot(Overlap, method = "color", type = "full", is.corr=FALSE, outline=TRUE, addCoef.col="black", addCoefasPercent = FALSE, order="hclust", hclust.method="ward.D2", cl.pos="n")
+#dev.off()
+```
+
+Ce plot est très intéressant mais souffre de ce que les négatifs des datasets les plus petits vont naturellement moins overlapper les positifs des sets les plus grands.
+
+Essayons de regarder ces recouvrements négatifs/positifs deux-à-deux, en se restreignant à chaque fois à l'intersection des prédictions (positives + négatives) faites pour les 2 datasets.
+
+
+```{r, results="hide"}
+Overlap = matrix(, nrow=nb_benchmarks, ncol=nb_benchmarks)
+Length_Intersection = matrix(, nrow=nb_benchmarks, ncol=nb_benchmarks)
+rownames(Overlap) <- names 
+colnames(Overlap) <- names
+rownames(Length_Intersection) <- names 
+colnames(Length_Intersection) <- names
+
+if(nb_benchmarks>1){
+  for(i in 1:nb_benchmarks){
+    for(j in 1:(nb_benchmarks)){
+      filteri = benchmarks[[i]]$name %in% benchmarks[[j]]$name
+      filterj = benchmarks[[j]]$name %in% benchmarks[[i]]$name
+      Length_Intersection[i,j] = sum(filteri)
+      reduced_beni = benchmarks[[i]][filteri,]
+      reduced_benj = benchmarks[[j]][filterj,]
+      negatives = reduced_beni$interaction=="0"
+      positives = reduced_benj$interaction=="1"
+      nb_positives = sum(positives)
+      Overlap[i,j] = length(intersect(reduced_beni[negatives, 7], reduced_benj[positives, 7]))/nb_positives
+    }
+  }
+}
+```
+
+
+```{r}
+#png(file="/home/hoellinger/Documents/INSERM/shared/notes_perso/docs/moore2020/expA_all_pairs_fixed_ratio.png", width=700, height=700)
+corrplot(Overlap, method = "color", type = "full", is.corr=FALSE, outline=TRUE, addCoef.col="black", addCoefasPercent = FALSE, order="hclust", hclust.method="ward.D2")
+#dev.off()
+```
+
+Vraiment beaucoup de positifs des uns donnés comme négatifs par les autres... Mais c'est un effet voulu par Moore et al (ce qui confirme encore une fois que les BENGI ne se devraient vraiment pas se positionner comme des ensemble de référence, mais plutôt comme des ensemble permettant de facilement constater quels types d'interactions sont capturés par une méthode ou un autre...) :
+"To complement the positive cCRE-gene pairs in each why 95%? maybe to ensure we don't BENGI dataset, we generated negative pairs for each take false negative as cCRE-ELS by selecting all unpaired genes whose TSS ground negatives, as the most distal was located within (either upstream or downstream) the elements generally have a 95th percentile distance from all positive cCRE-gene lower score / level of confidence pairs in the dataset (Additional file 2: Table S2a, see if so is the reason, it “Methods”)"
+
+Regardons aussi la distribution en distances des paires communes à HiC et aux autres datasets, et à CHiC vs les autres datasets
+
+```{r}
+HiC_intersected_with_CHiC = benchmarks$HiC[benchmarks$HiC$name %in% intersect(benchmarks$HiC[benchmarks$HiC$interaction=="1", 7], benchmarks$CHiC[benchmarks$CHiC$interaction=="1", 7]),]$distance
+HiC_intersected_with_CTCF = benchmarks$HiC[benchmarks$HiC$name %in% intersect(benchmarks$HiC[benchmarks$HiC$interaction=="1", 7], benchmarks$CTCF[benchmarks$CTCF$interaction=="1", 7]),]$distance
+HiC_intersected_with_GEUVADIS = benchmarks$HiC[benchmarks$HiC$name %in% intersect(benchmarks$HiC[benchmarks$HiC$interaction=="1", 7], benchmarks$GEUVADIS[benchmarks$GEUVADIS$interaction=="1", 7]),]$distance
+HiC_intersected_with_GTEx = benchmarks$HiC[benchmarks$HiC$name %in% intersect(benchmarks$HiC[benchmarks$HiC$interaction=="1", 7], benchmarks$GTEx[benchmarks$GTEx$interaction=="1", 7]),]$distance
+HiC_intersected_with_RNAPII = benchmarks$HiC[benchmarks$HiC$name %in% intersect(benchmarks$HiC[benchmarks$HiC$interaction=="1", 7], benchmarks$RNAPII[benchmarks$RNAPII$interaction=="1", 7]),]$distance
+```
+
+```{r}
+Distances_HiC <- list()
+
+Distances_HiC[[1]] <- data.frame(matrix(unlist(HiC_intersected_with_CHiC), nrow=length(HiC_intersected_with_CHiC), byrow=T), rep("CHiC", length(HiC_intersected_with_CHiC)))
+Distances_HiC[[2]] <- data.frame(matrix(unlist(HiC_intersected_with_CTCF), nrow=length(HiC_intersected_with_CTCF), byrow=T), rep("CTCF", length(HiC_intersected_with_CTCF)))
+Distances_HiC[[3]] <- data.frame(matrix(unlist(HiC_intersected_with_GEUVADIS), nrow=length(HiC_intersected_with_GEUVADIS), byrow=T), rep("GEUVADIS", length(HiC_intersected_with_GEUVADIS)))
+Distances_HiC[[4]] <- data.frame(matrix(unlist(HiC_intersected_with_GTEx), nrow=length(HiC_intersected_with_GTEx), byrow=T), rep("GTEx", length(HiC_intersected_with_GTEx)))
+Distances_HiC[[5]] <- data.frame(matrix(unlist(HiC_intersected_with_RNAPII), nrow=length(HiC_intersected_with_RNAPII), byrow=T), rep("RNAPII", length(HiC_intersected_with_RNAPII)))
+
+for(k in 1:(nb_benchmarks-1)){
+  names(Distances_HiC[[k]]) <- c("distance", "group")
+  Distances_HiC[[k]]$group <- as.factor(Distances_HiC[[k]]$group)
+}
+
+Df_distances_HiC <- rbind(Distances_HiC[[1]], Distances_HiC[[2]], Distances_HiC[[3]], Distances_HiC[[4]], Distances_HiC[[5]])
+```
+
+
+
+```{r}
+ggplot(Df_distances_HiC, aes(x=group, y=distance, fill=group)) + geom_violin() + scale_y_continuous(trans='log10') + geom_boxplot(width=0.1, outlier.colour="red", outlier.shape=8) + theme(legend.position="bottom") + scale_x_discrete(limits=c("CHiC", "CTCF", "GEUVADIS", "GTEx", "RNAPII"))
+```
+
+```{r}
+ggplot(Df_distances[Df_distances$group %in% c(names[6], names[2], names[1], names[3], names[4]),], aes(x=group, y=distance, fill=group)) + geom_violin() + scale_y_continuous(trans='log10') + geom_boxplot(width=0.1, outlier.colour="red", outlier.shape=8) + theme(legend.position="bottom") + scale_x_discrete(limits=c(names[6], names[2], names[1], names[3], names[4]))
+```
+
+```{r}
+Df_distances_HiC["dataset"] = rep("reduced", length(Df_distances_HiC[[1]]))
+Df_distances["dataset"] = rep("full", length(Df_distances[[1]]))
+Double_Df_distances_HiC <- rbind(Df_distances, Df_distances_HiC)
+```
+
+
+```{r}
+ggplot(Double_Df_distances_HiC, aes(x=group, y=distance, fill=dataset)) + geom_violin() + scale_y_continuous(trans='log10') + theme(legend.position="bottom") + scale_x_discrete(limits=c("CHiC", "CTCF", "GEUVADIS", "GTEx", "RNAPII"))
+```
+
+```{r}
+library(ggpubr)
+
+ggplot(Double_Df_distances_HiC, aes(x=group, y=distance, fill=dataset)) + scale_fill_manual(values = c(3,4))+ scale_y_continuous(trans='log10', expand=c(0.3,0.4)) + geom_boxplot()  + theme(text = element_text(size = 9)) + scale_x_discrete(limits=c("CHiC", "CTCF", "GEUVADIS", "GTEx", "RNAPII")) + stat_compare_means(label = c("p.signif"), method = "wilcox.test", vjust = -5) + theme_bw() + ggtitle("Distance distributions of all pairs or distal pairs in GM12878 BENGI")
+```
+
+
+Reproduisons maintenant les mêmes graphiques en plus petit (avec seulement 4 des 6 benchmarks) pour JOBIM :
+
+
+
+```{r, results="hide"}
+Overlap = matrix(, nrow=4, ncol=4)
+Length_Intersection = matrix(, nrow=4, ncol=4)
+sn = names[c(1,3,4,5)]
+rownames(Overlap) <- sn 
+colnames(Overlap) <- sn
+rownames(Length_Intersection) <- sn 
+colnames(Length_Intersection) <- sn
+for(i in 1:4){
+  for(j in 1:4){
+    filteri = benchmarks[[sn[i]]]$name %in% benchmarks[[sn[j]]]$name
+    filterj = benchmarks[[sn[j]]]$name %in% benchmarks[[sn[i]]]$name
+    Length_Intersection[i,j] = sum(filteri)
+    reduced_beni = benchmarks[[sn[i]]][filteri,]
+    reduced_benj = benchmarks[[sn[j]]][filterj,]
+    negatives = reduced_beni$interaction=="0"
+    positives = reduced_benj$interaction=="1"
+    nb_positives = sum(positives)
+    Overlap[i,j] = length(intersect(reduced_beni[negatives, 7], reduced_benj[positives, 7]))/nb_positives
+  }
+}
+```
+
+
+```{r}
+#png(file="/home/hoellinger/Documents/INSERM/shared/notes_perso/docs/moore2020/expA_all_pairs_fixed_ratio.png", width=700, height=700)
+corrplot(Overlap, method = "color", col=colorRampPalette(c("#FFFFFF", "#FFFFFF", "#BB4444"))(200), type = "full", is.corr=FALSE, outline=TRUE, addCoef.col="black", addCoefasPercent = FALSE, order="hclust", hclust.method="ward.D2", cl.pos="n")
+#dev.off()
+```
+
+
+
+```{r}
+#max_proximal_distance = min(Distances[[5]]$distance)
+max_proximal_distance = quantile(benchmarks$HiC[benchmarks$HiC$interaction=="1",]$distance, c(0.2))[[1]]
+max_distal_distance = min(max(benchmarks$GEUVADIS$distance), max(benchmarks$GTEx$distance))
+
+reduced_benchmarks <- sapply(benchmarks[sn], simplify=FALSE, function(Df){
+  indices <- (Df$distance >= max_proximal_distance) & (Df$distance <= max_distal_distance)
+  Df <- Df[indices, ]
+})
+```
+
+
+```{r, results="hide"}
+positives <- list(4)
+positives <- sapply(reduced_benchmarks, simplify=FALSE, function(Df){return(Df$interaction=="1")})
+nb_positives <- vector(length = 4)
+for(i in 1:4){nb_positives[i] <- sum(positives[[i]])}
+
+length_benchmarks <- vector()
+for(i in 1:4){length_benchmarks[i] <- nrow(reduced_benchmarks[[i]])}
+
+reduced_Overlap <- matrix(nrow=4, ncol=4)
+rownames(reduced_Overlap) <- sn
+colnames(reduced_Overlap) <- sn
+
+for(i in 2:4){
+  for(j in 1:(i-1)){
+    reduced_Overlap[i,j] = length(intersect(reduced_benchmarks[[i]][positives[[i]], 7], reduced_benchmarks[[j]][positives[[j]], 7]))/min(nb_positives[i], nb_positives[j])
+  }
+}
+reduced_Overlap[upper.tri(reduced_Overlap)] <- t(reduced_Overlap)[upper.tri(reduced_Overlap)]
+```
+
+
+```{r}
+#png(file="/Users/hoellinger/Desktop/overlap_distal_pairs.png", width=700, height=700)
+corrplot(reduced_Overlap, method = "pie", type = "upper", is.corr=FALSE, diag=TRUE, outline=TRUE, addCoef.col="black", tl.pos="d", addCoefasPercent = FALSE, order="hclust", hclust.method="ward.D2", tl.cex=1.2, cl.pos="n", number.cex=1.2, col=colorRampPalette(c("#BB4444", "#BB4444", "#EE9988"))(200), mar=c(0,0,2,0), title="Overlap between distal positive pairs \nfrom 3D-based and QTL-based BENGI datasets")
+#dev.off()
+```
+
+```{r, results="hide"}
+positives <- list(4)
+positives <- sapply(reduced_benchmarks, simplify=FALSE, function(Df){return(Df$interaction=="1")})
+nb_positives <- vector(length = 4)
+for(i in 1:4){nb_positives[i] <- sum(positives[[i]])}
+
+length_benchmarks <- vector()
+for(i in 1:4){length_benchmarks[i] <- nrow(reduced_benchmarks[[i]])}
+
+reduced_Overlap <- matrix(nrow=4, ncol=4)
+rownames(reduced_Overlap) <- sn
+colnames(reduced_Overlap) <- sn
+
+for(i in 2:4){
+  for(j in 1:(i-1)){
+    reduced_Overlap[i,j] = length(intersect(reduced_benchmarks[[i]][positives[[i]], 7], reduced_benchmarks[[j]][positives[[j]], 7]))/min(nb_positives[i], nb_positives[j])
+  }
+}
+reduced_Overlap[upper.tri(reduced_Overlap)] <- t(reduced_Overlap)[upper.tri(reduced_Overlap)]
+```
+
+```{r}
+#png(file="/Users/hoellinger/Desktop/overlap_distal_pairs.png", width=700, height=700)
+corrplot(reduced_Overlap, method = "pie", type = "upper", is.corr=TRUE, diag=TRUE, outline=TRUE, addCoef.col="black", tl.pos="d", addCoefasPercent = FALSE, tl.cex=1.1, cl.pos="n", number.cex=1.3, col=colorRampPalette(c("#BB4444", "#BB4444", "#EE9988"))(200), mar=c(0,0,2,0), title="Overlap between distal positive pairs \nfrom 3D-based and QTL-based BENGI datasets")
+#dev.off()
+```
+
+
+
+
+
+
+

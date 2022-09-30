@@ -1,0 +1,117 @@
+---
+title: "ABC original results (from Fulco et al) over the CRISPRi-FlowFISH validation datasets"
+date : "décembre 2020"
+output:
+  md_document
+  #html_document:
+    #toc: true
+    #toc_float: true
+    #toc_depth : 4
+    #number_sections : true
+---
+
+```{css,echo=F}
+.badCode {
+background-color: #C9DDE4;
+}
+```
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+opts_knit$set(width=75)
+```
+
+```{r}
+library(ggplot2)
+library(ggpubr) # for ggarrange
+library(dplyr) # for bind_rows
+
+# Tools for precision-recall : (see https://classeval.wordpress.com/tools-for-roc-and-precision-recall/)
+library(precrec)
+#library(ROCR)
+#library(pROC)
+#library(PRROC)
+```
+
+```{r, results="hide"}
+rm(list = ls())
+
+# Personal
+work_dir = "~/Documents/INSERM/"
+# Inserm
+#work_dir = "~/Documents/"
+
+path_to_results = paste(work_dir, "ABC-Enhancer-Gene-Prediction/april_K562_candidates_in_whitelist/ABC_output/Predictions/", sep='')
+file_names = c("predictions_intersected_with_CRISPRi_FlowFISH_regions_that_maximize_the_ABC_score.bedpe.sorted")
+short_names = c('CRISPRi.FlowFISH')
+
+nb_files = length(file_names)
+colnames <- c('interaction', 'chr', 'start', 'end', 'gene', 'ABC.Score')
+results <- sapply(file_names, simplify=FALSE, function(file_name){
+  Df <- read.table(paste(path_to_results, as.character(file_name), sep=''), sep='\t', header=T)
+  Df[[1]] <- factor(Df[[1]], levels=c(0,1), labels=c("no interaction", "interaction"))
+  names(Df) <- colnames
+  #Df <- Df[complete.cases(Df$ABC.Score),]
+  return(Df)
+})
+names(results) <- short_names
+
+#library(dplyr)
+All_results <- bind_rows(results, .id = 'dataset') # requires library(dplyr)
+```
+
+
+```{r}
+str(results)
+summary(results$CRISPRi.FlowFISH)
+```
+
+```{r}
+ggplot(aes(y = ABC.Score, x = dataset, fill = interaction), data = All_results) + geom_boxplot()
+```
+
+```{r}
+sscurves_ABC <- list()
+sscurves_ABC <- sapply(results, simplify=FALSE, function(Df){
+  evalmod(scores = Df$ABC.Score, labels = Df$interaction) # comes with "precrec" library
+})
+```
+
+```{r}
+#library(ggplot2)
+autoplot(sscurves_ABC[[1]], curvetype = c("PRC")) + ggtitle(paste(short_names[1], signif(attr(sscurves_ABC[[1]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+```
+
+
+
+```{r}
+all_sscurves_ABC <- sapply(sscurves_ABC, simplify = FALSE, function(obj){
+  Df <- data.frame(obj$prcs[[1]]$x, obj$prcs[[1]]$y)
+  names(Df) <- c('x', 'y')
+  return(Df)
+})
+all_sscurves_ABC <- bind_rows(all_sscurves_ABC, .id = 'dataset')
+
+total_nrow = nrow(all_sscurves_ABC)
+max_nb_points_to_plot = 20000
+if(total_nrow>max_nb_points_to_plot){
+  set.seed(1)
+  samples_points = sample(1:total_nrow, min(max_nb_points_to_plot, total_nrow), replace=TRUE)
+} else{
+  samples_points = 1:total_nrow
+}
+
+
+ggplot(aes(y = y, x = x, color = dataset), data = all_sscurves_ABC[samples_points,]) + geom_line() + ylim(0,1) + xlab('Recall') + ylab('Precision') + ggtitle("Precision-Recall curves for the ABC model over the\n CRISPRi-FlowFISH validation dataset")
+```
+
