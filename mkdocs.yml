@@ -1,7 +1,7 @@
 site_name: Genome-wide identification of E/G interactions
 site_author: Tristan Hoellinger
 copyright: 2020 - 2022 Tristan Hoellinger
-site_url: https://hoellin.github.io
+site_url: https://eg.github.io
 nav:
   - Guidebooks:
     - Introduction: guidebooks/introduction.md
@@ -114,4 +114,4 @@ extra:
       link: mailto:sarah.djebali@inserm.fr
 
 repo_url: https://github.com/hoellin/hoellin.github.io
-repo_name: hoellin/hoellin.github.io
+repo_name: hoellin/eg.github.io
