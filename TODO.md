@@ -43,3 +43,12 @@ TODO (when everything is done)
 ## Rename files and folders for sake of clarity whenever necessary
 
 TODO (after everything else is done ; let's not mess up the guidelines)
+
+## Call Sarah 30 septembre
+
+* Papier à soumettre le 12 novembre
+* Sur bioRxiv bientôt
+* Paragraphe méthode sur la figure numéro 2
+* Relecutre du papier
+* Rédaction de l'ANR
+* 
