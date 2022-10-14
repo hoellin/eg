@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This GitHub Pages summarize some investigations on recent methods for genome-wide cell type specific identification of enhancer/gene relationships. You can go to [hoellin.github.io/](https://hoellin.github.io/) to navigate the Pages.
+This GitHub Pages summarize some investigations on recent methods for genome-wide cell type specific identification of enhancer/gene relationships. You can go to [hoellin.github.io/eg](https://hoellin.github.io/eg) to navigate the Pages.
 
 ## How to contribute?
 
