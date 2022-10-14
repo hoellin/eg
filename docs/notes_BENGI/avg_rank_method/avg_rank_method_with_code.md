@@ -4,11 +4,11 @@
 
 ### Step 1: run Distance method
 
-See [dedicated guide](/notes_BENGI/distance_method/distance_evaluation_with_code).
+See [dedicated guide](/eg/notes_BENGI/distance_method/distance_evaluation_with_code).
 
 ### Step 2: run DNase-expression correlation method
 
-See [dedicated guide](/notes_BENGI/dnase_expression_correlation/correlation_method_with_code).
+See [dedicated guide](/eg/notes_BENGI/dnase_expression_correlation/correlation_method_with_code).
 
 ## Partial reimplementation of `Run-Average-Rank.sh`
 
@@ -237,7 +237,7 @@ ggplot(aes(y = y, x = x, color = method), data = all_sscurves_avg_rank[samples_p
 
 ### Results
 
-One can also directly have a look at the summarized results here: http://genoweb.toulouse.inra.fr/~thoellinger/notes/notes_BENGI/avg_rank_method/summary_avg_rank_method.html
+One can also directly have a look at the summarized results [here](/eg/notes_BENGI/avg_rank_method/summary_avg_rank_method)
 
 #### Not correcting the error in `Run-Average-Rank.sh` gives same results as in the paper
 
