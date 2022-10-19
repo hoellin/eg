@@ -1,0 +1,352 @@
+---
+title: "Evaluation of different methods over BENGI datasets"
+date : "avril 2020"
+output:
+  md_document
+  #html_document:
+    #toc: true
+    #toc_float: true
+    #toc_depth : 4
+    #number_sections : true
+---
+
+```{css,echo=F}
+.badCode {
+background-color: #C9DDE4;
+}
+```
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+opts_knit$set(width=75)
+```
+
+```{r}
+library(ggplot2)
+library(ggpubr) # for ggarrange
+library(dplyr) # for bind_rows
+
+# Tools for precision-recall : (see https://classeval.wordpress.com/tools-for-roc-and-precision-recall/)
+library(precrec)
+#library(ROCR)
+#library(pROC)
+#library(PRROC)
+```
+
+```{r, results="hide"}
+rm(list = ls())
+
+# Personal
+work_dir = "~/Documents/INSERM/"
+# Inserm
+#work_dir = "~/Documents/"
+
+#####################
+## Distance method ##
+#####################
+
+path_to_results = paste(work_dir, "BENGI/Distance-Method/Results/", sep='')
+file_names_distance = c("GM12878.CHiC-Distance.v3.txt", "GM12878.CTCF-ChIAPET-Distance.v3.txt", "GM12878.GEUVADIS-Distance.v3.txt", "GM12878.GTEx-Distance.v3.txt", "GM12878.HiC-Distance.v3.txt", "GM12878.RNAPII-ChIAPET-Distance.v3.txt")
+short_names = c('CHiC', 'CTCF', 'GEUVAVDIS', 'GTEx', 'HiC', 'RNAPII')
+
+nb_files = length(file_names_distance)
+
+distance_colnames <- c('interaction', 'inverse.distance')
+distance <- sapply(file_names_distance, simplify=FALSE, function(file_names_distance){
+  Df <- read.table(paste(path_to_results, as.character(file_names_distance), sep=''), sep='\t')
+  Df[[1]] <- factor(Df[[1]], levels=c(0,1), labels=c("no interaction", "interaction"))
+  names(Df) <- distance_colnames
+  return(Df)
+})
+names(distance) <- short_names
+
+#library(dplyr)
+Distances <- bind_rows(distance, .id = 'method')
+
+###########################################
+##  ABC starting from ENCODE ccRE-dELSs  ##
+###########################################
+
+path_to_ABC_results = paste(work_dir, "ABC-Enhancer-Gene-Prediction/BENGI_GM12878_from_ccRE_ELSs/ABC_output/Predictions/BENGI_intersect/", sep='')
+# Must be same number of files, "nb_files", for each method
+file_names_ABC = c("AllPredictions.intersect.GM12878.CHiC-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.CTCF-ChIAPET-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.GEUVADIS-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.GTEx-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.HiC-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.RNAPII-ChIAPET-Benchmark.v3.bedpe")
+
+# File col names: c('chr1', 'start1', 'end1', 'start2', 'end2', 'name', 'is.positive', 'TSSs', 'score')
+ABC_colnames <- c('interaction', 'powerlaw.Score')
+abc_scores <- sapply(file_names_ABC, simplify=FALSE, function(file_name){
+  Bedpe <- read.table(paste(path_to_ABC_results, as.character(file_name), sep=''), sep='\t')
+  Df <- data.frame(factor(Bedpe[[7]], levels=c(0,1), labels=c("no interaction", "interaction")), Bedpe[[9]])
+  #Df[[1]] <- factor(Bedpe[[6]], levels=c(0,1), labels=c("no interaction", "interaction"))
+  #Df[[2]] <- Bedpe[[8]]
+  names(Df) <- ABC_colnames
+  return(Df)
+})
+names(abc_scores) <- short_names
+
+ABC_scores <- bind_rows(abc_scores, .id = 'method')
+
+#####################
+##   ABC standard  ##
+#####################
+
+path_to_ABC_standard_results = paste(work_dir, "ABC-Enhancer-Gene-Prediction/BENGI_GM12878/ABC_output/Predictions/BENGI_intersect/", sep='')
+# Must be same number of files, "nb_files", for each method
+file_names_ABC_standard = c("AllPredictions.intersect.GM12878.CHiC-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.CTCF-ChIAPET-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.GEUVADIS-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.GTEx-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.HiC-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.RNAPII-ChIAPET-Benchmark.v3.bedpe")
+
+# File col names: c('chr1', 'start1', 'end1', 'start2', 'end2', 'name', 'is.positive', 'TSSs', 'score')
+ABC_standard_colnames <- c('interaction', 'powerlaw.Score')
+abc_standard_scores <- sapply(file_names_ABC_standard, simplify=FALSE, function(file_name){
+  Bedpe <- read.table(paste(path_to_ABC_standard_results, as.character(file_name), sep=''), sep='\t')
+  Df <- data.frame(factor(Bedpe[[7]], levels=c(0,1), labels=c("no interaction", "interaction")), Bedpe[[9]])
+  names(Df) <- ABC_standard_colnames
+  return(Df)
+})
+names(abc_standard_scores) <- short_names
+
+ABC_standard_scores <- bind_rows(abc_standard_scores, .id = 'method')
+
+#####################
+##  ABC 500K peaks ##
+#####################
+path_to_ABC_500K_results = paste(work_dir, "ABC-Enhancer-Gene-Prediction/500K_peaks_BENGI_GM12878/ABC_output/Predictions/BENGI_intersect/", sep='')
+# Must be same number of files, "nb_files", for each method
+file_names_ABC_500K = c("AllPredictions.intersect.GM12878.CHiC-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.CTCF-ChIAPET-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.GEUVADIS-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.GTEx-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.HiC-Benchmark.v3.bedpe", "AllPredictions.intersect.GM12878.RNAPII-ChIAPET-Benchmark.v3.bedpe")
+
+# File col names: c('chr1', 'start1', 'end1', 'start2', 'end2', 'name', 'is.positive', 'TSSs', 'score')
+ABC_500K_colnames <- c('interaction', 'powerlaw.Score')
+abc_500K_scores <- sapply(file_names_ABC_500K, simplify=FALSE, function(file_name){
+  Bedpe <- read.table(paste(path_to_ABC_500K_results, as.character(file_name), sep=''), sep='\t')
+  Df <- data.frame(factor(Bedpe[[7]], levels=c(0,1), labels=c("no interaction", "interaction")), Bedpe[[9]])
+  names(Df) <- ABC_500K_colnames
+  return(Df)
+})
+names(abc_500K_scores) <- short_names
+
+ABC_500K_scores <- bind_rows(abc_500K_scores, .id = 'method')
+
+#########################################
+## DNase-expression correlation method ##
+#########################################
+path_to_correlation_results = paste(work_dir, "BENGI/Correlation-Methods/Sheffield/Results/", sep='')
+file_names_correlation = c("GM12878.CHiC-Correlation.v3.txt", "GM12878.CTCF-ChIAPET-Correlation.v3.txt", "GM12878.GEUVADIS-Correlation.v3.txt", "GM12878.GTEx-Correlation.v3.txt", "GM12878.HiC-Correlation.v3.txt", "GM12878.RNAPII-ChIAPET-Correlation.v3.txt")
+
+correlation_colnames <- c('interaction', 'cor', 'p', 'Z', 'ccRE', 'gene')
+correlation_scores <- sapply(file_names_correlation, simplify=FALSE, function(file_name){
+  Df <- read.table(paste(path_to_correlation_results, as.character(file_name), sep=''), sep='\t')
+  Df[[1]] <- factor(Df[[1]], levels=c(0,1), labels=c("no interaction", "interaction"))
+  names(Df) <- correlation_colnames
+  return(Df)
+})
+names(correlation_scores) <- short_names
+
+#library(dplyr)
+DNase_expression_scores <- bind_rows(correlation_scores, .id = 'method')
+
+
+#########################
+## Average-Rank method ##
+#########################
+path_to_avg_rank_results = paste(work_dir, "BENGI/Correlation-Methods/Average-Rank/", sep='')
+file_names_avg_rank = c("GM12878.CHiC-Average-Rank.v3.txt", "GM12878.CTCF-ChIAPET-Average-Rank.v3.txt", "GM12878.GEUVADIS-Average-Rank.v3.txt", "GM12878.GTEx-Average-Rank.v3.txt", "GM12878.HiC-Average-Rank.v3.txt", "GM12878.RNAPII-ChIAPET-Average-Rank.v3.txt")
+
+colnames_avg_rank <- c('interaction', 'score', 'inverse.distance', 'correlation', 'inverse.distance.rank', 'correlation.rank', 'average.rank')
+avg_rank_scores <- sapply(file_names_avg_rank, simplify=FALSE, function(file_name){
+  Df <- read.table(paste(path_to_avg_rank_results, as.character(file_name), sep=''), sep='\t')
+  Df[[1]] <- factor(Df[[1]], levels=c(0,1), labels=c("no interaction", "interaction"))
+  names(Df) <- colnames_avg_rank
+  return(Df)
+})
+names(avg_rank_scores) <- short_names
+
+#library(dplyr)
+Average_rank_scores <- bind_rows(avg_rank_scores, .id = 'method') # requires library(dplyr)
+```
+
+
+
+```{r}
+ggplot(aes(y = inverse.distance, x = method, fill = interaction), data = Distances) + geom_boxplot()
+ggplot(aes(y = powerlaw.Score, x = method, fill = interaction), data = ABC_scores) + geom_boxplot()
+ggplot(aes(y = powerlaw.Score, x = method, fill = interaction), data = ABC_standard_scores) + geom_boxplot()
+ggplot(aes(y = powerlaw.Score, x = method, fill = interaction), data = ABC_500K_scores) + geom_boxplot()
+```
+
+```{r}
+sscurves_distance <- list()
+sscurves_distance <- sapply(distance, simplify=FALSE, function(Df){
+  evalmod(scores = Df$inverse.distance, labels = Df$interaction) # comes with "precrec" library
+})
+
+sscurves_abc <- list()
+sscurves_abc <- sapply(abc_scores, simplify=FALSE, function(Df){
+  evalmod(scores = Df$powerlaw.Score, labels = Df$interaction) # comes with "precrec" library
+})
+
+sscurves_abc_standard <- list()
+sscurves_abc_standard <- sapply(abc_standard_scores, simplify=FALSE, function(Df){
+  evalmod(scores = Df$powerlaw.Score, labels = Df$interaction) # comes with "precrec" library
+})
+
+sscurves_abc_500K <- list()
+sscurves_abc_500K <- sapply(abc_500K_scores, simplify=FALSE, function(Df){
+  evalmod(scores = Df$powerlaw.Score, labels = Df$interaction) # comes with "precrec" library
+})
+
+sscurves_avg_rank <- list()
+sscurves_avg_rank <- sapply(avg_rank_scores, simplify=FALSE, function(Df){
+  evalmod(scores = Df$score, labels = Df$interaction) # comes with "precrec" library
+})
+```
+
+```{r}
+#library(ggplot2)
+p1 <- autoplot(sscurves_distance[[1]], curvetype = c("PRC")) + ggtitle(paste(short_names[1], signif(attr(sscurves_distance[[1]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p2 <- autoplot(sscurves_distance[[2]], curvetype = c("PRC")) + ggtitle(paste(short_names[2], signif(attr(sscurves_distance[[2]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p3 <- autoplot(sscurves_distance[[3]], curvetype = c("PRC")) + ggtitle(paste(short_names[3], signif(attr(sscurves_distance[[3]], 'auc')[[4]][2], digits=2), sep = " A="))
+p4 <- autoplot(sscurves_distance[[4]], curvetype = c("PRC")) + ggtitle(paste(short_names[4], signif(attr(sscurves_distance[[4]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p5 <- autoplot(sscurves_distance[[5]], curvetype = c("PRC")) + ggtitle(paste(short_names[5], signif(attr(sscurves_distance[[5]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p6 <- autoplot(sscurves_distance[[6]], curvetype = c("PRC")) + ggtitle(paste(short_names[6], signif(attr(sscurves_distance[[6]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+
+# ggarrange comes with library('ggpubr')
+figure <- ggarrange(p1, p2, p3, p4, p5, p6,
+                    ncol = 3, nrow = 2)
+figure
+```
+
+```{r}
+#library(ggplot2)
+p1 <- autoplot(sscurves_abc[[1]], curvetype = c("PRC")) + ggtitle(paste(short_names[1], signif(attr(sscurves_abc[[1]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p2 <- autoplot(sscurves_abc[[2]], curvetype = c("PRC")) + ggtitle(paste(short_names[2], signif(attr(sscurves_abc[[2]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p3 <- autoplot(sscurves_abc[[3]], curvetype = c("PRC")) + ggtitle(paste(short_names[3], signif(attr(sscurves_abc[[3]], 'auc')[[4]][2], digits=2), sep = " A="))
+p4 <- autoplot(sscurves_abc[[4]], curvetype = c("PRC")) + ggtitle(paste(short_names[4], signif(attr(sscurves_abc[[4]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p5 <- autoplot(sscurves_abc[[5]], curvetype = c("PRC")) + ggtitle(paste(short_names[5], signif(attr(sscurves_abc[[5]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p6 <- autoplot(sscurves_abc[[6]], curvetype = c("PRC")) + ggtitle(paste(short_names[6], signif(attr(sscurves_abc[[6]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+
+# ggarrange comes with library('ggpubr')
+figure <- ggarrange(p1, p2, p3, p4, p5, p6,
+                    ncol = 3, nrow = 2)
+figure
+```
+
+```{r}
+#library(ggplot2)
+p1 <- autoplot(sscurves_abc_standard[[1]], curvetype = c("PRC")) + ggtitle(paste(short_names[1], signif(attr(sscurves_abc_standard[[1]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p2 <- autoplot(sscurves_abc_standard[[2]], curvetype = c("PRC")) + ggtitle(paste(short_names[2], signif(attr(sscurves_abc_standard[[2]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p3 <- autoplot(sscurves_abc_standard[[3]], curvetype = c("PRC")) + ggtitle(paste(short_names[3], signif(attr(sscurves_abc_standard[[3]], 'auc')[[4]][2], digits=2), sep = " A="))
+p4 <- autoplot(sscurves_abc_standard[[4]], curvetype = c("PRC")) + ggtitle(paste(short_names[4], signif(attr(sscurves_abc_standard[[4]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p5 <- autoplot(sscurves_abc_standard[[5]], curvetype = c("PRC")) + ggtitle(paste(short_names[5], signif(attr(sscurves_abc_standard[[5]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p6 <- autoplot(sscurves_abc_standard[[6]], curvetype = c("PRC")) + ggtitle(paste(short_names[6], signif(attr(sscurves_abc_standard[[6]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+
+# ggarrange comes with library('ggpubr')
+figure <- ggarrange(p1, p2, p3, p4, p5, p6,
+                    ncol = 3, nrow = 2)
+figure
+```
+
+```{r}
+#library(ggplot2)
+p1 <- autoplot(sscurves_abc_500K[[1]], curvetype = c("PRC")) + ggtitle(paste(short_names[1], signif(attr(sscurves_abc_500K[[1]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p2 <- autoplot(sscurves_abc_500K[[2]], curvetype = c("PRC")) + ggtitle(paste(short_names[2], signif(attr(sscurves_abc_500K[[2]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p3 <- autoplot(sscurves_abc_500K[[3]], curvetype = c("PRC")) + ggtitle(paste(short_names[3], signif(attr(sscurves_abc_500K[[3]], 'auc')[[4]][2], digits=2), sep = " A="))
+p4 <- autoplot(sscurves_abc_500K[[4]], curvetype = c("PRC")) + ggtitle(paste(short_names[4], signif(attr(sscurves_abc_500K[[4]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p5 <- autoplot(sscurves_abc_500K[[5]], curvetype = c("PRC")) + ggtitle(paste(short_names[5], signif(attr(sscurves_abc_500K[[5]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+p6 <- autoplot(sscurves_abc_500K[[6]], curvetype = c("PRC")) + ggtitle(paste(short_names[6], signif(attr(sscurves_abc_500K[[6]], 'auc')[[4]][2], digits=2), sep = " AUPR="))
+
+# ggarrange comes with library('ggpubr')
+figure <- ggarrange(p1, p2, p3, p4, p5, p6,
+                    ncol = 3, nrow = 2)
+figure
+```
+
+```{r}
+sapply(sscurves_distance, function(obj){print(attr(obj, 'auc')[[4]])})
+```
+
+```{r}
+merged_sscurves = list()
+for (i in 1:length(short_names)){
+  vals_distance_method = distance[[i]][,1:2]
+  names(vals_distance_method) = c("interaction", "score")
+  vals_abc_model = abc_scores[[i]][,1:2]
+  names(vals_abc_model) = c("interaction", "score")
+  scores <- join_scores(vals_distance_method$score, vals_abc_model$score)
+  labels <- join_labels(vals_distance_method$interaction, vals_abc_model$interaction)
+  msmdat <- mmdata(scores, labels)
+  merged_sscurves[[i]] <- evalmod(msmdat)
+}
+
+plots = list()
+for (i in 1:length(short_names)){
+  plots[[i]] <- autoplot(merged_sscurves[[i]], curvetype = c("PRC")) + labs(colour = "AUPR") + ggtitle(paste(short_names[i], "dataset")) + scale_color_manual(labels = paste(c("Distance method:", "ABC model:"), format(round(attr(merged_sscurves[[i]], 'auc')[[4]][c(2,4)], 3), nsmall = 3)), values = c(2, 3)) + theme(legend.position = c(0.5, 0.76), legend.title = element_text(size=6), legend.text = element_text(size=7))
+}
+
+figure <- ggarrange(plots[[1]], plots[[2]], plots[[3]], plots[[4]], plots[[5]], plots[[6]],
+                    ncol = 3, nrow = 2)
+figure
+```
+
+
+```{r}
+library(grid)
+merged_sscurves = list()
+for (i in 1:length(short_names)){
+  vals_distance_method = distance[[i]][,1:2]
+  vals_abc_model = abc_scores[[i]][,1:2]
+  #vals_sheffield = correlation_scores[[i]][,1:2]
+  vals_avg_rank = avg_rank_scores[[i]][,1:2]
+  names(vals_distance_method) = c("interaction", "score")
+  names(vals_abc_model) = c("interaction", "score")
+  #names(vals_sheffield) = c("interaction", "score")
+  names(vals_avg_rank) = c("interaction", "score")
+  scores <- join_scores(vals_avg_rank$score, vals_distance_method$score, vals_abc_model$score)
+  labels <- join_labels(vals_avg_rank$interaction, vals_distance_method$interaction, vals_abc_model$interaction)
+  #scores <- join_scores(vals_distance_method$score, vals_abc_model$score, vals_sheffield$score, vals_avg_rank$score)
+  #labels <- join_labels(vals_distance_method$interaction, vals_abc_model$interaction, vals_sheffield$interaction, vals_avg_rank$interaction)
+  msmdat <- mmdata(scores, labels)
+  merged_sscurves[[i]] <- evalmod(msmdat)
+}
+
+plots = list()
+for (i in 1:length(short_names)){
+  plots[[i]] <- autoplot(merged_sscurves[[i]], curvetype = c("PRC")) + ggtitle(paste(short_names[i], "dataset")) + labs(colour = "AUPRs") + scale_color_manual(labels = paste(c("Average-Rank", "Distance", "ABC model"), format(round(attr(merged_sscurves[[i]], 'auc')[[4]][c(2,4,6)], 3), nsmall = 3)), values = c(4, 3, 2)) + theme(legend.position = c(0.6, 0.8), legend.title = element_text(size=12), legend.text = element_text(size=12), plot.title = element_text(hjust = 0.5)) # DO NOT change formatting (see below)
+}
+
+figure <- ggarrange(plots[[1]]+rremove("xlab"), plots[[2]]+rremove("ylab")+rremove("xlab"), plots[[3]]+rremove("ylab")+rremove("xlab"), plots[[4]], plots[[5]]+rremove("ylab"), plots[[6]]+rremove("ylab"),
+                    ncol = 3, nrow = 2)
+figure # DO NOT change formatting: although the figure may not be well displayed in RStudio, the current formatting is well-suited for ggsave below
+ggsave("arrangedplot.png", figure, width = 16, height = 8)
+library(cowplot)
+save_plot("thisoneisbetter.png", figure, ncol = 2, base_height = 8, base_asp = .8)
+```
+
+```{r}
+all_sscurves_distance <- sapply(sscurves_distance, simplify = FALSE, function(obj){
+  Df <- data.frame(obj$prcs[[1]]$x, obj$prcs[[1]]$y)
+  names(Df) <- c('x', 'y')
+  return(Df)
+})
+all_sscurves_distance <- bind_rows(all_sscurves_distance, .id = 'method')
+
+total_nrow = nrow(all_sscurves_distance)
+max_nb_points_to_plot = 20000
+if(total_nrow>max_nb_points_to_plot){
+  set.seed(1)
+  samples_points = sample(1:total_nrow, min(max_nb_points_to_plot, total_nrow), replace=TRUE)
+} else{
+  samples_points = 1:total_nrow
+}
+
+
+ggplot(aes(y = y, x = x, color = method), data = all_sscurves_distance[samples_points,]) + geom_line() + ylim(0,1) + xlab('Recall') + ylab('Precision') + ggtitle("Precision-Recall curves for Distance method over the 6 GM12878 BENGI")
+```
+
