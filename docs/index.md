@@ -30,7 +30,7 @@ The GitHub Pages site is organized as follows:
 
 ### The GitHub repository
 
-The present website is generated from the [GitHub repository](https://github.com/hoellin/hoellin.github.io) of the project. At the same time, the repository contains most (hopefully all - don't hesitate to [contact me](about_me) otherwise) of the resources required to reproduce the results presented in the paper. The repository itself is organized as follows:
+The present website is generated from the [GitHub repository](https://github.com/hoellin/eg) of the project. At the same time, the repository contains most (hopefully all - don't hesitate to [contact me](about_me) otherwise) of the resources required to reproduce the results presented in the paper. The repository itself is organized as follows:
 
 - The `docs/` directory contains
     - the files used to generate the GitHub Pages site.
