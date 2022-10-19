@@ -2,7 +2,7 @@
 
 These pages gather guidelines to run the ABC model [[1]](#1) over several examples (chr22, K562, GM12878, GM12878 with accessions from Moore et al' BENGI, ...). 
 
-For some of them, the code can be directly adapted on your computer to re-run the steps, if needed. For some others, one should use the dedicated notebook, or start from & adapt the generic notebook. All notebooks can be found in [scripts/notebooks/ipynb/ABC/](/scripts/notebooks/ipynb/).
+For some of them, the code can be directly adapted on your computer to re-run the steps, if needed. For some others, one should use the dedicated notebook, or start from & adapt the generic notebook. All notebooks can be found in [scripts/notebooks/ipynb/ABC/](../scripts/notebooks/ipynb/).
 
 # References
 

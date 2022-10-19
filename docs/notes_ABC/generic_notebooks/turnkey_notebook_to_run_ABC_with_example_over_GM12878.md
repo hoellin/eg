@@ -3,7 +3,7 @@
 
 ## How to use this notebook?
 
-First, make a copy of [this notebook](/scripts/notebooks/ipynb/ABC/ABC_generic.ipynb) on your computer / cluster.
+First, make a copy of [this notebook](../../scripts/notebooks/ipynb/ABC/ABC_generic.ipynb) on your computer / cluster.
 
 Then, to use this notebook, one should only have to carefully modify the content of the [Set working directory](#set-working-directory) section, then to execute the notebook cell by cell, in the correct order. After execution of each cell, remember to check for errors before executing the next one.
 

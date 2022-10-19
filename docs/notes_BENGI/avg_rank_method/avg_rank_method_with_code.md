@@ -4,11 +4,11 @@
 
 ### Step 1: run Distance method
 
-See [dedicated guide](/eg/notes_BENGI/distance_method/distance_evaluation_with_code).
+See [dedicated guide](../distance_method/distance_evaluation_with_code.html).
 
 ### Step 2: run DNase-expression correlation method
 
-See [dedicated guide](/eg/notes_BENGI/dnase_expression_correlation/correlation_method_with_code).
+See [dedicated guide](../dnase_expression_correlation/correlation_method_with_code.html).
 
 ## Partial reimplementation of `Run-Average-Rank.sh`
 

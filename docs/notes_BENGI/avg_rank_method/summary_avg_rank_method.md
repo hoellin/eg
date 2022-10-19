@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Detailed procedure is explained [here](/eg/notes_BENGI/avg_rank_method/avg_rank_method_with_code).
+Detailed procedure is explained [here](avg_rank_method_with_code.html).
 
 ## Not correcting the error in `Run-Average-Rank.sh` gives same results as in the paper
 

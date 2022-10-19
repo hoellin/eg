@@ -130,7 +130,7 @@ We have done so many inaccuracies that the results we obtained are not really re
 
 ### Notebook
 
-[notes_ABC/K562/april_K562_candidates_not_in_whitelist_56_genes/april_K562_candidates_NOT_in_whitelist](/notes_ABC/K562/april_K562_candidates_not_in_whitelist_56_genes/april_K562_candidates_NOT_in_whitelist)
+[notes_ABC/K562/april_K562_candidates_not_in_whitelist_56_genes/april_K562_candidates_NOT_in_whitelist.html](april_K562_candidates_not_in_whitelist_56_genes/april_K562_candidates_NOT_in_whitelist.html)
 
 ### Accessions
 
@@ -166,7 +166,7 @@ Irrelevant. Same as fifth run but of poorer quality (here we did not deal with t
 
 ### Notebook
 
-[notes_ABC/K562/april_K562_59_genes/april_K562_59_genes](/notes_ABC/K562/april_K562_59_genes/april_K562_59_genes)
+[notes_ABC/K562/april_K562_59_genes/april_K562_59_genes.html](april_K562_59_genes/april_K562_59_genes.html)
 
 ### Accessions
 
@@ -199,7 +199,7 @@ We recall that over their whole CRiFF validation dataset, in very similar condit
 
 ### Notebook
 
-[notes_ABC/K562/april_K562_56_genes/april_K562_56_genes](/notes_ABC/K562/april_K562_56_genes/april_K562_56_genes)
+[notes_ABC/K562/april_K562_56_genes/april_K562_56_genes.html](april_K562_56_genes/april_K562_56_genes.html)
 
 ### Accessions
 

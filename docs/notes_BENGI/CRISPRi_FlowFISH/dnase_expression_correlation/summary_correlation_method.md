@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-See detailed procedure [here](/notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/correlation_method_with_code).
+See detailed procedure [here](correlation_method_with_code.html).
 
 ## Results
 

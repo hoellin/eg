@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-See detailed procedure [here](/notes_BENGI/CRISPRi_FlowFISH/avg_rank_method/avg_rank_method_with_code).
+See detailed procedure [here](avg_rank_method_with_code.html).
 
 ## Results
 
