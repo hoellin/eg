@@ -11,6 +11,28 @@ The Activity-by-contact model predicts which enhancers regulate which genes on a
 
 ## Preprocessing
 
+To obtain the \texttt{CRiFF} reference set we first downloaded Table S6a from Fulco et al 2019 as a tsv file, and then obtained the 109 positive and the 3754 negative E/G relationships performing the following filters (the negatives are indeed defined as either not significant or not associated to a decrease in gene expression):
+
+```bash
+awk 'NR==2{gsub(/\ /,".",$0); header=$0; OFS="\t"; 
+print header > "109.fulco.positives.tsv"; 
+print header > "3754.fulco.negatives.tsv"}
+NR>=3{
+split($0,a,"\t");
+if(a[6]!="promoter"&&(a[10]=="TRUE"||a[17]>0.8))
+{ 
+if(a[10]=="TRUE"&&a[8]<0)
+{
+print > "109.fulco.positives.tsv";
+}
+else
+{
+print > "3754.fulco.negatives.tsv";
+}}}' tableS6a.tsv
+```
+
+Merging:
+
 ```bash
 awk 'BEGIN{FS="\t"; OFS="\t"} {if(NR==1){printf "interaction\t"} else{printf "1\t"}; print $1, $2, $3, $5, $19, $22, $23}' 109.fulco.positives.tsv > 3863.fulco.tsv
 ```

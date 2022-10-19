@@ -12,6 +12,8 @@ nav:
       - Git: guidebooks/git.md
       - Genotoul cluster: guidebooks/genotoul.md
       - How to use Jupyter through ssh tunneling?: guidebooks/notebooks_ssh.md
+    - Misc:
+      - Compute correlations: guidebooks/compute_correlations.md
   - Haemochromatosis:
     - Introduction: haemochromatosis/introduction.md
     - Data format: haemochromatosis/data_format.md
