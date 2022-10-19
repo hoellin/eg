@@ -4,7 +4,7 @@ For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 
 ### Commands
 
-* `mkdocs serve` - Start the live-reloading docs server.
+* `mkdocs serve --no-directory-urls` - Start the live-reloading docs server (`--no-directory-urls` is needed to avoid inconsistent redirections)
 * `mkdocs build --no-directory-urls` - Build the documentation site.
 
 ### Syntax highlighting

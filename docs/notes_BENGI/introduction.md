@@ -3,16 +3,16 @@
 We want to evaluate:
 
 - the performance of ABC method [[1]](#1) to predict Enhancer-Gene relationships, over:
-    - [the CRISPRi-FlowFISH set](../../notes_ABC/K562/recap_investigations_ABC_over_CRiFF/)
-    - [the BENGI sets](../../notes_ABC/BENGI/ABC_BENGI_results/)
+    - [the CRISPRi-FlowFISH set](../notes_ABC/K562/recap_investigations_ABC_over_CRiFF.html)
+    - [the BENGI sets](../notes_ABC/BENGI/ABC_BENGI_results.html)
 - the performance of Average Rank method [[2]](#2) to predict Enhancer-Gene relationships, over:
-    - [the CRISPRi-FlowFISH set](../CRISPRi_FlowFISH/avg_rank_method/summary_avg_rank/)
-    - [the BENGI sets](../avg_rank_method/summary_avg_rank_method/)
+    - [the CRISPRi-FlowFISH set](CRISPRi_FlowFISH/avg_rank_method/summary_avg_rank.html)
+    - [the BENGI sets](avg_rank_method/summary_avg_rank_method.html)
 
 In particular, we needed to understand:
 
 - how to use the BENGI sets
-- [how to use the Average Rank method](../avg_rank_method/avg_rank_method_with_code/)
+- [how to use the Average Rank method](avg_rank_method/avg_rank_method_with_code.html)
 
 This is the subject of this section.
 
@@ -20,7 +20,7 @@ This is the subject of this section.
 
 These pages gather guidelines to use Moore et al. BENGI benchmarks, mainly for GM12878.
 
-For most of them, the code can be directly adapted to re-run the steps anywhere needed. For some others, one should use the dedicated notebook. All notebooks can be found at [scripts/notebooks/ipynb/](../../scripts/notebooks/ipynb/).
+For most of them, the code can be directly adapted to re-run the steps anywhere needed. For some others, one should use the dedicated notebook. All notebooks can be found at [scripts/notebooks/ipynb/](../scripts/notebooks/ipynb/).
 
 # References
 

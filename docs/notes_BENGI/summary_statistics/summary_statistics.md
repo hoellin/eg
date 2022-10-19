@@ -8,7 +8,7 @@ We computed summary statistics on the [BENGI benchmarks](https://genomebiology.b
 
 ## Remarks
 
-The R code we used to compute the results below is detailed [here](../../../notes_BENGI/summary_statistics_BENGI/summary_BENGI_bedpe).
+The R code we used to compute the results below is detailed [here](../../notes_BENGI/summary_statistics_BENGI/summary_BENGI_bedpe.html).
 
 ## Introduction
 

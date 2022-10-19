@@ -8,9 +8,9 @@ In this notebook we reprocess BENGI datasets into `.bedpe` containing comprehens
 
 ## How to use this notebook?
 
-First, make a copy of this notebook on your computer / cluster. The notebook can be found at [scripts/notebooks/ipynb/](../../scripts/notebooks/ipynb/).
+First, make a copy of this notebook on your computer / cluster. The notebook can be found at [scripts/notebooks/ipynb/](../scripts/notebooks/ipynb/).
 
-To use Jupyter Notebook through ssh tunneling, one can refer to the following tutorial: [guidebooks/notebooks_ssh](../../guidebooks/notebooks_ssh)
+To use Jupyter Notebook through ssh tunneling, one can refer to the following tutorial: [guidebooks/notebooks_ssh](../guidebooks/notebooks_ssh.html)
 
 Then, to use this notebook, one should only have to carefully modify the content of the "Set working directory" section, then to execute the notebook cell by cell, in the correct order. After execution of each cell, remember to check for errors before executing the next one.
 
