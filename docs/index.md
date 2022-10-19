@@ -1,6 +1,6 @@
 # How to navigate through this site
 
-These pages were first intented for my personal use to organize my notes, and to share them with my colleagues. Now they could be used as guidelines to help going through the data and scripts used to reproduce the results presented in the [paper](...) paper. Yet as they were not intented to be read by another audience, they are not very user-friendly. If you have any question or suggestion, please do not hesitate to [contact me](../../about_me).
+These pages were first intented for my personal use to organize my notes, and to share them with my colleagues. Now they could be used as guidelines to help going through the data and scripts used to reproduce the results presented in [E/G relationships: need for more reliable genome-wide reference sets](https://doi.org/10.1101/2022.10.12.511908). Yet as they were not intented to be read by another audience, they are not very user-friendly. If you have any question or suggestion, please do not hesitate to [contact me](../../about_me).
 
 ## Context
 
@@ -21,16 +21,16 @@ Here we reviewed 2 of the most recent methods to identify enhancer-gene relation
 
 The GitHub Pages site is organized as follows:
 
-- The [Guidebooks](/guidebooks/introduction) section contains basic technical guidelines that are referenced in the other sections.
-- The [ABC](/notes_abc/introduction) section contains the scripts used to reproduce the results presented in the paper when using the ABC method.
-- The [BENGI](/notes_bengi/introduction) section contains the guidelines to:
+- The [Guidebooks](../guidebooks/introduction) section contains basic technical guidelines that are referenced in the other sections.
+- The [ABC](../notes_abc/introduction) section contains the scripts used to reproduce the results presented in the paper when using the ABC method.
+- The [BENGI](../notes_bengi/introduction) section contains the guidelines to:
     - use the Average Rank method
     - evaluate the ABC model and the Average Rank method over the BENGI sets
-- In the [Haemochromatosis](/haemochromatosis/introduction) section we make use of the ABC method to identify putative genes involved in the severity of haemochromatosis based on the enhancers they are regulated by.
+- In the [Haemochromatosis](../haemochromatosis/introduction) section we make use of the ABC method to identify putative genes involved in the severity of haemochromatosis based on the enhancers they are regulated by.
 
 ### The GitHub repository
 
-The present website is generated from the [GitHub repository](https://github.com/hoellin/hoellin.github.io) of the project. At the same time, the repository contains most (hopefully all - don't hesitate to [contact me](/about_me) otherwise) of the resources required to reproduce the results presented in the paper. The repository itself is organized as follows:
+The present website is generated from the [GitHub repository](https://github.com/hoellin/hoellin.github.io) of the project. At the same time, the repository contains most (hopefully all - don't hesitate to [contact me](../about_me) otherwise) of the resources required to reproduce the results presented in the paper. The repository itself is organized as follows:
 
 - The `docs/` directory contains
     - the files used to generate the GitHub Pages site.
