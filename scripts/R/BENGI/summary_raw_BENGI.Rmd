@@ -1,0 +1,211 @@
+---
+title: "Summary BENGI"
+date : "décembre 2020"
+output:
+  md_document
+  #html_document:
+    #toc: true
+    #toc_float: true
+    #toc_depth : 4
+    #number_sections : true
+---
+
+```{css,echo=F}
+.badCode {
+background-color: #C9DDE4;
+}
+```
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+opts_knit$set(width=75)
+```
+
+```{r}
+library(corrplot)
+library(ggplot2)
+```
+
+# BENGI
+
+## Summary statistics on BENGI GM12878 benchmarks
+
+### Data importation
+
+```{r, results="hide"}
+rm(list = ls())
+
+nb_benchmarks <- 6
+# All pairs, fixed ratio, GM12878
+#path_to_benchmarks <- "/home/hoellinger/Documents/INSERM/BENGI/Benchmark/All-Pairs.Fixed-Ratio/"
+#path_to_ben1 <- "GM12878.CHiC-Benchmark.v4.txt"
+#path_to_ben2 <- "GM12878.CTCF-ChIAPET-Benchmark.v4.txt"
+#path_to_ben3 <- "GM12878.GEUVADIS-Benchmark.v4.txt"
+#path_to_ben4 <- "GM12878.GTEx-Benchmark.v4.txt"
+#path_to_ben5 <- "GM12878.HiC-Benchmark.v4.txt"
+#path_to_ben6 <- "GM12878.RNAPII-ChIAPET-Benchmark.v4.txt"
+# All pairs, natural ratio, GM12878
+path_to_benchmarks <- "/home/hoellinger/Documents/INSERM/BENGI/Benchmark/All-Pairs.Natural-Ratio/"
+path_to_ben1 <- "GM12878.CHiC-Benchmark.v3.txt"
+path_to_ben2 <- "GM12878.CTCF-ChIAPET-Benchmark.v3.txt"
+path_to_ben3 <- "GM12878.GEUVADIS-Benchmark.v3.txt"
+path_to_ben4 <- "GM12878.GTEx-Benchmark.v3.txt"
+path_to_ben5 <- "GM12878.HiC-Benchmark.v3.txt"
+path_to_ben6 <- "GM12878.RNAPII-ChIAPET-Benchmark.v3.txt"
+names <- c("CHiC", "CTCF", "GEUVADIS", "GTEx", "HiC", "RNAPII")
+col_names <- c("ccRE.ELS", "gene", "interaction", "CV")
+list_of_files <- list(paste(path_to_benchmarks,path_to_ben1,sep=""), paste(path_to_benchmarks,path_to_ben2,sep=""), paste(path_to_benchmarks,path_to_ben3,sep=""), paste(path_to_benchmarks,path_to_ben4,sep=""), paste(path_to_benchmarks,path_to_ben5,sep=""), paste(path_to_benchmarks,path_to_ben6,sep=""))
+
+path_to_ccREs_annotation = "/home/hoellinger/Documents/INSERM/BENGI/Benchmark/Annotations/hg19-cCREs.bed"
+path_to_TSS_annotation = "/home/hoellinger/Documents/INSERM/BENGI/Benchmark/Annotations/GENCODEv19-TSSs.bed"
+names_ccREs <- c("chr", "start", "end", "rDHS", "ccRE", "group")
+names_TSS <- c("chr", "start", "end", "transcript_id", "V5", "strand", "gene_id")
+
+to_factor_benchmarks <- c(1:4)
+to_factor_ccREs = c(1,4:6)
+to_factor_TSS = c(1,4:7)
+
+benchmarks = lapply(list_of_files, function(file){
+  as.data.frame(read.table(file, sep="\t"))
+})
+benchmarks = sapply(benchmarks, simplify=FALSE, function(Df){
+  Df[to_factor_benchmarks] = lapply(Df[to_factor_benchmarks], factor)
+  names(Df) <- col_names
+  return(Df)
+})
+names(benchmarks) <- names
+
+ccREs <- as.data.frame(read.table(path_to_ccREs_annotation, sep="\t"))
+ccREs[to_factor_ccREs] <- lapply(ccREs[to_factor_ccREs], factor)
+names(ccREs) <- names_ccREs
+
+TSS <- as.data.frame(read.table(path_to_TSS_annotation, sep="\t"))
+TSS[to_factor_TSS] <- lapply(TSS[to_factor_TSS], factor)
+names(TSS) <- names_TSS
+```
+
+### Overlap coefficient
+
+```{r, results="hide"}
+benchmarks = sapply(benchmarks, simplify=FALSE, USE.NAMES=TRUE, function(Df){
+  gene.without.version <- sapply(Df$gene, function(gene_id){
+    result <- as.character(gene_id)
+    return(strsplit(result, "\\.")[[1]][1])
+  })
+  Df$gene.without.version <- as.factor(gene.without.version)
+  Df$gene <- as.factor(Df$gene) #
+  Df$identifier <- as.factor(paste(Df$ccRE.ELS, Df$gene.without.version, sep = " "))
+  return(Df)
+})
+positives <- list(nb_benchmarks)
+positives <- sapply(benchmarks, simplify=FALSE, function(Df){return(Df$interaction=="1")})
+```
+
+```{r, results="hide"}
+Overlap <- as.matrix(diag(nb_benchmarks))
+rownames(Overlap) <- names
+colnames(Overlap) <- names
+
+length_benchmarks <- vector(length = nb_benchmarks)
+for(i in 1:nb_benchmarks){length_benchmarks[i] <- length(benchmarks[[i]]$identifier)}
+nb_positives <- vector(length = nb_benchmarks)
+for(i in 1:nb_benchmarks){nb_positives[i] <- length(benchmarks[[i]][positives[[i]], "identifier"])}
+
+for(i in 2:nb_benchmarks){
+  for(j in 1:(i-1)){
+    Overlap[i,j] = length(intersect(benchmarks[[i]][positives[[i]], "identifier"], benchmarks[[j]][positives[[j]], "identifier"]))/min(nb_positives[i], nb_positives[j])
+  }
+}
+Overlap[upper.tri(Overlap)] <- t(Overlap)[upper.tri(Overlap)]
+```
+
+
+```{r}
+#png(file="/home/hoellinger/Documents/INSERM/shared/notes_perso/docs/moore2020/expA_all_pairs_fixed_ratio.png", width=700, height=700)
+corrplot(Overlap, method = "color", type = "full", is.corr=FALSE, diag=TRUE, outline=TRUE, addCoef.col="black", addCoefasPercent = FALSE, order="hclust", hclust.method="ward.D2")
+#dev.off()
+```
+
+### Distance distribution
+
+First we verify that we find the same results as authors working with GRCh19.
+
+```{r}
+TSS$gene_without_version <- sapply(TSS$gene_id, function(id){
+  return(strsplit(as.character(id), "\\.")[[1]][1])
+})
+TSS_loci_lists <- aggregate(TSS$start, FUN=identity, by=list(TSS$gene_without_version))
+TSS_loci_lists <- setNames(data.frame(t(TSS_loci_lists[,-1])), TSS_loci_lists[,1])
+ccREs_start <- aggregate(ccREs$start, FUN=identity, by=list(ccREs$ccRE))
+ccREs_start <- setNames(data.frame(t(ccREs_start[,-1])), ccREs_start[,1])
+ccREs_end <- aggregate(ccREs$end, FUN=identity, by=list(ccREs$ccRE))
+ccREs_end <- setNames(data.frame(t(ccREs_end[,-1])), ccREs_end[,1])
+benchmarks <- sapply(benchmarks, simplify=FALSE, USE.NAMES=TRUE, function(Df){
+  pair <- sapply(Df$identifier, function(elt){
+    id <- strsplit(as.character(elt), ' ')[[1]]
+    return(c(id[1], id[2]))
+  })
+  Df$pair <- t(pair)
+  return(Df)
+})
+benchmarks <- sapply(benchmarks, simplify=FALSE, USE.NAMES=TRUE, function(Df){
+  annotated_TSSs <- TSS_loci_lists[Df$pair[,2]]
+  annotated_ccRE_start <- ccREs_start[Df$pair[,1]]
+  annotated_ccRE_end <- ccREs_end[Df$pair[,1]]
+  Df$distance <- NA
+  for(i in 1:length(Df$identifier)){
+    Df$distance[i] <- min(min(abs(unlist(annotated_TSSs[[i]])-unlist(annotated_ccRE_start[[i]]))), min(abs(unlist(annotated_TSSs[[i]])-unlist(annotated_ccRE_end[[i]]))))
+  }
+  return(Df)
+})
+```
+
+```{r}
+Distances <- list()
+for(k in 1:nb_benchmarks){
+  Distances[[k]] <- benchmarks[[names[k]]]$distance[positives[[k]]]
+}
+
+Df_distances <- data.frame()
+Df <- list()
+for(k in 1:nb_benchmarks){
+  nk = nb_positives[k]
+  #nk = length(Distances[[k]])
+  Df[[k]] <- data.frame(matrix(unlist(Distances[[k]]), nrow=nk, byrow=T), rep(names[k], nk))
+  names(Df[[k]]) <- c("distance", "group")
+  Df[[k]]$group <- as.factor(Df[[k]]$group)
+}
+Df_distances <- rbind(Df[[1]], Df[[2]], Df[[3]], Df[[4]], Df[[5]], Df[[6]]) # should find a way to do this without having to manually write each element of the list
+```
+
+```{r}
+quantiles <- list()
+for(k in 1:nb_benchmarks){
+  quantiles[k] <- quantile(Distances[[k]],.95)
+}
+
+summary(Df_distances)
+print('0.95-quantiles:')
+print(names)
+t(quantiles)
+```
+
+
+```{r}
+#png(file="/home/hoellinger/Documents/INSERM/shared/notes_perso/docs/moore2020/distancesV1.png", width=700, height=700)
+#limits=c(1e-3,2e16)
+ggplot(Df_distances, aes(x=group, y=distance, fill=group)) + geom_violin() + scale_y_continuous(trans='log10', limits=c(1e-3,2e16), n.breaks=3) + geom_boxplot(width=0.1, outlier.colour="red", outlier.shape=8) + theme(legend.position="bottom") + scale_x_discrete(limits=c(names[6], names[2], names[5], names[1], names[3], names[4]))
+#dev.off()
+```
+
+

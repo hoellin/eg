@@ -1,0 +1,493 @@
+---
+title: "Analysis of E-G Networks starting from genes involved in hemochromatosis / iron metabolism ; based on element-gene relation obtained with CHiC data"
+date : "January 2022"
+output:
+  html_document:
+    keep_md: true
+    toc: true
+    toc_float:
+      collapsed: true
+    toc_depth : 4
+    number_sections : true
+    theme: united
+    hilight: tango
+---
+
+
+```{css,echo=F}
+.badCode {
+background-color: #C9DDE4;
+}
+```
+
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source="badCode")
+opts_knit$set(width=75)
+```
+
+
+```{r, echo=F, eval=F, results="hide"}
+# # Put this outside of the script box if you want to add buttons to collapse the left panel.
+# Select the menu on the left to expand / collapse table of contents (TOC) entries. Press button below to collapse all TOC except the top level headings.
+# 
+# <button id="btnCollapseHeading" onclick="collapseTOC()">Collapse sub-headings</button>
+# 
+# If you only want to collapse level 3 headings press this button.
+# 
+# <button id="btnCollapseLevel3" onclick="collapseLevel3()">Collapse Level 3 only</button>
+# 
+# <script>
+# function collapseTOC() {
+#   var x = document.getElementsByClassName("tocify-subheader");
+#   var i;
+#   for (i = 0; i < x.length; i++) {
+#       x[i].style.display = "none";
+#   }
+# }
+# 
+# function collapseLevel3() {
+#   var x = document.getElementsByClassName("tocify-subheader");
+#   var i;
+#   for (i = 0; i < x.length; i++) {
+#       if (x[i].getAttribute("data-tag") == "3") {
+#         x[i].style.display = "none";
+#       }
+#   }
+# }
+# 
+# </script>
+```
+
+# Libraries & Version
+
+```{r, results="hide"}
+library(tidyverse)
+library(visNetwork)
+```
+
+
+```{r, echo=F}
+sessionInfo()
+```
+
+# Preliminary work
+
+Have a look https://datastorm-open.github.io/visNetwork/nodes.html for documentation on `visNetwork`.
+
+## Data importation
+
+All the files imported here can be found on Genotoul, in `/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/` and `/work2/project/regenet/results/phic/homo_sapiens/hg19/jung.ren.2019/LI11/nofilter/pp`.
+
+The full code itself is available here: `/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/` (as `preliminary_analysis_v1.Rmd`). Please do not modify directly this repository as it is backed up between multiple computers on a regular basis.
+
+```{r}
+rm(list = ls())
+
+#wd = "data/"
+wd = "/home/thoellinger/Documents/shared/2022/promoter_capture_hic/data/"
+#wd = "/home/hoellinger/Documents/INSERM/shared/2022/promoter_capture_hic/data/"
+egfile = paste(wd,"liver.all_putative_enhancers.overlapping_ccRE-ELS.sorted.bedpe",sep='')
+merged_efile = paste(wd, "list_all_enhancers.overlapping_ccRE-ELS.bed", sep='')
+
+#############
+# Enhancers #
+#############
+me = as.data.frame(read.table(merged_efile, sep = "\t"))
+
+############
+# E-G list #
+############
+
+eg = as.data.frame(read.table(egfile, header=F, col.names=c("chrom1",
+                                                           "start1",
+                                                           "end1",
+                                                           "chrom2",
+                                                           "start2",
+                                                           "end2",
+                                                           "name",
+                                                           "score.contact",
+                                                           "strand1",
+                                                           "strand2",
+                                                           "tissue",
+                                                           "gene.symbol",
+                                                           "original.distance",
+                                                           "gene.id"), sep = "\t"))
+
+###############
+# known genes #
+###############
+gene_list = c("HFE", "TFR2", "HFE2", "HAMP", "SLC40A1", "BMP6", "TMPRSS6", "TFRC", "SLC11A2", "CYBRD1", "NEO1", "CIAPIN1", "SLC39A14")
+
+# genes known to be causally involved in hemochromatosis: "HFE", "TFR2", "HFE2", "HAMP", "SLC40A1", "BMP6" (the other genes are involved in iron metabolism regulation)
+# genes co-expressed in the liver: HFE + TFR2 + HJV + HAMP + TMPRSS6
+# genes co-expressed in intestine: DCYTB + DMT1 + SLC40A1
+```
+
+## Data preprocessing
+
+### Conversion to factors
+
+```{r}
+#to_factor_cols = c("chrom1", "chrom2", "name", "strand1", "strand2", "tissue", "gene.symbol", "gene.id")
+to_factor_cols = c("chrom1", "chrom2", "name", "strand1", "strand2", "tissue")
+eg[to_factor_cols] = lapply(eg[to_factor_cols], factor)
+```
+
+## Exploration
+
+### Summary statistics on enhancer lists
+
+```{r}
+length(me[,1])
+```
+
+Warning: we shall pay attention to the fact that those 25,600 putative enhancers correspond to those, among the 31,749 initial putative regulatory elements in the CHiC data, that intersect at least one ccRE-ELS. We filtered out the other elements / the E-G pairs involving such elements. We did so because they are pretty large (see next cell), so it is very unlikely for such large element to be an enhancer but not to intersect any ccRE-ELS.
+
+
+```{r}
+me$length = abs(me$V3-me$V2)
+
+summary(me$length)
+```
+
+### E-G pairs
+
+We extract the subsample of the E-G bedpe input list, where genes are contained in our list of genes involved either directly in hemochromatosis or in iron metabolism. In the variable name, "dist0" stands for "distance is 0 between the genes in `eg_dist0` and the list of initial genes".
+
+```{r}
+eg_dist0 = eg[eg$gene.symbol %in% gene_list,]
+```
+
+
+```{r}
+length(eg_dist0$name)
+length(unique(eg_dist0$gene.symbol))
+```
+
+```{r}
+print(as.character(unique(eg_dist0$gene.symbol)))
+print(gene_list)
+```
+
+We have element-gene pairs in our data for 12 out of 13 initial genes.
+
+### Genes
+
+Chromosomes where the genes are located:
+
+```{r, echo=F}
+list_chrs = as.data.frame(lapply(gene_list, function(g) {
+    c(gene=g, chr=as.character(unique(eg_dist0[eg_dist0$gene.symbol==g,]$chrom2)))
+}))
+names(list_chrs) = list_chrs[1,]
+unlist(list_chrs[-c(1),])
+```
+
+# Networks
+
+Note: in all subsequent graphs, size of nodes of type "gene" (and not "known_gene", for which the size is fixed) is proportional to the number of distinct enhancers regulating them.
+
+## Find all genes regulated by the initial enhancers
+
+The "initial enhancers" are the enhancers involved in eg_dist0, ie all the enhancers regulating the initial genes in `gene_list`.
+
+`genes` is the subset of `gene_list` for which we have data (12 out of 13 genes here), and `enhancers` is the list of enhancers regulating those initial known genes.
+
+```{r}
+enhancers = unique(paste(eg_dist0$chrom1, ":", eg_dist0$start1, "-", eg_dist0$end1, sep=''))
+genes = unique(eg_dist0$gene.symbol)
+```
+
+
+Now we compute the list of all genes regulated by enhancers in `eg_dist0`. Specifically, we extract, from the full E-G list `eg`, the list `eg_dist1` containing only the enhancers-genes pairs for which the gene G is regulated by any of the enhancers regulating a gene in `gene_list` ("dist1" stands for "distance is at most 1 between the genes in `eg_dist1` and the list of initial genes").
+
+
+```{r}
+eg_enhancers_id = data.frame(source = paste(eg$chrom1, ":", eg$start1, "-", eg$end1, sep=''), eg[,-c(1,2,3)]) # same as eg but columns 1-3 have been concatenated to make unique enhancers id
+eg_dist1 = eg_enhancers_id[eg_enhancers_id$source %in% paste(eg_dist0$chrom1, ":", eg_dist0$start1, "-", eg_dist0$end1, sep=''),]
+eg_dist1$from = lapply(eg_dist1$source, function(x) unique(as.character(eg_dist0[paste(eg_dist0$chrom1, ":", eg_dist0$start1, "-", eg_dist0$end1, sep='')==x,"gene.symbol"])))
+eg_dist1$from.id = lapply(eg_dist1$source, function(x) unique(as.character(eg_dist0[paste(eg_dist0$chrom1, ":", eg_dist0$start1, "-", eg_dist0$end1, sep='')==x,"gene.id"])))
+eg_dist1$score.contact.IE = left_join(data.frame(name = paste(eg_dist1$source,eg_dist1$from.id,eg_dist1$from,sep="::")), eg_enhancers_id, by="name")$score.contact # max ABC score of the I-E pair (initialGene-Enhancer) corresponding to the E-G pair
+genes_dist1 = unique(eg_dist1$gene.symbol)
+```
+
+`genes_dist1` is the list of genes regulated by `enhancers`.
+
+
+Compute "contact product", ie the product of the contact scores of:
+- the initial gene - enhancer pair (I-E)
+- the enhancer - gene pair (E-G)
+
+```{r}
+eg_dist1$contact.product = eg_dist1$score.contact * eg_dist1$score.contact.IE
+eg_dist1$contact.product = eg_dist1$contact.product/max(eg_dist1$contact.product)
+```
+
+
+```{r}
+print(min(eg_dist1$contact.product))
+print(mean(eg_dist1$contact.product))
+print(max(eg_dist1$contact.product))
+print(quantile(eg_dist1$contact.product, c(.1,.4,.5,.6,.8,.9)))
+```
+
+
+```{r}
+eg_dist1$contact.product.label = 1
+eg_dist1[eg_dist1$contact.product>=median(eg_dist1$contact.product),]$contact.product.label = 2
+eg_dist1[eg_dist1$contact.product>=quantile(eg_dist1$contact.product,.9)[[1]],]$contact.product.label = 3
+```
+
+
+```{r}
+table(eg_dist1$contact.product.label)
+```
+
+
+In the following cell we re-organize `genes_dist1` into `genes_dist1.more` which is in a well-suited format for further "concatenation" with inferences made with other type of data (ABC or QTL -based).
+
+
+```{r}
+genes_dist1.more = eg_dist1 %>%
+                      group_by(gene.symbol) %>%
+                      mutate(CHiC.sources = paste0(source, collapse = ',')) %>%
+                      mutate(CHiC.count = length(str_split(CHiC.sources, ',')[[1]])) %>%
+                      slice(which.max(contact.product.label)) %>%
+                      ungroup() %>%
+                      select(gene.symbol, gene.id, CHiC.sources, contact.product.label, CHiC.count, from)
+
+genes_dist1.more = subset(genes_dist1.more, !(genes_dist1.more$gene.symbol %in% genes))
+genes_dist1.more$from = as.character(genes_dist1.more$from)
+genes_dist1.more
+```
+
+We re-arrange `eg_dist1` as an edge list `edges_list_dist1`, which will be more suitable to later construct the edges list for visualization as a graph.
+
+```{r, results="hide"}
+edges_list_dist1 = data.frame(source = eg_dist1$source, target=eg_dist1$gene.symbol, distance_kb=floor(eg_dist1$original.distance/1000), inv_dist=1/(eg_dist1$original.distance+1), rescaled_log_inv_dist=1-min(log(1/(eg_dist1$original.distance+1)))+log(1/(eg_dist1$original.distance+1)))
+edges_list_dist1
+```
+
+
+Now we can compute the list `nodes_dist1` of (colored) nodes required for our graphs. There are 3 types of nodes: `enhancer`, `known_gene` and (unknown) `gene`.
+
+```{r, results="hide"}
+nodes_dist1 = full_join(data.frame(label = unique(eg_dist1$source), group="enhancer"),
+                        data.frame(label = unique(eg_dist1$gene.symbol), group="gene")) %>% rowid_to_column("id")
+nodes_dist1[nodes_dist1$label %in% genes,]$group = "known_gene"
+nodes_dist1 = unique(nodes_dist1)
+```
+
+
+
+```{r}
+table(nodes_dist1$group)
+```
+
+In the list of edges of the graph, `edges_dist1`, the `sample` column indicates in which family of tissues (liver, intestine or both) each E-G pair has been found.
+
+```{r, echo=F, results="hide"}
+edges_dist1 <- edges_list_dist1 %>% 
+  left_join(nodes_dist1[-c(3)], by = c("source" = "label")) %>% 
+  rename(from = id)
+
+edges_dist1 <- edges_dist1 %>% 
+  left_join(nodes_dist1[c("id", "label")], by = c("target" = "label")) %>% 
+  rename(to = id)
+
+edges_dist1 = select(edges_dist1, from, to, distance_kb, inv_dist, rescaled_log_inv_dist)
+edges_dist1
+```
+
+
+We add to `nodes_dist1` a column `d_in` for plotting purpose: it contains 1 for each node of type `enhancer`, the number of incoming enhancers for each node of type `gene`, and the max of the latter for each node of type `known_gene`.
+
+```{r, echo=F, results="hide"}
+if(! exists("values_df"))
+{
+  values_df = edges_list_dist1 %>%
+    group_by(target) %>%
+    summarise(d_in = n()) %>% 
+  ungroup()
+  values_df = unique(values_df)
+  
+  values_for_eg = as.data.frame(cbind(eg_dist1$source, rep(1, nrow(eg_dist1))))
+  colnames(values_for_eg) = c("target", "d_in")
+  
+  values_df = rbind(values_for_eg, values_df)
+  colnames(values_df) = c("label", "d_in")
+  
+  values_df[values_df$label %in% genes, ]$d_in = 1
+  values_df[values_df$label %in% genes, ]$d_in = max(values_df$d_in)
+  
+  values_df = unique(values_df)
+  
+  nodes_dist1 = merge(nodes_dist1, values_df, by="label")
+}
+```
+
+
+
+
+```{r, echo=F, results="hide"}
+# See https://github.com/datastorm-open/visNetwork/issues/49 for potential issues with the `value` node argument. In particular, we need to use one of those label for `value` to work: image, circularImage, diamond, dot, star, triangle, triangleDown, square or icon.
+# Custom function to plot graphs
+
+plot_graph = function(edges_dist1, nodes_dist1) {
+  set.seed(123)
+  
+  visNetwork(nodes_dist1, edges_dist1, height = "400", width="100%",
+             main = list(text = "E-G Network in Liver and Intestine cells", style = "color:black;font-size:20px;text-align:center;"),
+             submain = list(text = "Network of genes involved in hemochromatosis and iron metabolism, their enhancers, and other genes regulated by the latter enhancers",
+                            style = "color:grey;font-size:14px;text-align:center;")) %>%
+    visGroups(groupname = "enhancer", color = "black", shape = "dot") %>%
+    visGroups(groupname = "gene", color = "darkred", shape = "star") %>%
+    visGroups(groupname = "known_gene", color = "green", shape = "star",
+              shadow = list(enabled = TRUE)) %>%
+    visEdges(color = list(color = "grey", highlight = "red")) %>%
+    visIgraphLayout(layout = "layout_nicely") %>%
+    visInteraction(navigationButtons = TRUE) %>%
+  #  visLegend(width = 0.2, position = "left") %>% 
+    visLegend(addNodes = list(list(label = "gene", shape = "star", color="darkred", size=15),
+                              list(label = "known\n gene", shape = "star", color = "green", size=15),
+                              list(label = "enhancer", shape = "dot", color = "black", size=15)),
+              useGroups = FALSE) %>%
+   visOptions(highlightNearest = list(enabled =TRUE, degree = 1), selectedBy = list(variable = "sample", multiple = T))
+}
+```
+
+
+
+## Edge weight based on distance
+
+Width proportional to distance. For each enhancer-gene pair $E$-$G$, the distance indicated in the `eg` dataframe as `original_distance.mean` is given in in base pairs. Here, `distance_kb` is the very same quantity but expressed in `kb`.
+
+```{r, echo=F, eval=F, results="hide"}
+min(edges_dist1$distance_kb)
+max(edges_dist1$distance_kb)
+```
+
+
+```{r, echo=F}
+edges_dist1 = mutate(edges_dist1, width = distance_kb/100)
+nodes_dist1 = mutate(nodes_dist1, value=d_in)
+plot_graph(edges_dist1, nodes_dist1)
+```
+
+Width proportional to inverse distance:
+
+```{r, echo=F, eval=F, results="hide"}
+min(edges_dist1$inv_dist/sd(edges_dist1$inv_dist))
+max(edges_dist1$inv_dist/sd(edges_dist1$inv_dist))
+```
+
+
+```{r, echo=F}
+edges_dist1 = mutate(edges_dist1, width = inv_dist/sd(inv_dist))
+nodes_dist1 = mutate(nodes_dist1, value=d_in)
+plot_graph(edges_dist1, nodes_dist1)
+```
+
+Width proportional to rescaled and translated log inverse distance:
+
+```{r, echo=F, eval=F, results="hide"}
+min(edges_dist1$rescaled_log_inv_dist)
+mean(edges_dist1$rescaled_log_inv_dist)
+max(edges_dist1$rescaled_log_inv_dist)
+```
+
+
+```{r, echo=F}
+edges_dist1 = mutate(edges_dist1, width = rescaled_log_inv_dist)
+nodes_dist1 = mutate(nodes_dist1, value=d_in)
+plot_graph(edges_dist1, nodes_dist1)
+```
+
+
+
+# Results
+
+The list of the initial genes + all genes regulated by enhancers regulating the 12 initial genes (12 found among 13), can be found here: `/work2/project/regenet/workspace/thoellinger/shared/automne_2021/promoter_capture_hic/results/new_genes_v1.list`.
+
+```{r, eval=F}
+#write.table(genes_dist1, file='results/new_genes_v1.list', quote=FALSE, sep='\t', row.names=F, col.names=F)
+```
+
+The list all genes regulated by enhancers regulating the 12 initial genes, with useful info, can be found here: `/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/results/new_genes_chic_v2_more_info.list`.
+
+```{r, eval=F}
+#write.table(genes_dist1.more, file='results/new_genes_chic_v2_more_info.list', quote=FALSE, sep='\t', row.names=F, col.names=T)
+```
+
+
+For each one of the 12 initial genes, the list of genes regulated by enhancers regulating that initial gene, can be found here:
+
+```{r, eval=F}
+#for (gene in genes){
+#  current_gene_dist1 = unique(eg_dist1[eg_dist1$from==gene,"gene.symbol"])
+#  write.table(current_gene_dist1, file=paste("results/separate/",gene,".list", sep=''), quote=FALSE, sep='\t', row.names=F, col.names=F)
+#}
+```
+
+
+The list of the enhancers regulating the 12 initial genes, can be found here: `/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/results/enhancers.list`
+
+```{r, eval=F}
+#write.table(enhancers, file='results/enhancers.list', quote=FALSE, sep='\t', row.names=F, col.names=F)
+```
+
+The list of E-G pairs involving the 12 initial genes, can be found here: `/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/results/eg_dist0.bedpe`
+
+```{r, eval=F}
+#write.table(eg_dist0, file='results/eg_dist0.bedpe', quote=FALSE, sep='\t', row.names=F, col.names=F)
+```
+
+The list of the enhancers regulating the 54 initial+new genes, can be found here: `/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/results/enhancers.new_genes.list`
+
+```{r, eval=F}
+#eg_dist2 = eg[eg$gene.symbol %in% genes_dist1,]
+#enhancers.new_genes = unique(paste(eg_dist2$chrom1, ":", eg_dist2$start1, "-", eg_dist2$end1, sep=''))
+#write.table(enhancers.new_genes, file='results/enhancers.new_genes.list', quote=FALSE, sep='\t', row.names=F, col.names=F)
+```
+
+The list of E-G pairs involving the 54 initial+new genes, can be found here: `/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/results/eg_dist2.bedpe`
+
+```{r, eval=F}
+#write.table(eg_dist2, file='results/eg_dist2.bedpe', quote=FALSE, sep='\t', row.names=F, col.names=F)
+```
+
+
+# Appendix
+
+## Tables
+
+### Table of the initial ABC-predicted E-G pairs involving the initial genes
+
+
+```{r}
+options(max.print=1000)
+eg_dist0
+options(max.print=75)
+```
+
+
+### List of the infered new genes
+
+```{r}
+options(max.print=1000)
+genes_dist1
+length(genes_dist1)
+options(max.print=75)
+```
+

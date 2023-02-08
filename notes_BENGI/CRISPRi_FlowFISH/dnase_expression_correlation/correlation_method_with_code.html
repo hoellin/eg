@@ -1,0 +1,2513 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Tristan Hoellinger">
+      
+      
+        <link rel="canonical" href="https://eg.github.io/notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/correlation_method_with_code.html">
+      
+      
+        <link rel="prev" href="../distance_method/summary_distance_over_fulco_et_al_crispri.html">
+      
+      
+        <link rel="next" href="summary_correlation_method.html">
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.11">
+    
+    
+      
+        <title>Full code - Genome-wide identification of E/G interactions</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.0d440cfe.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#evaluation-of-moore-et-al-s-dnase-expression-correlation-method-over-fulco-et-al-crispri-flowfish-validation-dataset" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Genome-wide identification of E/G interactions" class="md-header__button md-logo" aria-label="Genome-wide identification of E/G interactions" data-md-component="logo">
+      
+  <img src="../../../logo/logo-inserm-blc.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Genome-wide identification of E/G interactions
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Full code
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/hoellin/eg" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    hoellin/eg
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../guidebooks/introduction.html" class="md-tabs__link">
+        Guidebooks
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../haemochromatosis/introduction.html" class="md-tabs__link">
+        Haemochromatosis
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../introduction.html" class="md-tabs__link md-tabs__link--active">
+        BENGI
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../notes_ABC/introduction.html" class="md-tabs__link">
+        ABC
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../index.html" class="md-tabs__link">
+        About
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Genome-wide identification of E/G interactions" class="md-nav__button md-logo" aria-label="Genome-wide identification of E/G interactions" data-md-component="logo">
+      
+  <img src="../../../logo/logo-inserm-blc.png" alt="logo">
+
+    </a>
+    Genome-wide identification of E/G interactions
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/hoellin/eg" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    hoellin/eg
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+          Guidebooks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Guidebooks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/introduction.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/script_bedpe_summary/script_bedpe_summary.html" class="md-nav__link">
+        Compute summary stats of a bedpe
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+          Basics
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          Basics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/shell.html" class="md-nav__link">
+        Shell
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/conda_environments.html" class="md-nav__link">
+        Conda basics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/git.html" class="md-nav__link">
+        Git
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/genotoul.html" class="md-nav__link">
+        Genotoul cluster
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/notebooks_ssh.html" class="md-nav__link">
+        How to use Jupyter through ssh tunneling?
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_4" id="__nav_1_4_label" tabindex="0">
+          Misc
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          Misc
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/compute_correlations.html" class="md-nav__link">
+        Compute correlations
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Haemochromatosis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Haemochromatosis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/introduction.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/data_format.html" class="md-nav__link">
+        Data format
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/custom_go.html" class="md-nav__link">
+        Custom script GO
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/main_results.html" class="md-nav__link">
+        Main results
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          CHiC data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          CHiC data
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/CHiC/preprocess_data.html" class="md-nav__link">
+        Preprocessing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/CHiC/preliminary_analysis_chic_v2.html" class="md-nav__link">
+        Networks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/CHiC/go_enrichment.html" class="md-nav__link">
+        GO enrichment
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+          ABC data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_6">
+          <span class="md-nav__icon md-icon"></span>
+          ABC data
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/data_processing.html" class="md-nav__link">
+        Preprocessing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/preliminary_analysis_v9.html" class="md-nav__link">
+        Networks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/summary_statistics_eg_pairs.html" class="md-nav__link">
+        Summary statistics enhancers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/go_enrichment.html" class="md-nav__link">
+        GO enrichment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/gorilla.html" class="md-nav__link">
+        GOrilla
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/compute_avg_nb_of_connections_per_gene.html" class="md-nav__link">
+        Avg nb connections per gene
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/gwas.html" class="md-nav__link">
+        GWAS (13 initial genes)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/gwas_10.html" class="md-nav__link">
+        GWAS (10 initial genes)
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          BENGI
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          BENGI
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../introduction.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+          Notebooks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Notebooks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../BENGI_to_custom_bedpe.html" class="md-nav__link">
+        Convert BENGI datasets to custom bedpe
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+          Summary statistics
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Summary statistics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../summary_statistics/summary_statistics.html" class="md-nav__link">
+        Summary statistics on BENGI GM12878 benchmarks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../summary_statistics_BENGI/summary_BENGI_bedpe.html" class="md-nav__link">
+        (R code) Compute summary statistics over BENGI
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+          Evaluation of a few methods over BENGI GM12878
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_4">
+          <span class="md-nav__icon md-icon"></span>
+          Evaluation of a few methods over BENGI GM12878
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4_1" id="__nav_3_4_1_label" tabindex="0">
+          Distance method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Distance method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../distance_method/distance_evaluation_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../distance_method/summary_distance_evaluation.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4_2" id="__nav_3_4_2_label" tabindex="0">
+          DNase-expression correlation method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          DNase-expression correlation method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dnase_expression_correlation/correlation_method_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dnase_expression_correlation/summary_correlation_method.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4_3" id="__nav_3_4_3_label" tabindex="0">
+          Average rank method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Average rank method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../avg_rank_method/avg_rank_method_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../avg_rank_method/summary_avg_rank_method.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+          Evaluation of a few methods over Fulco et al 2019 CRISPRi-FlowFISH
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Evaluation of a few methods over Fulco et al 2019 CRISPRi-FlowFISH
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_5_1" id="__nav_3_5_1_label" tabindex="0">
+          Distance method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          Distance method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../distance_method/distance_over_fulco_et_al_crispri.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../distance_method/summary_distance_over_fulco_et_al_crispri.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_5_2" id="__nav_3_5_2_label" tabindex="0">
+          DNase-expression correlation method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3_5_2">
+          <span class="md-nav__icon md-icon"></span>
+          DNase-expression correlation method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Full code
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="correlation_method_with_code.html" class="md-nav__link md-nav__link--active">
+        Full code
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partial-reimplementation-of-run-sheffieldsh" class="md-nav__link">
+    Partial reimplementation of Run-Sheffield.sh
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partial-reimplementation-of-sheffieldcorrelationpy" class="md-nav__link">
+    Partial reimplementation of sheffield.correlation.py
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-code-for-bengi-benchmarks-over-gm12878" class="md-nav__link">
+    Running the code for BENGI benchmarks over GM12878
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analysis-with-r" class="md-nav__link">
+    Analysis with R
+  </a>
+  
+    <nav class="md-nav" aria-label="Analysis with R">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code" class="md-nav__link">
+    Code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    Results
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="summary_correlation_method.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_5_3" id="__nav_3_5_3_label" tabindex="0">
+          Average rank method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Average rank method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avg_rank_method/avg_rank_method_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avg_rank_method/summary_avg_rank.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          ABC
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          ABC
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/introduction.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/BENGI/ABC_BENGI_results.html" class="md-nav__link">
+        ABC over BENGI for GM12878, main results
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+          CRISPRi-FlowFISH
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          CRISPRi-FlowFISH
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/K562/ABC_K562_CRISPRi_FlowFISH.html" class="md-nav__link">
+        Original ABC predictions over K562
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/K562/recap_investigations_ABC_over_CRiFF.html" class="md-nav__link">
+        Summary ABC over CRiFF
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+          Notebooks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Notebooks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/K562/april_K562_56_genes/april_K562_56_genes.html" class="md-nav__link">
+        ABC over K562 cCRiFF
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/K562/april_K562_59_genes/april_K562_59_genes.html" class="md-nav__link">
+        ABC over K562 CRiFF
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/K562/april_K562_candidates_not_in_whitelist_56_genes/april_K562_candidates_NOT_in_whitelist.html" class="md-nav__link">
+        ABC over K562 cCRiFF, no whitelist
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/generic_notebooks/turnkey_notebook_to_run_ABC_with_example_over_GM12878.html" class="md-nav__link">
+        Generic notebook to run ABC method & Example over GM12878
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/BENGI/notebook_ABC_over_BENGI_GM12878.html" class="md-nav__link">
+        ABC over GM12878 with same accessions as for BENGI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/BENGI/notebook_ABC_over_BENGI_GM12878_from_ccRE_ELSs.html" class="md-nav__link">
+        ABC over GM12878 with same accessions as for BENGI, starting with ccRE-dELS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+          Full codes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_5">
+          <span class="md-nav__icon md-icon"></span>
+          Full codes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/test_abc_pipeline.html" class="md-nav__link">
+        Test of ABC pipeline over chr22
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/BENGI/ABC_over_BENGI_GM12878.html" class="md-nav__link">
+        ABC over GM12878 with same accessions as for BENGI
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/differences_example_chr22.html" class="md-nav__link">
+        Meld of results over chr22 vs authors' results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../index.html" class="md-nav__link">
+        Getting started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about_me.html" class="md-nav__link">
+        About me
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partial-reimplementation-of-run-sheffieldsh" class="md-nav__link">
+    Partial reimplementation of Run-Sheffield.sh
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partial-reimplementation-of-sheffieldcorrelationpy" class="md-nav__link">
+    Partial reimplementation of sheffield.correlation.py
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-code-for-bengi-benchmarks-over-gm12878" class="md-nav__link">
+    Running the code for BENGI benchmarks over GM12878
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analysis-with-r" class="md-nav__link">
+    Analysis with R
+  </a>
+  
+    <nav class="md-nav" aria-label="Analysis with R">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code" class="md-nav__link">
+    Code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    Results
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="evaluation-of-moore-et-al-s-dnase-expression-correlation-method-over-fulco-et-al-crispri-flowfish-validation-dataset">Evaluation of Moore et al 's DNase-expression correlation method over Fulco et al CRISPRi-FlowFISH validation dataset<a class="headerlink" href="#evaluation-of-moore-et-al-s-dnase-expression-correlation-method-over-fulco-et-al-crispri-flowfish-validation-dataset" title="Permanent link">&para;</a></h1>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<p>First we need to download the curated DNase counts from <a href="http://big.databio.org/papers/RED/supplement/">http://big.databio.org/papers/RED/supplement/</a> (see p. 14 of the BENGI paper).</p>
+<blockquote>
+<div class="highlight"><pre><span></span><code>Correlation-Methods/
+└──<span class="w"> </span>Sheffield
+<span class="w">    </span>└──<span class="w"> </span>Signal-Matrices
+<span class="w">        </span>├──<span class="w"> </span>dhs112_v3_int.bed
+<span class="w">        </span>├──<span class="w"> </span>dhs112_v3_int.bed.gz
+<span class="w">        </span>└──<span class="w"> </span>exp112.bed
+</code></pre></div>
+</blockquote>
+<p>Note that, in the Python code, we will have to use the appropriate argument for the column 87 of <code>exp112.bed</code>, corresponding to K562, to be selected instead of the one corresponding to GM12878. Fortunately, it suffices to provide "K562" as an argument for this purpose.</p>
+<h2 id="partial-reimplementation-of-run-sheffieldsh">Partial reimplementation of <code>Run-Sheffield.sh</code><a class="headerlink" href="#partial-reimplementation-of-run-sheffieldsh" title="Permanent link">&para;</a></h2>
+<p>First of all we made a copy of all scripts, ie we duplicated <code>Scripts</code> folder in a new folder which we named <code>local_Scripts</code>.</p>
+<p>We adapted of <code>local_Scripts/Unsupervised-Methods/Run-Sheffield.sh</code> in <code>local_Scripts/Unsupervised-Methods/CRISPRiFF_Run-Sheffield.sh</code> to use the CRISPRi-FlowFISH validation dataset. </p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+
+<span class="c1">#################</span>
+<span class="c1">## DEPENDENCIES #</span>
+<span class="c1">#################</span>
+<span class="c1"># bedtools</span>
+<span class="c1"># python2</span>
+<span class="c1"># scipy</span>
+
+<span class="c1">#################</span>
+<span class="c1">## INPUT ARGS: ##</span>
+<span class="c1">#################</span>
+<span class="c1"># $1: `intermediate_output` relative_path to parent folder for intermediate results.</span>
+<span class="c1">#                           Folder need not exist yet.</span>
+
+<span class="c1"># WARNING: some inputs are not passed as args, see code below!</span>
+
+<span class="c1">#################</span>
+<span class="c1">#### OUTPUT #####</span>
+<span class="c1">#################</span>
+<span class="c1"># els.bed: input data (DNase, expression) are intersected with ccREs</span>
+<span class="c1">#          Then, the result is sorted and uniqued. </span>
+<span class="c1"># enhancer-matrix.bed</span>
+<span class="c1"># genes</span>
+<span class="c1"># genesFull</span>
+
+<span class="c1"># Inserm computer</span>
+<span class="c1">#workDir=~/Documents</span>
+<span class="c1"># Personal computer</span>
+<span class="c1">#workDir=~/Documents/INSERM</span>
+<span class="c1"># Genotoul</span>
+<span class="nv">workDir</span><span class="o">=</span>/work2/project/regenet/workspace/thoellinger
+
+<span class="nv">ccres</span><span class="o">=</span><span class="nv">$workDir</span>/BENGI/Benchmark/Annotations/hg19-cCREs.bed
+<span class="nv">gnid_gname</span><span class="o">=</span>/work2/project/fragencode/data/species.bk/homo_sapiens/hg19.gencv19/homo_sapiens.gnid.gnname.tsv
+
+<span class="c1"># One must create the following repository before launching the script:</span>
+<span class="nv">signalDir</span><span class="o">=</span><span class="nv">$workDir</span>/BENGI/Correlation-Methods/Sheffield/
+<span class="nv">featureDir</span><span class="o">=</span><span class="nv">$signalDir</span>/Signal-Matrices<span class="w"> </span><span class="c1"># must contain DNase counts and gene expression</span>
+<span class="c1">#                                       &quot;dhs112_v3_int.bed&quot;, &quot;exp112.bed&quot;</span>
+<span class="c1"># see (http://big.databio.org/papers/RED/supplement/)</span>
+
+<span class="nv">intermediate_outputs_dir</span><span class="o">=</span><span class="nv">$1</span><span class="w"> </span><span class="c1"># All output that are not final results are</span>
+<span class="c1">#                         going to be stored here. Need not exist before launching the</span>
+<span class="c1">#                         script</span>
+
+<span class="nv">intermediate_outputs</span><span class="o">=</span><span class="nv">$intermediate_outputs_dir</span>/K562.CRISPRi.FlowFISH
+<span class="nv">genes</span><span class="o">=</span><span class="nv">$intermediate_outputs</span>/genes<span class="w"> </span><span class="c1"># need not exist yet</span>
+<span class="nv">genesFull</span><span class="o">=</span><span class="nv">$intermediate_outputs</span>/genesFull<span class="w"> </span><span class="c1"># need not exist yet</span>
+<span class="nv">els</span><span class="o">=</span><span class="nv">$intermediate_outputs</span>/els.bed<span class="w"> </span><span class="c1"># need not exist yet</span>
+<span class="nv">enhancer_matrix</span><span class="o">=</span><span class="nv">$intermediate_outputs</span>/enhancer-matrix.txt<span class="w"> </span><span class="c1"># need not exist yet</span>
+
+<span class="nv">biosample</span><span class="o">=</span>K562
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$biosample</span>
+
+<span class="nv">train</span><span class="o">=</span>/work2/project/regenet/workspace/thoellinger/CRISPRi_FlowFISH/k562/3672_ccRE_gene_pairs.fulco.txt
+
+<span class="nv">scriptDir</span><span class="o">=</span><span class="nv">$workDir</span>/BENGI/local_Scripts/Unsupervised-Methods
+<span class="nv">outputDir</span><span class="o">=</span><span class="nv">$signalDir</span>/Results
+
+mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$outputDir</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$intermediate_outputs</span>
+
+<span class="c1"># dhs112_v3_int.bed (http://big.databio.org/papers/RED/supplement/) is space-delimited</span>
+<span class="c1"># so we first replace spaces by tabs. It contains the DNase counts over whole genome</span>
+<span class="c1"># for 112 cell types.</span>
+<span class="c1"># exp112.bed: idem. It contains the gene expressions for 112 cell types.</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="nv">$els</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Finding ccRE-dELS in input data...&quot;</span>
+<span class="w">    </span>awk<span class="w"> </span><span class="s1">&#39;FNR==NR {x[$1];next} ($5 in x)&#39;</span><span class="w">  </span><span class="nv">$train</span><span class="w"> </span><span class="nv">$ccres</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $1 &quot;\t&quot; \</span>
+<span class="s1">        $2 &quot;\t&quot; $3 &quot;\t&quot; $5}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-u<span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$els</span>
+<span class="k">fi</span>
+
+<span class="c1"># Warning: the following requires a lot of memory</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="nv">$featureDir</span>/dhs112_v3_int_tab.bed<span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;dhs112 =&gt; dhs112_tab...&quot;</span>
+<span class="w">    </span>awk<span class="w"> </span><span class="s1">&#39;BEGIN{} {n=split($0, line, &quot; &quot;); ORS=&quot;\n&quot;; print line[0]; ORS=&quot;\t&quot;; for(u=1; u&lt;n; u++){print line[u]}; ORS=&quot;&quot;; print line[n]}&#39;</span><span class="w"> </span><span class="nv">$featureDir</span>/dhs112_v3_int.bed<span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$featureDir</span>/dhs112_v3_int_tab.bed
+<span class="k">fi</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="nv">$enhancer_matrix</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Building enhancer matrix (DNase counts for all the input cell types) using bedtools... This can take several minutes...&quot;</span>
+<span class="w">    </span>bedtools<span class="w"> </span>intersect<span class="w"> </span>-wo<span class="w"> </span>-a<span class="w"> </span><span class="nv">$els</span><span class="w"> </span>-b<span class="w"> </span><span class="nv">$featureDir</span>/dhs112_v3_int_tab.bed<span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$enhancer_matrix</span>
+<span class="k">fi</span>
+<span class="c1"># enhancer-matrix.txt contains:</span>
+<span class="c1"># $1 to $4: enhancer infos, bed-like format</span>
+<span class="c1"># $5 to $7: for the current enhancer, chr, start and end of an overlapping DHS.</span>
+<span class="c1"># $8 to $(n_columns-1): respective DNase counts for all the 112</span>
+<span class="c1">#                       cell types encountered in dhs112_v3_int_tab.bed</span>
+<span class="c1"># $n_columns: length (in bp) of the overlap</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="nv">$genes</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Finding all genes in input...&quot;</span>
+<span class="w">    </span>cat<span class="w"> </span><span class="nv">$train</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $2}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-u<span class="w">  </span>&gt;<span class="w"> </span><span class="nv">$genes</span>
+<span class="k">fi</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="nv">$genesFull</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Computing gene list (&lt;id&gt; &lt;name&gt;)...&quot;</span>
+<span class="w">    </span>awk<span class="w"> </span><span class="s1">&#39;FNR==NR {x[$1];next} ($1 in x)&#39;</span><span class="w"> </span><span class="nv">$genes</span><span class="w"> </span><span class="nv">$gnid_gname</span><span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$genesFull</span>
+<span class="k">fi</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="nv">$featureDir</span>/exp112_tab.bed<span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Adapting expression file format...&quot;</span>
+<span class="w">    </span>awk<span class="w"> </span><span class="s1">&#39;{n=split($0, line, &quot; &quot;); ORS=&quot;\n&quot;; if(NR==1){ORS=&quot;&quot;}; print line[0]; ORS=&quot;\t&quot;; for(u=1; u&lt;n; u++){print line[u]}; ORS=&quot;&quot;; print line[n]}&#39;</span><span class="w"> </span><span class="nv">$featureDir</span>/exp112.bed<span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$featureDir</span>/exp112_tab.bed
+<span class="k">fi</span>
+
+<span class="c1"># we replaced `$stats` by NOTHING as we do not use this argument.</span>
+<span class="c1"># &quot;$biosample&quot; is not a window dressing argument, it is the key of a dictionnary defined in the Python script, which provide the correct</span>
+<span class="c1"># column of &quot;exp112_tab.bed&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Running python script... This can take several minutes...&quot;</span>
+python<span class="w"> </span><span class="nv">$scriptDir</span>/sheffield.correlation.py<span class="w"> </span><span class="nv">$featureDir</span>/exp112_tab.bed<span class="w"> </span><span class="nv">$genesFull</span><span class="w"> </span><span class="nv">$enhancer_matrix</span><span class="w"> </span>NOTHING<span class="w"> </span><span class="nv">$train</span><span class="w"> </span><span class="nv">$biosample</span><span class="w"> </span><span class="p">|</span>sort<span class="w"> </span>-t<span class="w"> </span><span class="s1">$&#39;\t&#39;</span><span class="w"> </span>-k<span class="w"> </span><span class="m">5</span>,6<span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$outputDir</span>/<span class="nv">$biosample</span>.CRISPRi-FlowFISH-Correlation.txt
+</code></pre></div>
+<h2 id="partial-reimplementation-of-sheffieldcorrelationpy">Partial reimplementation of <code>sheffield.correlation.py</code><a class="headerlink" href="#partial-reimplementation-of-sheffieldcorrelationpy" title="Permanent link">&para;</a></h2>
+<p>We adapted of <code>local_Scripts/Unsupervised-Methods/sheffield.correlation.py</code> in <code>local_Scripts/Unsupervised-Methods/CRISPRiFF_sheffield.correlation.py.sh</code> to use the CRISPRi-FlowFISH validation dataset.</p>
+<p>Actually, we had nothing to change wrt our previous partial reimplementations.</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+import<span class="w"> </span>sys,<span class="w"> </span>scipy,<span class="w"> </span>math
+from<span class="w"> </span>scipy<span class="w"> </span>import<span class="w"> </span>stats
+
+import<span class="w"> </span>numpy<span class="w"> </span>as<span class="w"> </span>np<span class="w"> </span><span class="c1"># to reconstruct statDict &quot;by hand&quot;</span>
+
+from<span class="w"> </span>itertools<span class="w"> </span>import<span class="w"> </span>groupby
+<span class="c1"># We use all_equal to prevent a division-by-zero error in Calculate_Correlation</span>
+def<span class="w"> </span>all_equal<span class="o">(</span>iterable<span class="o">)</span>:
+<span class="w">    </span><span class="nv">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>groupby<span class="o">(</span>iterable<span class="o">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span>next<span class="o">(</span>g,<span class="w"> </span>True<span class="o">)</span><span class="w"> </span>and<span class="w"> </span>not<span class="w"> </span>next<span class="o">(</span>g,<span class="w"> </span>False<span class="o">)</span>
+
+def<span class="w"> </span>Process_Biosample<span class="o">(</span>biosample<span class="o">)</span>:
+<span class="w">    </span><span class="nv">biosampleDict</span><span class="o">={</span><span class="s2">&quot;GM12878&quot;</span>:28,<span class="w"> </span><span class="s2">&quot;HeLa&quot;</span>:50,<span class="w"> </span><span class="s2">&quot;K562&quot;</span>:88,<span class="s2">&quot;HMEC&quot;</span>:59,<span class="s2">&quot;NHEK&quot;</span>:100<span class="o">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>biosample<span class="w"> </span><span class="k">in</span><span class="w"> </span>biosampleDict:
+<span class="w">        </span><span class="k">return</span><span class="w"> </span>biosampleDict<span class="o">[</span>biosample<span class="o">]</span>
+<span class="w">    </span><span class="k">else</span>:
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s2">&quot;no&quot;</span>
+
+def<span class="w"> </span>Calculate_Correlation<span class="o">(</span>array1,<span class="w"> </span>array2<span class="o">)</span>:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span>not<span class="w"> </span><span class="o">(</span>all_equal<span class="o">(</span>array1<span class="o">)</span><span class="w"> </span>or<span class="w"> </span>all_equal<span class="o">(</span>array2<span class="o">))</span>:
+<span class="w">            </span><span class="nv">stat</span><span class="o">=</span>stats.pearsonr<span class="o">(</span>array1,<span class="w"> </span>array2<span class="o">)[</span><span class="m">0</span><span class="o">]</span>
+<span class="w">        </span><span class="k">else</span>:
+<span class="w">                </span><span class="nv">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>float<span class="o">(</span><span class="s1">&#39;NaN&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span>stat
+
+def<span class="w"> </span>Create_Gene_Dict<span class="o">(</span>genes<span class="o">)</span>:
+<span class="w">    </span><span class="nv">geneDict</span><span class="o">={}</span>
+<span class="w">    </span>genes.next<span class="o">()</span><span class="w"> </span><span class="c1">#skips header</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span>line<span class="w"> </span><span class="k">in</span><span class="w"> </span>genes:
+<span class="w">        </span><span class="nv">line</span><span class="o">=</span>line.rstrip<span class="o">()</span>.split<span class="o">(</span><span class="s2">&quot;\t&quot;</span><span class="o">)</span>
+<span class="w">        </span>geneDict<span class="o">[</span>line<span class="o">[</span><span class="m">3</span><span class="o">]]=[</span>float<span class="o">(</span>i<span class="o">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span>line<span class="o">[</span><span class="m">5</span>:<span class="o">]]</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span>geneDict
+
+def<span class="w"> </span>Create_ELS_Dict<span class="o">(</span>els,<span class="w"> </span>column<span class="o">)</span>:
+<span class="w">    </span><span class="nv">elsDictA</span><span class="o">={}</span>
+<span class="w">    </span><span class="nv">elsDictB</span><span class="o">={}</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span>line<span class="w"> </span><span class="k">in</span><span class="w"> </span>els:
+<span class="w">        </span><span class="nv">line</span><span class="o">=</span>line.rstrip<span class="o">()</span>.split<span class="o">(</span><span class="s2">&quot;\t&quot;</span><span class="o">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nv">column</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;no&quot;</span>:
+<span class="w">            </span><span class="nv">score</span><span class="o">=</span>max<span class="o">(</span>float<span class="o">(</span>i<span class="o">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span>line<span class="o">[</span><span class="m">7</span>:-1<span class="o">])</span>
+<span class="w">        </span><span class="k">else</span>:
+<span class="w">            </span><span class="nv">score</span><span class="o">=</span>float<span class="o">(</span>line<span class="o">[</span>column<span class="o">])</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span>line<span class="o">[</span><span class="m">3</span><span class="o">]</span><span class="w"> </span>not<span class="w"> </span><span class="k">in</span><span class="w"> </span>elsDictA:
+<span class="w">            </span>elsDictA<span class="o">[</span>line<span class="o">[</span><span class="m">3</span><span class="o">]]=[</span>float<span class="o">(</span>line<span class="o">[</span>-1<span class="o">])</span>,score<span class="o">]</span><span class="w"> </span><span class="c1"># [size of overlap, counts fot the cell type considered]</span>
+<span class="w">            </span>elsDictB<span class="o">[</span>line<span class="o">[</span><span class="m">3</span><span class="o">]]=[</span>float<span class="o">(</span>i<span class="o">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span>line<span class="o">[</span><span class="m">7</span>:-1<span class="o">]]</span><span class="w"> </span><span class="c1"># [size of overlap, [counts for all cell types]]</span>
+<span class="w">        </span><span class="k">elif</span><span class="w"> </span>elsDictA<span class="o">[</span>line<span class="o">[</span><span class="m">3</span><span class="o">]][</span><span class="m">0</span><span class="o">]</span><span class="w"> </span>&lt;<span class="w"> </span>float<span class="o">(</span>line<span class="o">[</span>-1<span class="o">])</span>:
+<span class="w">        </span><span class="c1"># See comment below first. Here, same kind of thing, but it is about maximizing the overlap.</span>
+<span class="w">        </span><span class="c1"># Note that first the overlap is maximized, and only then the counts are maximized.</span>
+<span class="w">        </span><span class="c1"># This has SEVERE IMPLICATIONS: if there are 1000 counts for a candidate enhancer with which the</span>
+<span class="w">        </span><span class="c1"># overlap is 149, and at best 3 counts for enhancers with overlap 150, the ones with overlap 150 and 3</span>
+<span class="w">        </span><span class="c1"># counts only are kept...</span>
+<span class="w">        </span><span class="c1"># To prevent such a &quot;side effect&quot;, one may replace the following &quot;elif&quot; with an &quot;if&quot;</span>
+<span class="w">                </span><span class="c1"># I personnaly think this side effect is undesirable, but here we keep the &quot;elif&quot;</span>
+<span class="w">                </span><span class="c1"># to obtain the same results as Moore et al.</span>
+<span class="w">            </span>elsDictA<span class="o">[</span>line<span class="o">[</span><span class="m">3</span><span class="o">]]=[</span>float<span class="o">(</span>line<span class="o">[</span>-1<span class="o">])</span>,score<span class="o">]</span>
+<span class="w">            </span>elsDictB<span class="o">[</span>line<span class="o">[</span><span class="m">3</span><span class="o">]]=[</span>float<span class="o">(</span>i<span class="o">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span>line<span class="o">[</span><span class="m">7</span>:-1<span class="o">]]</span>
+<span class="w">        </span><span class="k">elif</span><span class="w"> </span>elsDictA<span class="o">[</span>line<span class="o">[</span><span class="m">3</span><span class="o">]][</span><span class="m">1</span><span class="o">]</span><span class="w"> </span>&lt;<span class="w"> </span>score:<span class="w"> </span><span class="c1"># note that all peak widths are 150</span>
+<span class="w">        </span><span class="c1"># if counts for another open chromatin region overlapping this enhancer has already been written,</span>
+<span class="w">        </span><span class="c1"># but are fewer than for the current open chromatin region overlapping this same enhancer,</span>
+<span class="w">        </span><span class="c1"># then we overwrite the counts with these new ones.</span>
+<span class="w">        </span><span class="c1"># At the end of the day, this results in taking into account, for each enhancer, only the open chromatin</span>
+<span class="w">             </span><span class="c1"># region that maximize the counts of DNase over a given enhancer ; although the selection is made among</span>
+<span class="w">             </span><span class="c1"># regions that maximize the overlap only, see comment above.</span>
+<span class="w">            </span>elsDictA<span class="o">[</span>line<span class="o">[</span><span class="m">3</span><span class="o">]]=[</span>float<span class="o">(</span>line<span class="o">[</span>-1<span class="o">])</span>,score<span class="o">]</span>
+<span class="w">            </span>elsDictB<span class="o">[</span>line<span class="o">[</span><span class="m">3</span><span class="o">]]=[</span>float<span class="o">(</span>i<span class="o">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span>line<span class="o">[</span><span class="m">7</span>:-1<span class="o">]]</span>
+
+<span class="w">    </span><span class="c1"># Well at the end of the day, elsDictB[key=&quot;enhancer id&quot;] = [max overlap with a DHS, max counts in this DHS]</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span>elsDictB,<span class="w"> </span>elsDictA
+
+def<span class="w"> </span>Create_Symbol_Dict<span class="o">(</span>symbols<span class="o">)</span>:
+<span class="w">    </span><span class="nv">symbolDict</span><span class="o">={}</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span>line<span class="w"> </span><span class="k">in</span><span class="w"> </span>symbols:
+<span class="w">        </span><span class="nv">line</span><span class="o">=</span>line.rstrip<span class="o">()</span>.split<span class="o">(</span><span class="s2">&quot;\t&quot;</span><span class="o">)</span>
+<span class="w">        </span>symbolDict<span class="o">[</span>line<span class="o">[</span><span class="m">0</span><span class="o">]]=</span>line<span class="o">[</span><span class="m">1</span><span class="o">]</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span>symbolDict
+
+def<span class="w"> </span>Create_Stat_Dict<span class="o">(</span>stats<span class="o">)</span>:
+<span class="w">    </span><span class="c1"># For now we know that:</span>
+<span class="w">    </span><span class="c1"># stat (argv[4]) must contain at least 3 columns</span>
+<span class="w">    </span><span class="c1"># first column is a gene id (see for loop at the end of the code)</span>
+<span class="w">    </span><span class="c1"># 2nd and 3rd columns are float / real numbers.</span>
+<span class="w">    </span><span class="c1"># Both are later compared to correlations.</span>
+<span class="w">    </span><span class="nv">statDict</span><span class="o">={}</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span>line<span class="w"> </span><span class="k">in</span><span class="w"> </span>stats:
+<span class="w">        </span><span class="nv">line</span><span class="o">=</span>line.rstrip<span class="o">()</span>.split<span class="o">(</span><span class="s2">&quot;\t&quot;</span><span class="o">)</span>
+<span class="w">        </span>statDict<span class="o">[</span>line<span class="o">[</span><span class="m">0</span><span class="o">]</span>.rstrip<span class="o">()]=[</span>float<span class="o">(</span>line<span class="o">[</span><span class="m">1</span><span class="o">])</span>,float<span class="o">(</span>line<span class="o">[</span><span class="m">2</span><span class="o">])]</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span>statDict
+
+<span class="nv">genes</span><span class="o">=</span>open<span class="o">(</span>sys.argv<span class="o">[</span><span class="m">1</span><span class="o">])</span><span class="w"> </span><span class="c1"># gene expression</span>
+<span class="nv">geneDict</span><span class="o">=</span>Create_Gene_Dict<span class="o">(</span>genes<span class="o">)</span>
+genes.close<span class="o">()</span>
+<span class="c1"># geneDict[key = &quot;gene NAME (not id)&quot;] = [expression in cell line 1, expression in cell line 2, etc]</span>
+
+<span class="nv">symbols</span><span class="o">=</span>open<span class="o">(</span>sys.argv<span class="o">[</span><span class="m">2</span><span class="o">])</span><span class="w"> </span><span class="c1"># gene annotation</span>
+<span class="nv">symbolDict</span><span class="o">=</span>Create_Symbol_Dict<span class="o">(</span>symbols<span class="o">)</span>
+symbols.close<span class="o">()</span>
+
+<span class="nv">column</span><span class="o">=</span>Process_Biosample<span class="o">(</span>sys.argv<span class="o">[</span><span class="m">6</span><span class="o">])</span><span class="w"> </span><span class="c1"># the correct column is 28 for GM12878</span>
+
+<span class="nv">els</span><span class="o">=</span>open<span class="o">(</span>sys.argv<span class="o">[</span><span class="m">3</span><span class="o">])</span><span class="w"> </span><span class="c1"># ccRE expression</span>
+elsDict,<span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="o">=</span>Create_ELS_Dict<span class="o">(</span>els,column<span class="o">)</span>
+els.close<span class="o">()</span>
+<span class="c1"># elsDict[key=&quot;enhancer id&quot;] = [max overlap of this enhancer with a DHS, max counts for this max overlap]</span>
+
+<span class="c1"># For now we try to rebuild statArray directly in this script.</span>
+<span class="c1">#stat=open(sys.argv[4])</span>
+<span class="c1">#statArray = Create_Stat_Dict(stat)</span>
+<span class="c1">#stat.close()</span>
+
+<span class="c1"># On essaye ci-dessous</span>
+<span class="c1"># On le fait volontairement d&#39;une maniere très peu optimisée, c&#39;est juste pour tester, en évitant d&#39;induire d&#39;autres sources</span>
+<span class="c1"># potentielles de problèmes</span>
+
+<span class="nv">pairs</span><span class="o">=</span>open<span class="o">(</span>sys.argv<span class="o">[</span><span class="m">5</span><span class="o">])</span><span class="w"> </span><span class="c1"># BENGI benchmark</span>
+<span class="nv">all_cor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{}</span>
+<span class="k">for</span><span class="w"> </span>line<span class="w"> </span><span class="k">in</span><span class="w"> </span>pairs:
+<span class="w">    </span><span class="nv">line</span><span class="o">=</span>line.rstrip<span class="o">()</span>.split<span class="o">(</span><span class="s2">&quot;\t&quot;</span><span class="o">)</span>
+<span class="w">    </span><span class="nv">els</span><span class="o">=</span>line<span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="w"> </span><span class="c1"># candidate enhancer id</span>
+<span class="w">    </span><span class="nv">gene</span><span class="o">=</span>symbolDict<span class="o">[</span>line<span class="o">[</span><span class="m">1</span><span class="o">]</span>.rstrip<span class="o">()]</span><span class="w"> </span><span class="c1"># name (not id) of candidate paired gene</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>els<span class="w"> </span><span class="k">in</span><span class="w"> </span>elsDict<span class="w"> </span>and<span class="w"> </span>gene<span class="w"> </span><span class="k">in</span><span class="w"> </span>geneDict:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span>gene<span class="w"> </span><span class="k">in</span><span class="w"> </span>all_cor:
+<span class="w">            </span>all_cor<span class="o">[</span>gene<span class="o">]</span>.append<span class="o">(</span>Calculate_Correlation<span class="o">(</span>elsDict<span class="o">[</span>els<span class="o">]</span>,geneDict<span class="o">[</span>gene<span class="o">]))</span>
+<span class="w">        </span><span class="k">else</span>:
+<span class="w">            </span>all_cor<span class="o">[</span>gene<span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span>Calculate_Correlation<span class="o">(</span>elsDict<span class="o">[</span>els<span class="o">]</span>,geneDict<span class="o">[</span>gene<span class="o">])]</span>
+pairs.close<span class="o">()</span>
+<span class="c1"># Now for each gene name of gene id found in the benchmark pairs, all_cor[gene] should</span>
+<span class="c1"># be the list of the correlations of its expression accross all cell lines, with</span>
+<span class="c1"># the counts of DNase accross all cell lines, for enhancers it is paired with</span>
+
+<span class="nv">pairs</span><span class="o">=</span>open<span class="o">(</span>sys.argv<span class="o">[</span><span class="m">5</span><span class="o">])</span><span class="w"> </span><span class="c1"># BENGI benchmark</span>
+<span class="nv">statArray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{}</span>
+<span class="k">for</span><span class="w"> </span>line<span class="w"> </span><span class="k">in</span><span class="w"> </span>pairs:<span class="w"> </span><span class="c1">#inutile il suffit de boucler sur tous les genes trouves, une seule fois chacun, qu&#39;on aurait du enregistrer precedemment deja</span>
+<span class="w">    </span><span class="nv">line</span><span class="o">=</span>line.rstrip<span class="o">()</span>.split<span class="o">(</span><span class="s2">&quot;\t&quot;</span><span class="o">)</span>
+<span class="w">    </span><span class="nv">els</span><span class="o">=</span>line<span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="w"> </span><span class="c1"># candidate enhancer id</span>
+<span class="w">    </span><span class="nv">gene</span><span class="o">=</span>symbolDict<span class="o">[</span>line<span class="o">[</span><span class="m">1</span><span class="o">]</span>.rstrip<span class="o">()]</span><span class="w"> </span><span class="c1"># name (not id) of candidate paired gene</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>els<span class="w"> </span><span class="k">in</span><span class="w"> </span>elsDict<span class="w"> </span>and<span class="w"> </span>gene<span class="w"> </span><span class="k">in</span><span class="w"> </span>geneDict:
+<span class="w">        </span><span class="k">if</span><span class="w"> </span>gene<span class="w"> </span>not<span class="w"> </span><span class="k">in</span><span class="w"> </span>statArray:
+<span class="w">            </span>statArray<span class="o">[</span>gene<span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span>np.mean<span class="o">(</span>all_cor<span class="o">[</span>gene<span class="o">])</span>,<span class="w"> </span>np.std<span class="o">(</span>all_cor<span class="o">[</span>gene<span class="o">])]</span>
+pairs.close<span class="o">()</span>
+
+<span class="nv">pairs</span><span class="o">=</span>open<span class="o">(</span>sys.argv<span class="o">[</span><span class="m">5</span><span class="o">])</span><span class="w"> </span><span class="c1"># BENGI benchmark</span>
+
+<span class="k">for</span><span class="w"> </span>line<span class="w"> </span><span class="k">in</span><span class="w"> </span>pairs:
+<span class="w">    </span><span class="nv">line</span><span class="o">=</span>line.rstrip<span class="o">()</span>.split<span class="o">(</span><span class="s2">&quot;\t&quot;</span><span class="o">)</span>
+<span class="w">    </span><span class="nv">els</span><span class="o">=</span>line<span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="w"> </span><span class="c1"># candidate enhancer</span>
+<span class="w">    </span><span class="nv">gene</span><span class="o">=</span>symbolDict<span class="o">[</span>line<span class="o">[</span><span class="m">1</span><span class="o">]</span>.rstrip<span class="o">()]</span><span class="w"> </span><span class="c1"># name (not id) of candidate paired gene</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>els<span class="w"> </span><span class="k">in</span><span class="w"> </span>elsDict<span class="w"> </span>and<span class="w"> </span>gene<span class="w"> </span><span class="k">in</span><span class="w"> </span>geneDict:
+<span class="w">        </span><span class="nv">cor</span><span class="o">=</span>Calculate_Correlation<span class="o">(</span>elsDict<span class="o">[</span>els<span class="o">]</span>,geneDict<span class="o">[</span>gene<span class="o">])</span><span class="w"> </span><span class="c1"># correlation between counts of DNase over els and gene expression accross the 112 biosamples</span>
+
+<span class="w">        </span><span class="c1"># cor est la corrélation entre les counts max de DNase sur els, et l&#39;expression du gène appairé avec cet els.</span>
+
+<span class="w">        </span><span class="c1"># On a dit que :</span>
+<span class="w">        </span><span class="c1"># statArray devait être issu d&#39;un fichier de trois colonnes qui est tel que :</span>
+<span class="w">        </span><span class="c1"># La clef est un id de gene (visiblement plutôt un NOM de gène ! - pourquoi pas...)</span>
+<span class="w">        </span><span class="c1"># La première valeur est, pour chaque gène, la corrélation moyenne qu&#39;on trouve entre ce gène et les ccRE auxquels il est appairé</span>
+<span class="w">        </span><span class="c1"># La deuxième valeur est, pour chaque gène, l&#39;écart-type de ces mêmes corrélations.</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span>math.isnan<span class="o">(</span>cor<span class="o">)</span>:
+<span class="w">            </span><span class="nv">cor</span><span class="o">=</span><span class="m">0</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span>statArray<span class="o">[</span>gene<span class="o">][</span><span class="m">1</span><span class="o">]</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">0</span>:
+<span class="w">            </span><span class="nv">Z</span><span class="o">=(</span>cor-statArray<span class="o">[</span>gene<span class="o">][</span><span class="m">0</span><span class="o">])</span>/statArray<span class="o">[</span>gene<span class="o">][</span><span class="m">1</span><span class="o">]</span>
+<span class="w">        </span><span class="k">else</span>:
+<span class="w">            </span><span class="nv">Z</span><span class="o">=</span><span class="m">0</span>
+<span class="w">        </span><span class="nv">p</span><span class="o">=</span>stats.norm.sf<span class="o">(</span>abs<span class="o">(</span>Z<span class="o">))</span>*2
+<span class="w">        </span>print<span class="w"> </span>line<span class="o">[</span><span class="m">2</span><span class="o">]</span>,<span class="w"> </span><span class="s2">&quot;\t&quot;</span>,<span class="w"> </span>cor,<span class="w"> </span><span class="s2">&quot;\t&quot;</span>,<span class="w"> </span>p,<span class="w"> </span><span class="s2">&quot;\t&quot;</span>,<span class="w"> </span>Z,<span class="w"> </span><span class="s2">&quot;\t&quot;</span>,<span class="w"> </span>els,<span class="w"> </span><span class="s2">&quot;\t&quot;</span>,<span class="w"> </span>line<span class="o">[</span><span class="m">1</span><span class="o">]</span>
+
+<span class="w">    </span><span class="k">else</span>:
+<span class="w">        </span>pass
+<span class="w">        </span>print<span class="w"> </span>line<span class="o">[</span><span class="m">2</span><span class="o">]</span>,<span class="w"> </span><span class="s2">&quot;\t&quot;</span>,<span class="w"> </span>-100,<span class="w"> </span><span class="s2">&quot;\t&quot;</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="s2">&quot;\t&quot;</span>,<span class="w"> </span>-100,<span class="w"> </span><span class="s2">&quot;\t&quot;</span>,<span class="w"> </span>els,<span class="w"> </span><span class="s2">&quot;\t&quot;</span>,<span class="w"> </span>line<span class="o">[</span><span class="m">1</span><span class="o">]</span>
+</code></pre></div>
+<h2 id="running-the-code-for-bengi-benchmarks-over-gm12878">Running the code for BENGI benchmarks over GM12878<a class="headerlink" href="#running-the-code-for-bengi-benchmarks-over-gm12878" title="Permanent link">&para;</a></h2>
+<p>If working on Genotoul, start with:</p>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>activate<span class="w"> </span>base<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>conda<span class="w"> </span>activate<span class="w"> </span>abcmodel<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>conda<span class="w"> </span>activate<span class="w"> </span>py2<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>module<span class="w"> </span>load<span class="w"> </span>bioinfo/bedtools-2.27.1
+</code></pre></div>
+<p>and before launching the script, do not forget (a lot of memory is required):</p>
+<div class="highlight"><pre><span></span><code>srun<span class="w"> </span>--mem<span class="o">=</span>8G<span class="w"> </span>--pty<span class="w"> </span>bash
+</code></pre></div>
+<p>Now it suffices to run <code>Run-Sheffield.sh</code> over the CRISPRi-FlowFISH validation dataset:</p>
+<div class="highlight"><pre><span></span><code>./local_Scripts/Unsupervised-Methods/CRISPRiFF_Run-Sheffield.sh<span class="w"> </span>Correlation-Methods/Sheffield
+</code></pre></div>
+<blockquote>
+<div class="highlight"><pre><span></span><code>./local_Scripts/Unsupervised-Methods/Run-Sheffield.sh<span class="w"> </span>GM12878.CHiC<span class="w"> </span>v3<span class="w"> </span>Correlation-Methods/Sheffield
+</code></pre></div>
+<p>K562
+Finding ccRE-dELS in input data...
+Building enhancer matrix (DNase counts for all the input cell types) using bedtools... This can take several minutes...
+Finding all genes in input...
+Computing gene list (<id> <name>)...
+Running python script... This can take several minutes...</p>
+</blockquote>
+<h2 id="analysis-with-r">Analysis with R<a class="headerlink" href="#analysis-with-r" title="Permanent link">&para;</a></h2>
+<h3 id="code">Code<a class="headerlink" href="#code" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>.badCode {
+background-color: #C9DDE4;
+}
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>library(knitr)
+## Global options
+options(max.print=&quot;75&quot;)
+opts_chunk$set(echo=TRUE,
+                 cache=FALSE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               class.source=&quot;badCode&quot;)
+opts_knit$set(width=75)
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>library(ggplot2)
+library(ggpubr) # for ggarrange
+library(dplyr) # for bind_rows
+
+# Tools for precision-recall : (see https://classeval.wordpress.com/tools-for-roc-and-precision-recall/)
+library(precrec)
+#library(ROCR)
+#library(pROC)
+#library(PRROC)
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>rm(list = ls())
+
+# Personal
+work_dir = &quot;~/Documents/INSERM/&quot;
+# Inserm
+#work_dir = &quot;~/Documents/&quot;
+
+#####################
+## Distance method ##
+#####################
+
+path_to_results = paste(work_dir, &quot;BENGI/Correlation-Methods/Sheffield/Results/&quot;, sep=&#39;&#39;)
+file_names = c(&quot;K562.CRISPRi-FlowFISH-Correlation.txt&quot;)
+short_names = c(&#39;CRiFF&#39;)
+
+nb_files = length(file_names)
+
+colnames &lt;- c(&#39;interaction&#39;, &#39;cor&#39;, &#39;p&#39;, &#39;Z&#39;, &#39;ccRE&#39;, &#39;gene&#39;)
+results &lt;- sapply(file_names, simplify=FALSE, function(file_name){
+  Df &lt;- read.table(paste(path_to_results, as.character(file_name), sep=&#39;&#39;), sep=&#39;\t&#39;)
+  Df[[1]] &lt;- factor(Df[[1]], levels=c(0,1), labels=c(&quot;no interaction&quot;, &quot;interaction&quot;))
+  names(Df) &lt;- colnames
+  return(Df)
+})
+names(results) &lt;- short_names
+
+#library(dplyr)
+All_results &lt;- bind_rows(results, .id = &#39;method&#39;)
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>ggplot(aes(y = cor, x = method, fill = interaction), data = All_results) + geom_boxplot()
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>sscurves_dnase_expression &lt;- list()
+sscurves_dnase_expression &lt;- sapply(results, simplify=FALSE, function(Df){
+  evalmod(scores = Df$cor, labels = Df$interaction) # comes with &quot;precrec&quot; library
+})
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>#library(ggplot2)
+p1 &lt;- autoplot(sscurves_dnase_expression[[1]], curvetype = c(&quot;PRC&quot;)) + ggtitle(paste(short_names[1], signif(attr(sscurves_dnase_expression[[1]], &#39;auc&#39;)[[4]][2], digits=2), sep = &quot; AUPR=&quot;))
+
+# ggarrange comes with library(&#39;ggpubr&#39;)
+figure &lt;- ggarrange(p1,
+                    ncol = 1, nrow = 1)
+figure
+</code></pre></div>
+<h3 id="results">Results<a class="headerlink" href="#results" title="Permanent link">&para;</a></h3>
+<p><img alt="Image: Precision-Recall curves" src="precision_recall_DNase_expression_correlation_over_K562_CRISPRi_FlowFISH.png" /></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2020 - 2022 Tristan Hoellinger
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/TristanHoellin1" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://fr.linkedin.com/in/tristan-hoellinger" target="_blank" rel="noopener" title="fr.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:sarah.djebali@inserm.fr" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480v-83.6c0-4 1.5-7.8 4.2-10.7l167.6-182.9c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8l-88.3-44.2C7.1 311.3.3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "navigation.top"], "search": "../../../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.6df46069.min.js"></script>
+      
+    
+  </body>
+</html>

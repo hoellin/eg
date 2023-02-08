@@ -1,0 +1,4307 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Tristan Hoellinger">
+      
+      
+        <link rel="canonical" href="https://eg.github.io/data_and_results/haemochromatosis/ABC/gorilla.html">
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.11">
+    
+    
+      
+        <title>GO enrichment with GOrilla - Genome-wide identification of E/G interactions</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.0d440cfe.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#go-enrichment-with-gorilla" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Genome-wide identification of E/G interactions" class="md-header__button md-logo" aria-label="Genome-wide identification of E/G interactions" data-md-component="logo">
+      
+  <img src="../../../logo/logo-inserm-blc.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Genome-wide identification of E/G interactions
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              GO enrichment with GOrilla
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/hoellin/eg" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    hoellin/eg
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../guidebooks/introduction.html" class="md-tabs__link">
+        Guidebooks
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../haemochromatosis/introduction.html" class="md-tabs__link">
+        Haemochromatosis
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../notes_BENGI/introduction.html" class="md-tabs__link">
+        BENGI
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../notes_ABC/introduction.html" class="md-tabs__link">
+        ABC
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../index.html" class="md-tabs__link">
+        About
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Genome-wide identification of E/G interactions" class="md-nav__button md-logo" aria-label="Genome-wide identification of E/G interactions" data-md-component="logo">
+      
+  <img src="../../../logo/logo-inserm-blc.png" alt="logo">
+
+    </a>
+    Genome-wide identification of E/G interactions
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/hoellin/eg" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    hoellin/eg
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+          Guidebooks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Guidebooks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/introduction.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/script_bedpe_summary/script_bedpe_summary.html" class="md-nav__link">
+        Compute summary stats of a bedpe
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+          Basics
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          Basics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/shell.html" class="md-nav__link">
+        Shell
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/conda_environments.html" class="md-nav__link">
+        Conda basics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/git.html" class="md-nav__link">
+        Git
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/genotoul.html" class="md-nav__link">
+        Genotoul cluster
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/notebooks_ssh.html" class="md-nav__link">
+        How to use Jupyter through ssh tunneling?
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_4" id="__nav_1_4_label" tabindex="0">
+          Misc
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          Misc
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guidebooks/compute_correlations.html" class="md-nav__link">
+        Compute correlations
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Haemochromatosis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Haemochromatosis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/introduction.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/data_format.html" class="md-nav__link">
+        Data format
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/custom_go.html" class="md-nav__link">
+        Custom script GO
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/main_results.html" class="md-nav__link">
+        Main results
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          CHiC data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          CHiC data
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/CHiC/preprocess_data.html" class="md-nav__link">
+        Preprocessing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/CHiC/preliminary_analysis_chic_v2.html" class="md-nav__link">
+        Networks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/CHiC/go_enrichment.html" class="md-nav__link">
+        GO enrichment
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+          ABC data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_6">
+          <span class="md-nav__icon md-icon"></span>
+          ABC data
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/data_processing.html" class="md-nav__link">
+        Preprocessing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/preliminary_analysis_v9.html" class="md-nav__link">
+        Networks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/summary_statistics_eg_pairs.html" class="md-nav__link">
+        Summary statistics enhancers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/go_enrichment.html" class="md-nav__link">
+        GO enrichment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/gorilla.html" class="md-nav__link">
+        GOrilla
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/compute_avg_nb_of_connections_per_gene.html" class="md-nav__link">
+        Avg nb connections per gene
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/gwas.html" class="md-nav__link">
+        GWAS (13 initial genes)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../haemochromatosis/ABC/gwas_10.html" class="md-nav__link">
+        GWAS (10 initial genes)
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          BENGI
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          BENGI
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/introduction.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+          Notebooks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Notebooks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/BENGI_to_custom_bedpe.html" class="md-nav__link">
+        Convert BENGI datasets to custom bedpe
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+          Summary statistics
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Summary statistics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/summary_statistics/summary_statistics.html" class="md-nav__link">
+        Summary statistics on BENGI GM12878 benchmarks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/summary_statistics_BENGI/summary_BENGI_bedpe.html" class="md-nav__link">
+        (R code) Compute summary statistics over BENGI
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+          Evaluation of a few methods over BENGI GM12878
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_4">
+          <span class="md-nav__icon md-icon"></span>
+          Evaluation of a few methods over BENGI GM12878
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4_1" id="__nav_3_4_1_label" tabindex="0">
+          Distance method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Distance method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/distance_method/distance_evaluation_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/distance_method/summary_distance_evaluation.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4_2" id="__nav_3_4_2_label" tabindex="0">
+          DNase-expression correlation method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          DNase-expression correlation method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/dnase_expression_correlation/correlation_method_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/dnase_expression_correlation/summary_correlation_method.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4_3" id="__nav_3_4_3_label" tabindex="0">
+          Average rank method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Average rank method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/avg_rank_method/avg_rank_method_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/avg_rank_method/summary_avg_rank_method.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+          Evaluation of a few methods over Fulco et al 2019 CRISPRi-FlowFISH
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Evaluation of a few methods over Fulco et al 2019 CRISPRi-FlowFISH
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_5_1" id="__nav_3_5_1_label" tabindex="0">
+          Distance method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          Distance method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/CRISPRi_FlowFISH/distance_method/distance_over_fulco_et_al_crispri.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/CRISPRi_FlowFISH/distance_method/summary_distance_over_fulco_et_al_crispri.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_5_2" id="__nav_3_5_2_label" tabindex="0">
+          DNase-expression correlation method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_5_2">
+          <span class="md-nav__icon md-icon"></span>
+          DNase-expression correlation method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/correlation_method_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/summary_correlation_method.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_5_3" id="__nav_3_5_3_label" tabindex="0">
+          Average rank method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Average rank method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/CRISPRi_FlowFISH/avg_rank_method/avg_rank_method_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_BENGI/CRISPRi_FlowFISH/avg_rank_method/summary_avg_rank.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          ABC
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          ABC
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/introduction.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/BENGI/ABC_BENGI_results.html" class="md-nav__link">
+        ABC over BENGI for GM12878, main results
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+          CRISPRi-FlowFISH
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          CRISPRi-FlowFISH
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/K562/ABC_K562_CRISPRi_FlowFISH.html" class="md-nav__link">
+        Original ABC predictions over K562
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/K562/recap_investigations_ABC_over_CRiFF.html" class="md-nav__link">
+        Summary ABC over CRiFF
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+          Notebooks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Notebooks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/K562/april_K562_56_genes/april_K562_56_genes.html" class="md-nav__link">
+        ABC over K562 cCRiFF
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/K562/april_K562_59_genes/april_K562_59_genes.html" class="md-nav__link">
+        ABC over K562 CRiFF
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/K562/april_K562_candidates_not_in_whitelist_56_genes/april_K562_candidates_NOT_in_whitelist.html" class="md-nav__link">
+        ABC over K562 cCRiFF, no whitelist
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/generic_notebooks/turnkey_notebook_to_run_ABC_with_example_over_GM12878.html" class="md-nav__link">
+        Generic notebook to run ABC method & Example over GM12878
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/BENGI/notebook_ABC_over_BENGI_GM12878.html" class="md-nav__link">
+        ABC over GM12878 with same accessions as for BENGI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/BENGI/notebook_ABC_over_BENGI_GM12878_from_ccRE_ELSs.html" class="md-nav__link">
+        ABC over GM12878 with same accessions as for BENGI, starting with ccRE-dELS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+          Full codes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_5">
+          <span class="md-nav__icon md-icon"></span>
+          Full codes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/test_abc_pipeline.html" class="md-nav__link">
+        Test of ABC pipeline over chr22
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/BENGI/ABC_over_BENGI_GM12878.html" class="md-nav__link">
+        ABC over GM12878 with same accessions as for BENGI
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes_ABC/differences_example_chr22.html" class="md-nav__link">
+        Meld of results over chr22 vs authors' results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../index.html" class="md-nav__link">
+        Getting started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about_me.html" class="md-nav__link">
+        About me
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#collecting-the-list-of-genes-of-interest" class="md-nav__link">
+    Collecting the list of genes of interest
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#go-enrichment" class="md-nav__link">
+    GO enrichment
+  </a>
+  
+    <nav class="md-nav" aria-label="GO enrichment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#all-457-genes-original-inferred" class="md-nav__link">
+    All 457 genes (original + inferred)
+  </a>
+  
+    <nav class="md-nav" aria-label="All 457 genes (original + inferred)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method" class="md-nav__link">
+    Method
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    Results
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-initial-genes-only" class="md-nav__link">
+    13 initial genes only
+  </a>
+  
+    <nav class="md-nav" aria-label="13 initial genes only">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method_1" class="md-nav__link">
+    Method
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results_1" class="md-nav__link">
+    Results
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#all-444-genes-inferred-only-wo-original-genes" class="md-nav__link">
+    All 444 genes (inferred only ; w/o original genes)
+  </a>
+  
+    <nav class="md-nav" aria-label="All 444 genes (inferred only ; w/o original genes)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method_2" class="md-nav__link">
+    Method
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results_2" class="md-nav__link">
+    Results
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="go-enrichment-with-gorilla">GO enrichment with GOrilla<a class="headerlink" href="#go-enrichment-with-gorilla" title="Permanent link">&para;</a></h1>
+<p>We use <code>GOrilla</code> to compute GO enrichment of inferred genes: http://cbl-gorilla.cs.technion.ac.il/</p>
+<p><strong><em>We performed all analysis below on January 5th, 2022. At this time, the GOrilla database had last been updated on March 6th, 2021 (using the GO database and other sources)</em></strong></p>
+<p>All results (list of genes and detailed GO enrichment) can be found here:</p>
+<div class="highlight"><pre><span></span><code>/work2/project/regenet/workspace/thoellinger/shared/2022/networks_hemochromatosis
+</code></pre></div>
+<h2 id="collecting-the-list-of-genes-of-interest">Collecting the list of genes of interest<a class="headerlink" href="#collecting-the-list-of-genes-of-interest" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/work2/project/regenet/workspace/thoellinger/shared/2022/networks_hemochromatosis
+</code></pre></div>
+<p>We obtained this list using our R markdown doing network analysis of E-G pairs starting from genes directly involved in hemochromatosis or involved in the regulation of iron metabolism.</p>
+<p>We saved this list of 457 (13 known + 444 inferred) genes as <code>new_genes_v7.list</code>. For each one of the 13 initial genes, we also saved separately the corresponding inferred genes:</p>
+<blockquote>
+<div class="highlight"><pre><span></span><code>└──<span class="w"> </span>results
+...
+├──<span class="w"> </span>new_genes_v7.list<span class="w"> </span><span class="c1"># 457</span>
+└──<span class="w"> </span>separate
+<span class="w">  </span>├──<span class="w"> </span>BMP6.list<span class="w"> </span><span class="c1"># 17</span>
+<span class="w">  </span>├──<span class="w"> </span>CIAPIN1.list<span class="w"> </span><span class="c1"># 56</span>
+<span class="w">  </span>├──<span class="w"> </span>CYBRD1.list<span class="w"> </span><span class="c1"># 35</span>
+<span class="w">  </span>├──<span class="w"> </span>HAMP.list<span class="w"> </span><span class="c1"># 35</span>
+<span class="w">  </span>├──<span class="w"> </span>HFE2.list<span class="w"> </span><span class="c1"># 27</span>
+<span class="w">  </span>├──<span class="w"> </span>HFE.list<span class="w"> </span><span class="c1"># 61</span>
+<span class="w">  </span>├──<span class="w"> </span>NEO1.list<span class="w"> </span><span class="c1"># 39</span>
+<span class="w">  </span>├──<span class="w"> </span>SLC11A2.list<span class="w"> </span><span class="c1"># 68</span>
+<span class="w">  </span>├──<span class="w"> </span>SLC39A14.list<span class="w"> </span><span class="c1"># 35</span>
+<span class="w">  </span>├──<span class="w"> </span>SLC40A1.list<span class="w"> </span><span class="c1"># 26</span>
+<span class="w">  </span>├──<span class="w"> </span>TFR2.list<span class="w"> </span><span class="c1"># 34</span>
+<span class="w">  </span>├──<span class="w"> </span>TFRC.list<span class="w"> </span><span class="c1"># 10</span>
+<span class="w">  </span>└──<span class="w"> </span>TMPRSS6.list<span class="w"> </span><span class="c1"># 14</span>
+</code></pre></div>
+</blockquote>
+<h2 id="go-enrichment">GO enrichment<a class="headerlink" href="#go-enrichment" title="Permanent link">&para;</a></h2>
+<h3 id="all-457-genes-original-inferred">All 457 genes (original + inferred)<a class="headerlink" href="#all-457-genes-original-inferred" title="Permanent link">&para;</a></h3>
+<h4 id="method">Method<a class="headerlink" href="#method" title="Permanent link">&para;</a></h4>
+<p>We provided GOrilla with two lists:</p>
+<ul>
+<li>the list of background genes: their 23,221 <code>RefSeq</code> ids, which we saved as <code>all_genes_in_eg_pairs_131_biosamples.list</code> (note that GOrilla found only 21,304 of them, but this is still better than the number of default background genes used by our custom script)</li>
+</ul>
+<blockquote>
+<p>The system has recognized 21304 genes out of 23545 gene terms entered by the user. 21304 genes were recognised by gene symbol and 0 genes by other gene IDs.
+314 duplicate genes were removed (keeping the highest ranking instance of each gene) leaving  a total of 20990 genes. Only 17621 of these genes are associated with a GO term.</p>
+</blockquote>
+<ul>
+<li>the list of the 457 genes for which we want to test enrichment in GO terms, which we denoted <code>new_genes_v7.list</code> (note that GOrilla only found 430 of them, yet our custom script only found 336, so GOrilla did better than us. In other for GOrilla to give us this information, we had to run a separate analysis with this list as single list, ie without background)</li>
+</ul>
+<blockquote>
+<p>The system has recognized 430 genes out of 457 gene terms entered by the user.
+ 430 genes were recognized by gene symbol and 0 genes by other gene IDs .
+Only 388 of these genes are associated with a GO term.</p>
+</blockquote>
+<p>Note that we set the p-value threshold to the largest possible value in GOrilla, which is 10^-3. The FDR q-value given by GOrilla are obtained by performing the Benjamini and Hochberg correction - the same as that performed by default in our custom script:</p>
+<blockquote>
+<p><strong>'P-value'</strong> is the enrichment p-value computed according to the mHG or HG model. This p-value is not corrected for multiple testing of  15373 GO terms.</p>
+<p><strong>'FDR q-value'</strong> is the correction of the above p-value for multiple testing using the Benjamini and Hochberg (1995) method. Namely, for the ith term (ranked according to p-value) the FDR q-value is (p-value * number of GO terms) / i. </p>
+<p><strong>Enrichment (N, B, n, b)</strong> is defined as follows:
+N - is the total number of genes
+B - is the total number of genes associated with a specific GO term
+n - is the number of genes in the top of the user's input list or in the target set when appropriate
+b - is the number of genes in the intersection
+Enrichment = (b/n) / (B/N)</p>
+<p><strong>Genes:</strong> For each GO term you can see the list of associated genes that appear in the optimal top of the list. Each gene name is specified by gene symbol followed by a short description of the gene</p>
+</blockquote>
+<h4 id="results">Results<a class="headerlink" href="#results" title="Permanent link">&para;</a></h4>
+<p>We saved the results in: <code>/work2/project/regenet/workspace/thoellinger/shared/2022/networks_hemochromatosis/results/GO_FDR/all_genes/GOrilla_all_genes.xls</code></p>
+<table>
+<thead>
+<tr>
+<th><strong>GO term</strong></th>
+<th><strong>Description</strong></th>
+<th><strong><a href="http://cbl-gorilla.cs.technion.ac.il/GOrilla/dbhyqsac/GOResults.html#p_value_info">P-value</a></strong></th>
+<th><strong><a href="http://cbl-gorilla.cs.technion.ac.il/GOrilla/dbhyqsac/GOResults.html#fdr_info">FDR q-value</a></strong></th>
+<th><strong><a href="http://cbl-gorilla.cs.technion.ac.il/GOrilla/dbhyqsac/GOResults.html#enrich_info"> Enrichment (N, B, n, b) </a></strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006334&amp;view=details">GO:0006334</a></td>
+<td>nucleosome assembly</td>
+<td>2.44E-18</td>
+<td>3.74E-14</td>
+<td>9.45 (17621,125,388,26)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034728&amp;view=details">GO:0034728</a></td>
+<td>nucleosome organization</td>
+<td>2.05E-16</td>
+<td>1.57E-12</td>
+<td>7.57 (17621,162,388,27)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034723&amp;view=details">GO:0034723</a></td>
+<td>DNA replication-dependent nucleosome organization</td>
+<td>5.27E-16</td>
+<td>2.7E-12</td>
+<td>21.19 (17621,30,388,14)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006335&amp;view=details">GO:0006335</a></td>
+<td>DNA replication-dependent nucleosome assembly</td>
+<td>5.27E-16</td>
+<td>2.03E-12</td>
+<td>21.19 (17621,30,388,14)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055076&amp;view=details">GO:0055076</a></td>
+<td>transition metal ion homeostasis</td>
+<td>2.24E-15</td>
+<td>6.88E-12</td>
+<td>8.56 (17621,122,388,23)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0065004&amp;view=details">GO:0065004</a></td>
+<td>protein-DNA complex assembly</td>
+<td>2.28E-15</td>
+<td>5.85E-12</td>
+<td>6.59 (17621,193,388,28)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0046916&amp;view=details">GO:0046916</a></td>
+<td>cellular transition metal ion homeostasis</td>
+<td>5.87E-15</td>
+<td>1.29E-11</td>
+<td>9.35 (17621,102,388,21)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071824&amp;view=details">GO:0071824</a></td>
+<td>protein-DNA complex subunit organization</td>
+<td>3.83E-14</td>
+<td>7.35E-11</td>
+<td>5.68 (17621,232,388,29)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010273&amp;view=details">GO:0010273</a></td>
+<td>detoxification of copper ion</td>
+<td>6.5E-14</td>
+<td>1.11E-10</td>
+<td>30.28 (17621,15,388,10)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0000183&amp;view=details">GO:0000183</a></td>
+<td>chromatin silencing at rDNA</td>
+<td>9.01E-14</td>
+<td>1.39E-10</td>
+<td>17.89 (17621,33,388,13)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0061687&amp;view=details">GO:0061687</a></td>
+<td>detoxification of inorganic compound</td>
+<td>1.7E-13</td>
+<td>2.38E-10</td>
+<td>28.38 (17621,16,388,10)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0060968&amp;view=details">GO:0060968</a></td>
+<td>regulation of gene silencing</td>
+<td>3.52E-13</td>
+<td>4.51E-10</td>
+<td>6.83 (17621,153,388,23)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006333&amp;view=details">GO:0006333</a></td>
+<td>chromatin assembly or disassembly</td>
+<td>4.51E-13</td>
+<td>5.33E-10</td>
+<td>8.72 (17621,99,388,19)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006342&amp;view=details">GO:0006342</a></td>
+<td>chromatin silencing</td>
+<td>1.09E-12</td>
+<td>1.2E-9</td>
+<td>8.98 (17621,91,388,18)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071280&amp;view=details">GO:0071280</a></td>
+<td>cellular response to copper ion</td>
+<td>7.87E-12</td>
+<td>8.06E-9</td>
+<td>17.84 (17621,28,388,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071294&amp;view=details">GO:0071294</a></td>
+<td>cellular response to zinc ion</td>
+<td>2.12E-11</td>
+<td>2.03E-8</td>
+<td>19.75 (17621,23,388,10)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0046688&amp;view=details">GO:0046688</a></td>
+<td>response to copper ion</td>
+<td>2.51E-11</td>
+<td>2.27E-8</td>
+<td>13.97 (17621,39,388,12)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045814&amp;view=details">GO:0045814</a></td>
+<td>negative regulation of gene expression, epigenetic</td>
+<td>2.68E-11</td>
+<td>2.29E-8</td>
+<td>7.50 (17621,109,388,18)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006882&amp;view=details">GO:0006882</a></td>
+<td>cellular zinc ion homeostasis</td>
+<td>2.92E-11</td>
+<td>2.36E-8</td>
+<td>16.11 (17621,31,388,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0060964&amp;view=details">GO:0060964</a></td>
+<td>regulation of gene silencing by miRNA</td>
+<td>7.84E-11</td>
+<td>6.03E-8</td>
+<td>7.05 (17621,116,388,18)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055069&amp;view=details">GO:0055069</a></td>
+<td>zinc ion homeostasis</td>
+<td>9.31E-11</td>
+<td>6.81E-8</td>
+<td>14.69 (17621,34,388,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0060966&amp;view=details">GO:0060966</a></td>
+<td>regulation of gene silencing by RNA</td>
+<td>1.05E-10</td>
+<td>7.34E-8</td>
+<td>6.93 (17621,118,388,18)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0060147&amp;view=details">GO:0060147</a></td>
+<td>regulation of posttranscriptional gene silencing</td>
+<td>1.05E-10</td>
+<td>7.02E-8</td>
+<td>6.93 (17621,118,388,18)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045652&amp;view=details">GO:0045652</a></td>
+<td>regulation of megakaryocyte differentiation</td>
+<td>1.08E-10</td>
+<td>6.92E-8</td>
+<td>8.85 (17621,77,388,15)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0040029&amp;view=details">GO:0040029</a></td>
+<td>regulation of gene expression, epigenetic</td>
+<td>2.61E-10</td>
+<td>1.6E-7</td>
+<td>4.58 (17621,248,388,25)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0016458&amp;view=details">GO:0016458</a></td>
+<td>gene silencing</td>
+<td>6.61E-10</td>
+<td>3.91E-7</td>
+<td>5.50 (17621,165,388,20)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071276&amp;view=details">GO:0071276</a></td>
+<td>cellular response to cadmium ion</td>
+<td>4.89E-9</td>
+<td>2.79E-6</td>
+<td>12.27 (17621,37,388,10)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006325&amp;view=details">GO:0006325</a></td>
+<td>chromatin organization</td>
+<td>6.28E-9</td>
+<td>3.45E-6</td>
+<td>2.72 (17621,684,388,41)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055072&amp;view=details">GO:0055072</a></td>
+<td>iron ion homeostasis</td>
+<td>7.27E-9</td>
+<td>3.85E-6</td>
+<td>7.98 (17621,74,388,13)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010043&amp;view=details">GO:0010043</a></td>
+<td>response to zinc ion</td>
+<td>2.1E-8</td>
+<td>1.07E-5</td>
+<td>9.25 (17621,54,388,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045653&amp;view=details">GO:0045653</a></td>
+<td>negative regulation of megakaryocyte differentiation</td>
+<td>2.29E-8</td>
+<td>1.14E-5</td>
+<td>19.87 (17621,16,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006879&amp;view=details">GO:0006879</a></td>
+<td>cellular iron ion homeostasis</td>
+<td>6.67E-8</td>
+<td>3.2E-5</td>
+<td>8.33 (17621,60,388,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0046686&amp;view=details">GO:0046686</a></td>
+<td>response to cadmium ion</td>
+<td>4.86E-7</td>
+<td>2.26E-4</td>
+<td>7.83 (17621,58,388,10)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010038&amp;view=details">GO:0010038</a></td>
+<td>response to metal ion</td>
+<td>5.77E-7</td>
+<td>2.61E-4</td>
+<td>3.21 (17621,340,388,24)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0016233&amp;view=details">GO:0016233</a></td>
+<td>telomere capping</td>
+<td>5.96E-7</td>
+<td>2.62E-4</td>
+<td>13.25 (17621,24,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045637&amp;view=details">GO:0045637</a></td>
+<td>regulation of myeloid cell differentiation</td>
+<td>6.11E-7</td>
+<td>2.61E-4</td>
+<td>3.68 (17621,247,388,20)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071248&amp;view=details">GO:0071248</a></td>
+<td>cellular response to metal ion</td>
+<td>6.41E-7</td>
+<td>2.66E-4</td>
+<td>4.22 (17621,183,388,17)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010039&amp;view=details">GO:0010039</a></td>
+<td>response to iron ion</td>
+<td>1.44E-6</td>
+<td>5.84E-4</td>
+<td>11.77 (17621,27,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0032200&amp;view=details">GO:0032200</a></td>
+<td>telomere organization</td>
+<td>1.5E-6</td>
+<td>5.92E-4</td>
+<td>5.13 (17621,115,388,13)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034622&amp;view=details">GO:0034622</a></td>
+<td>cellular protein-containing complex assembly</td>
+<td>1.71E-6</td>
+<td>6.57E-4</td>
+<td>2.24 (17621,812,388,40)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0065003&amp;view=details">GO:0065003</a></td>
+<td>protein-containing complex assembly</td>
+<td>1.92E-6</td>
+<td>7.19E-4</td>
+<td>1.94 (17621,1262,388,54)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0022607&amp;view=details">GO:0022607</a></td>
+<td>cellular component assembly</td>
+<td>3.32E-6</td>
+<td>1.22E-3</td>
+<td>1.66 (17621,2162,388,79)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034755&amp;view=details">GO:0034755</a></td>
+<td>iron ion transmembrane transport</td>
+<td>3.52E-6</td>
+<td>1.26E-3</td>
+<td>18.92 (17621,12,388,5)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071241&amp;view=details">GO:0071241</a></td>
+<td>cellular response to inorganic substance</td>
+<td>4.29E-6</td>
+<td>1.5E-3</td>
+<td>3.68 (17621,210,388,17)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0043933&amp;view=details">GO:0043933</a></td>
+<td>protein-containing complex subunit organization</td>
+<td>5.12E-6</td>
+<td>1.75E-3</td>
+<td>1.79 (17621,1544,388,61)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0060586&amp;view=details">GO:0060586</a></td>
+<td>multicellular organismal iron ion homeostasis</td>
+<td>7.69E-6</td>
+<td>2.57E-3</td>
+<td>25.95 (17621,7,388,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010035&amp;view=details">GO:0010035</a></td>
+<td>response to inorganic substance</td>
+<td>1.06E-5</td>
+<td>3.47E-3</td>
+<td>2.53 (17621,485,388,27)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006336&amp;view=details">GO:0006336</a></td>
+<td>DNA replication-independent nucleosome assembly</td>
+<td>1.43E-5</td>
+<td>4.58E-3</td>
+<td>7.12 (17621,51,388,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045934&amp;view=details">GO:0045934</a></td>
+<td>negative regulation of nucleobase-containing compound metabolic process</td>
+<td>1.46E-5</td>
+<td>4.58E-3</td>
+<td>1.78 (17621,1457,388,57)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034724&amp;view=details">GO:0034724</a></td>
+<td>DNA replication-independent nucleosome organization</td>
+<td>1.66E-5</td>
+<td>5.1E-3</td>
+<td>6.99 (17621,52,388,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055065&amp;view=details">GO:0055065</a></td>
+<td>metal ion homeostasis</td>
+<td>1.8E-5</td>
+<td>5.41E-3</td>
+<td>2.32 (17621,587,388,30)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0016584&amp;view=details">GO:0016584</a></td>
+<td>nucleosome positioning</td>
+<td>1.8E-5</td>
+<td>5.33E-3</td>
+<td>14.19 (17621,16,388,5)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045926&amp;view=details">GO:0045926</a></td>
+<td>negative regulation of growth</td>
+<td>2.23E-5</td>
+<td>6.46E-3</td>
+<td>3.24 (17621,238,388,17)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0038111&amp;view=details">GO:0038111</a></td>
+<td>interleukin-7-mediated signaling pathway</td>
+<td>2.74E-5</td>
+<td>7.8E-3</td>
+<td>9.73 (17621,28,388,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034080&amp;view=details">GO:0034080</a></td>
+<td>CENP-A containing nucleosome assembly</td>
+<td>2.8E-5</td>
+<td>7.83E-3</td>
+<td>7.75 (17621,41,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055080&amp;view=details">GO:0055080</a></td>
+<td>cation homeostasis</td>
+<td>3.47E-5</td>
+<td>9.52E-3</td>
+<td>2.17 (17621,669,388,32)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006536&amp;view=details">GO:0006536</a></td>
+<td>glutamate metabolic process</td>
+<td>4.16E-5</td>
+<td>1.12E-2</td>
+<td>9.08 (17621,30,388,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006875&amp;view=details">GO:0006875</a></td>
+<td>cellular metal ion homeostasis</td>
+<td>4.4E-5</td>
+<td>1.17E-2</td>
+<td>2.33 (17621,526,388,27)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0031936&amp;view=details">GO:0031936</a></td>
+<td>negative regulation of chromatin silencing</td>
+<td>4.55E-5</td>
+<td>1.18E-2</td>
+<td>11.95 (17621,19,388,5)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0098771&amp;view=details">GO:0098771</a></td>
+<td>inorganic ion homeostasis</td>
+<td>4.61E-5</td>
+<td>1.18E-2</td>
+<td>2.14 (17621,679,388,32)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0031055&amp;view=details">GO:0031055</a></td>
+<td>chromatin remodeling at centromere</td>
+<td>5.24E-5</td>
+<td>1.32E-2</td>
+<td>7.06 (17621,45,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0007166&amp;view=details">GO:0007166</a></td>
+<td>cell surface receptor signaling pathway</td>
+<td>5.33E-5</td>
+<td>1.32E-2</td>
+<td>1.57 (17621,2109,388,73)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0051276&amp;view=details">GO:0051276</a></td>
+<td>chromosome organization</td>
+<td>6.2E-5</td>
+<td>1.51E-2</td>
+<td>2.55 (17621,392,388,22)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0030003&amp;view=details">GO:0030003</a></td>
+<td>cellular cation homeostasis</td>
+<td>7.83E-5</td>
+<td>1.88E-2</td>
+<td>2.18 (17621,605,388,29)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0036017&amp;view=details">GO:0036017</a></td>
+<td>response to erythropoietin</td>
+<td>1.03E-4</td>
+<td>2.42E-2</td>
+<td>27.25 (17621,5,388,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006873&amp;view=details">GO:0006873</a></td>
+<td>cellular ion homeostasis</td>
+<td>1.13E-4</td>
+<td>2.64E-2</td>
+<td>2.13 (17621,618,388,29)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045892&amp;view=details">GO:0045892</a></td>
+<td>negative regulation of transcription, DNA-templated</td>
+<td>1.38E-4</td>
+<td>3.16E-2</td>
+<td>1.74 (17621,1224,388,47)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0042592&amp;view=details">GO:0042592</a></td>
+<td>homeostatic process</td>
+<td>1.43E-4</td>
+<td>3.23E-2</td>
+<td>1.67 (17621,1438,388,53)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1903507&amp;view=details">GO:1903507</a></td>
+<td>negative regulation of nucleic acid-templated transcription</td>
+<td>1.43E-4</td>
+<td>3.19E-2</td>
+<td>1.74 (17621,1226,388,47)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0050801&amp;view=details">GO:0050801</a></td>
+<td>ion homeostasis</td>
+<td>1.44E-4</td>
+<td>3.16E-2</td>
+<td>1.99 (17621,754,388,33)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1902679&amp;view=details">GO:1902679</a></td>
+<td>negative regulation of RNA biosynthetic process</td>
+<td>1.49E-4</td>
+<td>3.22E-2</td>
+<td>1.74 (17621,1228,388,47)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0051252&amp;view=details">GO:0051252</a></td>
+<td>regulation of RNA metabolic process</td>
+<td>1.56E-4</td>
+<td>3.32E-2</td>
+<td>1.38 (17621,3595,388,109)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006303&amp;view=details">GO:0006303</a></td>
+<td>double-strand break repair via nonhomologous end joining</td>
+<td>1.8E-4</td>
+<td>3.79E-2</td>
+<td>5.05 (17621,72,388,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0043486&amp;view=details">GO:0043486</a></td>
+<td>histone exchange</td>
+<td>1.94E-4</td>
+<td>4.03E-2</td>
+<td>5.78 (17621,55,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006826&amp;view=details">GO:0006826</a></td>
+<td>iron ion transport</td>
+<td>1.94E-4</td>
+<td>3.98E-2</td>
+<td>5.78 (17621,55,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:2001141&amp;view=details">GO:2001141</a></td>
+<td>regulation of RNA biosynthetic process</td>
+<td>2.16E-4</td>
+<td>4.37E-2</td>
+<td>1.39 (17621,3342,388,102)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0000726&amp;view=details">GO:0000726</a></td>
+<td>non-recombinational repair</td>
+<td>2.18E-4</td>
+<td>4.35E-2</td>
+<td>4.91 (17621,74,388,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0009889&amp;view=details">GO:0009889</a></td>
+<td>regulation of biosynthetic process</td>
+<td>2.69E-4</td>
+<td>5.31E-2</td>
+<td>1.33 (17621,4054,388,119)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0048878&amp;view=details">GO:0048878</a></td>
+<td>chemical homeostasis</td>
+<td>2.78E-4</td>
+<td>5.41E-2</td>
+<td>1.77 (17621,1052,388,41)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0019725&amp;view=details">GO:0019725</a></td>
+<td>cellular homeostasis</td>
+<td>2.79E-4</td>
+<td>5.37E-2</td>
+<td>1.89 (17621,815,388,34)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0098754&amp;view=details">GO:0098754</a></td>
+<td>detoxification</td>
+<td>2.82E-4</td>
+<td>5.34E-2</td>
+<td>3.85 (17621,118,388,10)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0031326&amp;view=details">GO:0031326</a></td>
+<td>regulation of cellular biosynthetic process</td>
+<td>2.93E-4</td>
+<td>5.5E-2</td>
+<td>1.34 (17621,3980,388,117)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006355&amp;view=details">GO:0006355</a></td>
+<td>regulation of transcription, DNA-templated</td>
+<td>3.03E-4</td>
+<td>5.62E-2</td>
+<td>1.38 (17621,3332,388,101)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1903506&amp;view=details">GO:1903506</a></td>
+<td>regulation of nucleic acid-templated transcription</td>
+<td>3.07E-4</td>
+<td>5.62E-2</td>
+<td>1.38 (17621,3333,388,101)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0019219&amp;view=details">GO:0019219</a></td>
+<td>regulation of nucleobase-containing compound metabolic process</td>
+<td>3.23E-4</td>
+<td>5.84E-2</td>
+<td>1.34 (17621,3907,388,115)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1903706&amp;view=details">GO:1903706</a></td>
+<td>regulation of hemopoiesis</td>
+<td>3.83E-4</td>
+<td>6.85E-2</td>
+<td>2.19 (17621,476,388,23)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0002385&amp;view=details">GO:0002385</a></td>
+<td>mucosal immune response</td>
+<td>3.87E-4</td>
+<td>6.85E-2</td>
+<td>7.83 (17621,29,388,5)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0051253&amp;view=details">GO:0051253</a></td>
+<td>negative regulation of RNA metabolic process</td>
+<td>4.09E-4</td>
+<td>7.14E-2</td>
+<td>1.65 (17621,1320,388,48)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055082&amp;view=details">GO:0055082</a></td>
+<td>cellular chemical homeostasis</td>
+<td>4.1E-4</td>
+<td>7.08E-2</td>
+<td>1.95 (17621,700,388,30)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1902871&amp;view=details">GO:1902871</a></td>
+<td>positive regulation of amacrine cell differentiation</td>
+<td>4.84E-4</td>
+<td>8.26E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1902868&amp;view=details">GO:1902868</a></td>
+<td>positive regulation of retina development in camera-type eye</td>
+<td>4.84E-4</td>
+<td>8.17E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0061075&amp;view=details">GO:0061075</a></td>
+<td>positive regulation of neural retina development</td>
+<td>4.84E-4</td>
+<td>8.08E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0021893&amp;view=details">GO:0021893</a></td>
+<td>cerebral cortex GABAergic interneuron fate commitment</td>
+<td>4.84E-4</td>
+<td>7.99E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0009439&amp;view=details">GO:0009439</a></td>
+<td>cyanate metabolic process</td>
+<td>4.84E-4</td>
+<td>7.91E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0009440&amp;view=details">GO:0009440</a></td>
+<td>cyanate catabolic process</td>
+<td>4.84E-4</td>
+<td>7.83E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0046712&amp;view=details">GO:0046712</a></td>
+<td>GDP catabolic process</td>
+<td>4.84E-4</td>
+<td>7.74E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010556&amp;view=details">GO:0010556</a></td>
+<td>regulation of macromolecule biosynthetic process</td>
+<td>5.18E-4</td>
+<td>8.21E-2</td>
+<td>1.33 (17621,3789,388,111)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071281&amp;view=details">GO:0071281</a></td>
+<td>cellular response to iron ion</td>
+<td>5.46E-4</td>
+<td>8.57E-2</td>
+<td>17.03 (17621,8,388,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006323&amp;view=details">GO:0006323</a></td>
+<td>DNA packaging</td>
+<td>5.49E-4</td>
+<td>8.53E-2</td>
+<td>5.80 (17621,47,388,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0043044&amp;view=details">GO:0043044</a></td>
+<td>ATP-dependent chromatin remodeling</td>
+<td>5.65E-4</td>
+<td>8.68E-2</td>
+<td>4.27 (17621,85,388,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0009064&amp;view=details">GO:0009064</a></td>
+<td>glutamine family amino acid metabolic process</td>
+<td>6.64E-4</td>
+<td>1.01E-1</td>
+<td>4.74 (17621,67,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010558&amp;view=details">GO:0010558</a></td>
+<td>negative regulation of macromolecule biosynthetic process</td>
+<td>7.14E-4</td>
+<td>1.08E-1</td>
+<td>1.59 (17621,1427,388,50)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0002251&amp;view=details">GO:0002251</a></td>
+<td>organ or tissue specific immune response</td>
+<td>7.2E-4</td>
+<td>1.08E-1</td>
+<td>6.88 (17621,33,388,5)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045638&amp;view=details">GO:0045638</a></td>
+<td>negative regulation of myeloid cell differentiation</td>
+<td>7.68E-4</td>
+<td>1.14E-1</td>
+<td>4.08 (17621,89,388,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0031935&amp;view=details">GO:0031935</a></td>
+<td>regulation of chromatin silencing</td>
+<td>8.29E-4</td>
+<td>1.21E-1</td>
+<td>6.68 (17621,34,388,5)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0002042&amp;view=details">GO:0002042</a></td>
+<td>cell migration involved in sprouting angiogenesis</td>
+<td>8.48E-4</td>
+<td>1.23E-1</td>
+<td>9.08 (17621,20,388,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0009890&amp;view=details">GO:0009890</a></td>
+<td>negative regulation of biosynthetic process</td>
+<td>9.54E-4</td>
+<td>1.37E-1</td>
+<td>1.55 (17621,1520,388,52)</td>
+</tr>
+</tbody>
+</table>
+<p>Notably, for the 57 first GO terms of the above table, we have a (true) FDR &lt; 1%.</p>
+<p><img alt="" src="images_go_enrichment_md/GO_FDR/all_genes/GO_1Mb.jpg" /></p>
+<p><img alt="" src="images_go_enrichment_md/GO_FDR/all_genes/treemap.png" /></p>
+<h3 id="13-initial-genes-only">13 initial genes only<a class="headerlink" href="#13-initial-genes-only" title="Permanent link">&para;</a></h3>
+<h4 id="method_1">Method<a class="headerlink" href="#method_1" title="Permanent link">&para;</a></h4>
+<p>We provided GOrilla with two lists:</p>
+<ul>
+<li>the list of background genes: their 23,221 <code>RefSeq</code> ids, just as before</li>
+</ul>
+<blockquote>
+<p>The system has recognized 21304 genes out of 23545 gene terms entered by the user. 21304 genes were recognised by gene symbol and 0 genes by other gene IDs.
+314 duplicate genes were removed (keeping the highest ranking instance of each gene) leaving  a total of 20990 genes. Only 17621 of these genes are associated with a GO term.</p>
+</blockquote>
+<ul>
+<li>the list of the 13 initial genes involved in hemochromatosis and iron metabolism regulation we chose to work with. Namely:</li>
+</ul>
+<blockquote>
+<p>HFE
+TFR2
+HFE2
+HAMP
+SLC40A1
+BMP6
+TMPRSS6
+TFRC
+SLC11A2
+CYBRD1
+NEO1
+CIAPIN1
+SLC39A14</p>
+<p>The system has recognized 13 genes out of 13 gene terms entered by the user.
+13 genes were recognized by gene symbol and 0 genes by other gene IDs.</p>
+</blockquote>
+<p>Note that we set the p-value threshold to the largest possible value in GOrilla, which is 10^-3. The FDR q-value given by GOrilla are obtained by performing the Benjamini and Hochberg correction.</p>
+<h4 id="results_1">Results<a class="headerlink" href="#results_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th><strong>GO term</strong></th>
+<th><strong>Description</strong></th>
+<th><strong><a href="http://cbl-gorilla.cs.technion.ac.il/GOrilla/l7eeinlg/GOResults.html#p_value_info">P-value</a></strong></th>
+<th><strong><a href="http://cbl-gorilla.cs.technion.ac.il/GOrilla/l7eeinlg/GOResults.html#fdr_info">FDR q-value</a></strong></th>
+<th><strong><a href="http://cbl-gorilla.cs.technion.ac.il/GOrilla/l7eeinlg/GOResults.html#enrich_info"> Enrichment (N, B, n, b) </a></strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055072&amp;view=details">GO:0055072</a></td>
+<td>iron ion homeostasis</td>
+<td>1.53E-28</td>
+<td>2.35E-24</td>
+<td>219.80 (17621,74,13,12)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006879&amp;view=details">GO:0006879</a></td>
+<td>cellular iron ion homeostasis</td>
+<td>2.09E-26</td>
+<td>1.61E-22</td>
+<td>248.50 (17621,60,13,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055076&amp;view=details">GO:0055076</a></td>
+<td>transition metal ion homeostasis</td>
+<td>9E-26</td>
+<td>4.61E-22</td>
+<td>133.32 (17621,122,13,12)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0046916&amp;view=details">GO:0046916</a></td>
+<td>cellular transition metal ion homeostasis</td>
+<td>1.08E-23</td>
+<td>4.17E-20</td>
+<td>146.18 (17621,102,13,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055065&amp;view=details">GO:0055065</a></td>
+<td>metal ion homeostasis</td>
+<td>2.11E-17</td>
+<td>6.49E-14</td>
+<td>27.71 (17621,587,13,12)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055080&amp;view=details">GO:0055080</a></td>
+<td>cation homeostasis</td>
+<td>1.02E-16</td>
+<td>2.62E-13</td>
+<td>24.31 (17621,669,13,12)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0098771&amp;view=details">GO:0098771</a></td>
+<td>inorganic ion homeostasis</td>
+<td>1.22E-16</td>
+<td>2.69E-13</td>
+<td>23.96 (17621,679,13,12)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0050801&amp;view=details">GO:0050801</a></td>
+<td>ion homeostasis</td>
+<td>4.33E-16</td>
+<td>8.32E-13</td>
+<td>21.57 (17621,754,13,12)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006875&amp;view=details">GO:0006875</a></td>
+<td>cellular metal ion homeostasis</td>
+<td>1.12E-15</td>
+<td>1.91E-12</td>
+<td>28.35 (17621,526,13,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0030003&amp;view=details">GO:0030003</a></td>
+<td>cellular cation homeostasis</td>
+<td>5.24E-15</td>
+<td>8.06E-12</td>
+<td>24.64 (17621,605,13,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006873&amp;view=details">GO:0006873</a></td>
+<td>cellular ion homeostasis</td>
+<td>6.63E-15</td>
+<td>9.26E-12</td>
+<td>24.13 (17621,618,13,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010039&amp;view=details">GO:0010039</a></td>
+<td>response to iron ion</td>
+<td>1.21E-14</td>
+<td>1.56E-11</td>
+<td>301.21 (17621,27,13,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0048878&amp;view=details">GO:0048878</a></td>
+<td>chemical homeostasis</td>
+<td>2.38E-14</td>
+<td>2.81E-11</td>
+<td>15.46 (17621,1052,13,12)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055082&amp;view=details">GO:0055082</a></td>
+<td>cellular chemical homeostasis</td>
+<td>2.61E-14</td>
+<td>2.87E-11</td>
+<td>21.30 (17621,700,13,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0019725&amp;view=details">GO:0019725</a></td>
+<td>cellular homeostasis</td>
+<td>1.39E-13</td>
+<td>1.43E-10</td>
+<td>18.29 (17621,815,13,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0042592&amp;view=details">GO:0042592</a></td>
+<td>homeostatic process</td>
+<td>1.01E-12</td>
+<td>9.67E-10</td>
+<td>11.31 (17621,1438,13,12)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006826&amp;view=details">GO:0006826</a></td>
+<td>iron ion transport</td>
+<td>1.18E-12</td>
+<td>1.06E-9</td>
+<td>147.87 (17621,55,13,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0060586&amp;view=details">GO:0060586</a></td>
+<td>multicellular organismal iron ion homeostasis</td>
+<td>6.22E-12</td>
+<td>5.32E-9</td>
+<td>774.55 (17621,7,13,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0000041&amp;view=details">GO:0000041</a></td>
+<td>transition metal ion transport</td>
+<td>6.06E-11</td>
+<td>4.9E-8</td>
+<td>78.20 (17621,104,13,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034755&amp;view=details">GO:0034755</a></td>
+<td>iron ion transmembrane transport</td>
+<td>8.78E-11</td>
+<td>6.75E-8</td>
+<td>451.82 (17621,12,13,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071281&amp;view=details">GO:0071281</a></td>
+<td>cellular response to iron ion</td>
+<td>1.75E-8</td>
+<td>1.28E-5</td>
+<td>508.30 (17621,8,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0065008&amp;view=details">GO:0065008</a></td>
+<td>regulation of biological quality</td>
+<td>5.5E-8</td>
+<td>3.84E-5</td>
+<td>4.52 (17621,3600,13,12)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010038&amp;view=details">GO:0010038</a></td>
+<td>response to metal ion</td>
+<td>7.56E-8</td>
+<td>5.05E-5</td>
+<td>23.92 (17621,340,13,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010035&amp;view=details">GO:0010035</a></td>
+<td>response to inorganic substance</td>
+<td>6.14E-7</td>
+<td>3.93E-4</td>
+<td>16.77 (17621,485,13,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1990641&amp;view=details">GO:1990641</a></td>
+<td>response to iron ion starvation</td>
+<td>1.51E-6</td>
+<td>9.27E-4</td>
+<td>903.64 (17621,3,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0048871&amp;view=details">GO:0048871</a></td>
+<td>multicellular organismal homeostasis</td>
+<td>2.17E-6</td>
+<td>1.28E-3</td>
+<td>40.46 (17621,134,13,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0015682&amp;view=details">GO:0015682</a></td>
+<td>ferric iron transport</td>
+<td>2.21E-6</td>
+<td>1.26E-3</td>
+<td>112.96 (17621,36,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0033572&amp;view=details">GO:0033572</a></td>
+<td>transferrin transport</td>
+<td>2.21E-6</td>
+<td>1.21E-3</td>
+<td>112.96 (17621,36,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0072512&amp;view=details">GO:0072512</a></td>
+<td>trivalent inorganic cation transport</td>
+<td>2.21E-6</td>
+<td>1.17E-3</td>
+<td>112.96 (17621,36,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0030001&amp;view=details">GO:0030001</a></td>
+<td>metal ion transport</td>
+<td>2.21E-6</td>
+<td>1.13E-3</td>
+<td>13.46 (17621,604,13,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006953&amp;view=details">GO:0006953</a></td>
+<td>acute-phase response</td>
+<td>2.61E-6</td>
+<td>1.29E-3</td>
+<td>107.01 (17621,38,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0033212&amp;view=details">GO:0033212</a></td>
+<td>iron assimilation</td>
+<td>3.01E-6</td>
+<td>1.45E-3</td>
+<td>677.73 (17621,4,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0015691&amp;view=details">GO:0015691</a></td>
+<td>cadmium ion transport</td>
+<td>5.02E-6</td>
+<td>2.34E-3</td>
+<td>542.18 (17621,5,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0070574&amp;view=details">GO:0070574</a></td>
+<td>cadmium ion transmembrane transport</td>
+<td>5.02E-6</td>
+<td>2.27E-3</td>
+<td>542.18 (17621,5,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006812&amp;view=details">GO:0006812</a></td>
+<td>cation transport</td>
+<td>9.62E-6</td>
+<td>4.23E-3</td>
+<td>10.44 (17621,779,13,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0042221&amp;view=details">GO:0042221</a></td>
+<td>response to chemical</td>
+<td>1.01E-5</td>
+<td>4.3E-3</td>
+<td>4.85 (17621,2516,13,9)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0002526&amp;view=details">GO:0002526</a></td>
+<td>acute inflammatory response</td>
+<td>1.1E-5</td>
+<td>4.58E-3</td>
+<td>66.66 (17621,61,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034756&amp;view=details">GO:0034756</a></td>
+<td>regulation of iron ion transport</td>
+<td>1.4E-5</td>
+<td>5.68E-3</td>
+<td>338.87 (17621,8,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071421&amp;view=details">GO:0071421</a></td>
+<td>manganese ion transmembrane transport</td>
+<td>1.8E-5</td>
+<td>7.11E-3</td>
+<td>301.21 (17621,9,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0090092&amp;view=details">GO:0090092</a></td>
+<td>regulation of transmembrane receptor protein serine/threonine kinase signaling pathway</td>
+<td>2.29E-5</td>
+<td>8.79E-3</td>
+<td>22.31 (17621,243,13,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0030509&amp;view=details">GO:0030509</a></td>
+<td>BMP signaling pathway</td>
+<td>2.89E-5</td>
+<td>1.08E-2</td>
+<td>48.41 (17621,84,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006828&amp;view=details">GO:0006828</a></td>
+<td>manganese ion transport</td>
+<td>5.25E-5</td>
+<td>1.92E-2</td>
+<td>180.73 (17621,15,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0090100&amp;view=details">GO:0090100</a></td>
+<td>positive regulation of transmembrane receptor protein serine/threonine kinase signaling pathway</td>
+<td>5.32E-5</td>
+<td>1.9E-2</td>
+<td>39.48 (17621,103,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0070887&amp;view=details">GO:0070887</a></td>
+<td>cellular response to chemical stimulus</td>
+<td>5.4E-5</td>
+<td>1.89E-2</td>
+<td>5.91 (17621,1606,13,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0046887&amp;view=details">GO:0046887</a></td>
+<td>positive regulation of hormone secretion</td>
+<td>9.69E-5</td>
+<td>3.31E-2</td>
+<td>32.27 (17621,126,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006811&amp;view=details">GO:0006811</a></td>
+<td>ion transport</td>
+<td>1.41E-4</td>
+<td>4.72E-2</td>
+<td>6.50 (17621,1252,13,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0002793&amp;view=details">GO:0002793</a></td>
+<td>positive regulation of peptide secretion</td>
+<td>1.62E-4</td>
+<td>5.31E-2</td>
+<td>27.11 (17621,150,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0007178&amp;view=details">GO:0007178</a></td>
+<td>transmembrane receptor protein serine/threonine kinase signaling pathway</td>
+<td>2.19E-4</td>
+<td>7.02E-2</td>
+<td>24.50 (17621,166,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0097421&amp;view=details">GO:0097421</a></td>
+<td>liver regeneration</td>
+<td>2.31E-4</td>
+<td>7.24E-2</td>
+<td>87.45 (17621,31,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010628&amp;view=details">GO:0010628</a></td>
+<td>positive regulation of gene expression</td>
+<td>2.34E-4</td>
+<td>7.18E-2</td>
+<td>4.70 (17621,2017,13,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006954&amp;view=details">GO:0006954</a></td>
+<td>inflammatory response</td>
+<td>2.46E-4</td>
+<td>7.4E-2</td>
+<td>12.10 (17621,448,13,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071773&amp;view=details">GO:0071773</a></td>
+<td>cellular response to BMP stimulus</td>
+<td>2.62E-4</td>
+<td>7.74E-2</td>
+<td>82.15 (17621,33,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071772&amp;view=details">GO:0071772</a></td>
+<td>response to BMP</td>
+<td>2.62E-4</td>
+<td>7.6E-2</td>
+<td>82.15 (17621,33,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071248&amp;view=details">GO:0071248</a></td>
+<td>cellular response to metal ion</td>
+<td>2.92E-4</td>
+<td>8.31E-2</td>
+<td>22.22 (17621,183,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071241&amp;view=details">GO:0071241</a></td>
+<td>cellular response to inorganic substance</td>
+<td>4.37E-4</td>
+<td>1.22E-1</td>
+<td>19.36 (17621,210,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010817&amp;view=details">GO:0010817</a></td>
+<td>regulation of hormone levels</td>
+<td>4.59E-4</td>
+<td>1.26E-1</td>
+<td>10.27 (17621,528,13,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045124&amp;view=details">GO:0045124</a></td>
+<td>regulation of bone resorption</td>
+<td>4.67E-4</td>
+<td>1.26E-1</td>
+<td>61.61 (17621,44,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0098662&amp;view=details">GO:0098662</a></td>
+<td>inorganic cation transmembrane transport</td>
+<td>4.93E-4</td>
+<td>1.31E-1</td>
+<td>10.08 (17621,538,13,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010862&amp;view=details">GO:0010862</a></td>
+<td>positive regulation of pathway-restricted SMAD protein phosphorylation</td>
+<td>5.56E-4</td>
+<td>1.45E-1</td>
+<td>56.48 (17621,48,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0046850&amp;view=details">GO:0046850</a></td>
+<td>regulation of bone remodeling</td>
+<td>6.28E-4</td>
+<td>1.61E-1</td>
+<td>53.16 (17621,51,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0098657&amp;view=details">GO:0098657</a></td>
+<td>import into cell</td>
+<td>6.64E-4</td>
+<td>1.67E-1</td>
+<td>9.32 (17621,582,13,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010106&amp;view=details">GO:0010106</a></td>
+<td>cellular response to iron ion starvation</td>
+<td>7.38E-4</td>
+<td>1.83E-1</td>
+<td>1,355.46 (17621,1,13,1)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0002626&amp;view=details">GO:0002626</a></td>
+<td>negative regulation of T cell antigen processing and presentation</td>
+<td>7.38E-4</td>
+<td>1.8E-1</td>
+<td>1,355.46 (17621,1,13,1)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1904283&amp;view=details">GO:1904283</a></td>
+<td>negative regulation of antigen processing and presentation of endogenous peptide antigen via MHC class I</td>
+<td>7.38E-4</td>
+<td>1.77E-1</td>
+<td>1,355.46 (17621,1,13,1)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1904282&amp;view=details">GO:1904282</a></td>
+<td>regulation of antigen processing and presentation of endogenous peptide antigen via MHC class I</td>
+<td>7.38E-4</td>
+<td>1.74E-1</td>
+<td>1,355.46 (17621,1,13,1)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0015684&amp;view=details">GO:0015684</a></td>
+<td>ferrous iron transport</td>
+<td>7.38E-4</td>
+<td>1.72E-1</td>
+<td>1,355.46 (17621,1,13,1)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0015675&amp;view=details">GO:0015675</a></td>
+<td>nickel cation transport</td>
+<td>7.38E-4</td>
+<td>1.69E-1</td>
+<td>1,355.46 (17621,1,13,1)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0015692&amp;view=details">GO:0015692</a></td>
+<td>lead ion transport</td>
+<td>7.38E-4</td>
+<td>1.67E-1</td>
+<td>1,355.46 (17621,1,13,1)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1903988&amp;view=details">GO:1903988</a></td>
+<td>ferrous iron export across plasma membrane</td>
+<td>7.38E-4</td>
+<td>1.64E-1</td>
+<td>1,355.46 (17621,1,13,1)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1903874&amp;view=details">GO:1903874</a></td>
+<td>ferrous iron transmembrane transport</td>
+<td>7.38E-4</td>
+<td>1.62E-1</td>
+<td>1,355.46 (17621,1,13,1)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0035444&amp;view=details">GO:0035444</a></td>
+<td>nickel cation transmembrane transport</td>
+<td>7.38E-4</td>
+<td>1.6E-1</td>
+<td>1,355.46 (17621,1,13,1)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1903414&amp;view=details">GO:1903414</a></td>
+<td>iron cation export</td>
+<td>7.38E-4</td>
+<td>1.58E-1</td>
+<td>1,355.46 (17621,1,13,1)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0098655&amp;view=details">GO:0098655</a></td>
+<td>cation transmembrane transport</td>
+<td>7.54E-4</td>
+<td>1.59E-1</td>
+<td>9.01 (17621,602,13,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010647&amp;view=details">GO:0010647</a></td>
+<td>positive regulation of cell communication</td>
+<td>8.03E-4</td>
+<td>1.67E-1</td>
+<td>4.73 (17621,1720,13,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0023056&amp;view=details">GO:0023056</a></td>
+<td>positive regulation of signaling</td>
+<td>8.21E-4</td>
+<td>1.68E-1</td>
+<td>4.71 (17621,1727,13,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0046883&amp;view=details">GO:0046883</a></td>
+<td>regulation of hormone secretion</td>
+<td>8.23E-4</td>
+<td>1.66E-1</td>
+<td>15.58 (17621,261,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1903532&amp;view=details">GO:1903532</a></td>
+<td>positive regulation of secretion by cell</td>
+<td>8.32E-4</td>
+<td>1.66E-1</td>
+<td>15.52 (17621,262,13,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006355&amp;view=details">GO:0006355</a></td>
+<td>regulation of transcription, DNA-templated</td>
+<td>8.38E-4</td>
+<td>1.65E-1</td>
+<td>3.25 (17621,3332,13,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1903506&amp;view=details">GO:1903506</a></td>
+<td>regulation of nucleic acid-templated transcription</td>
+<td>8.4E-4</td>
+<td>1.64E-1</td>
+<td>3.25 (17621,3333,13,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:2001141&amp;view=details">GO:2001141</a></td>
+<td>regulation of RNA biosynthetic process</td>
+<td>8.56E-4</td>
+<td>1.65E-1</td>
+<td>3.24 (17621,3342,13,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0098660&amp;view=details">GO:0098660</a></td>
+<td>inorganic ion transmembrane transport</td>
+<td>8.89E-4</td>
+<td>1.69E-1</td>
+<td>8.62 (17621,629,13,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0060393&amp;view=details">GO:0060393</a></td>
+<td>regulation of pathway-restricted SMAD protein phosphorylation</td>
+<td>8.97E-4</td>
+<td>1.68E-1</td>
+<td>44.44 (17621,61,13,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006357&amp;view=details">GO:0006357</a></td>
+<td>regulation of transcription by RNA polymerase II</td>
+<td>9.57E-4</td>
+<td>1.77E-1</td>
+<td>3.75 (17621,2527,13,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0070838&amp;view=details">GO:0070838</a></td>
+<td>divalent metal ion transport</td>
+<td>9.68E-4</td>
+<td>1.77E-1</td>
+<td>14.73 (17621,276,13,3)</td>
+</tr>
+</tbody>
+</table>
+<p>Notably, for the 40 first GO terms of the above table, we have a (true) FDR &lt; 1%.</p>
+<p><img alt="" src="images_go_enrichment_md/GO_FDR/initial_genes/GO.png" /></p>
+<p><img alt="" src="images_go_enrichment_md/GO_FDR/initial_genes/treemap.png" /></p>
+<h3 id="all-444-genes-inferred-only-wo-original-genes">All 444 genes (inferred only ; w/o original genes)<a class="headerlink" href="#all-444-genes-inferred-only-wo-original-genes" title="Permanent link">&para;</a></h3>
+<h4 id="method_2">Method<a class="headerlink" href="#method_2" title="Permanent link">&para;</a></h4>
+<p>We provided GOrilla with two lists:</p>
+<ul>
+<li>
+<p>the list of background genes: their 23,221 <code>RefSeq</code> ids, just as before</p>
+</li>
+<li>
+<p>the list of the 410 inferred genes, which we denoted <code>new_genes_v7_wo_orig.list</code> (note that GOrilla only found 430 of them, yet our custom script only found 324, so GOrilla did better than us. In other for GOrilla to give us this information, we had to run a separate analysis with this list as single list, ie without background)</p>
+</li>
+</ul>
+<blockquote>
+<p>The system has recognized 430 genes out of 457 gene terms entered by the user.
+ 430 genes were recognized by gene symbol and 0 genes by other gene IDs .
+Only 388 of these genes are associated with a GO term.</p>
+</blockquote>
+<h4 id="results_2">Results<a class="headerlink" href="#results_2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th><strong>GO term</strong></th>
+<th><strong>Description</strong></th>
+<th><strong><a href="http://cbl-gorilla.cs.technion.ac.il/GOrilla/q7z4mfue/GOResults.html#p_value_info">P-value</a></strong></th>
+<th><strong><a href="http://cbl-gorilla.cs.technion.ac.il/GOrilla/q7z4mfue/GOResults.html#fdr_info">FDR q-value</a></strong></th>
+<th><strong><a href="http://cbl-gorilla.cs.technion.ac.il/GOrilla/q7z4mfue/GOResults.html#enrich_info"> Enrichment (N, B, n, b) </a></strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006334&amp;view=details">GO:0006334</a></td>
+<td>nucleosome assembly</td>
+<td>2.44E-18</td>
+<td>3.74E-14</td>
+<td>9.45 (17621,125,388,26)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034728&amp;view=details">GO:0034728</a></td>
+<td>nucleosome organization</td>
+<td>2.05E-16</td>
+<td>1.57E-12</td>
+<td>7.57 (17621,162,388,27)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034723&amp;view=details">GO:0034723</a></td>
+<td>DNA replication-dependent nucleosome organization</td>
+<td>5.27E-16</td>
+<td>2.7E-12</td>
+<td>21.19 (17621,30,388,14)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006335&amp;view=details">GO:0006335</a></td>
+<td>DNA replication-dependent nucleosome assembly</td>
+<td>5.27E-16</td>
+<td>2.03E-12</td>
+<td>21.19 (17621,30,388,14)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055076&amp;view=details">GO:0055076</a></td>
+<td>transition metal ion homeostasis</td>
+<td>2.24E-15</td>
+<td>6.88E-12</td>
+<td>8.56 (17621,122,388,23)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0065004&amp;view=details">GO:0065004</a></td>
+<td>protein-DNA complex assembly</td>
+<td>2.28E-15</td>
+<td>5.85E-12</td>
+<td>6.59 (17621,193,388,28)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0046916&amp;view=details">GO:0046916</a></td>
+<td>cellular transition metal ion homeostasis</td>
+<td>5.87E-15</td>
+<td>1.29E-11</td>
+<td>9.35 (17621,102,388,21)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071824&amp;view=details">GO:0071824</a></td>
+<td>protein-DNA complex subunit organization</td>
+<td>3.83E-14</td>
+<td>7.35E-11</td>
+<td>5.68 (17621,232,388,29)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010273&amp;view=details">GO:0010273</a></td>
+<td>detoxification of copper ion</td>
+<td>6.5E-14</td>
+<td>1.11E-10</td>
+<td>30.28 (17621,15,388,10)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0000183&amp;view=details">GO:0000183</a></td>
+<td>chromatin silencing at rDNA</td>
+<td>9.01E-14</td>
+<td>1.39E-10</td>
+<td>17.89 (17621,33,388,13)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0061687&amp;view=details">GO:0061687</a></td>
+<td>detoxification of inorganic compound</td>
+<td>1.7E-13</td>
+<td>2.38E-10</td>
+<td>28.38 (17621,16,388,10)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0060968&amp;view=details">GO:0060968</a></td>
+<td>regulation of gene silencing</td>
+<td>3.52E-13</td>
+<td>4.51E-10</td>
+<td>6.83 (17621,153,388,23)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006333&amp;view=details">GO:0006333</a></td>
+<td>chromatin assembly or disassembly</td>
+<td>4.51E-13</td>
+<td>5.33E-10</td>
+<td>8.72 (17621,99,388,19)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006342&amp;view=details">GO:0006342</a></td>
+<td>chromatin silencing</td>
+<td>1.09E-12</td>
+<td>1.2E-9</td>
+<td>8.98 (17621,91,388,18)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071280&amp;view=details">GO:0071280</a></td>
+<td>cellular response to copper ion</td>
+<td>7.87E-12</td>
+<td>8.06E-9</td>
+<td>17.84 (17621,28,388,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071294&amp;view=details">GO:0071294</a></td>
+<td>cellular response to zinc ion</td>
+<td>2.12E-11</td>
+<td>2.03E-8</td>
+<td>19.75 (17621,23,388,10)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0046688&amp;view=details">GO:0046688</a></td>
+<td>response to copper ion</td>
+<td>2.51E-11</td>
+<td>2.27E-8</td>
+<td>13.97 (17621,39,388,12)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045814&amp;view=details">GO:0045814</a></td>
+<td>negative regulation of gene expression, epigenetic</td>
+<td>2.68E-11</td>
+<td>2.29E-8</td>
+<td>7.50 (17621,109,388,18)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006882&amp;view=details">GO:0006882</a></td>
+<td>cellular zinc ion homeostasis</td>
+<td>2.92E-11</td>
+<td>2.36E-8</td>
+<td>16.11 (17621,31,388,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0060964&amp;view=details">GO:0060964</a></td>
+<td>regulation of gene silencing by miRNA</td>
+<td>7.84E-11</td>
+<td>6.03E-8</td>
+<td>7.05 (17621,116,388,18)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055069&amp;view=details">GO:0055069</a></td>
+<td>zinc ion homeostasis</td>
+<td>9.31E-11</td>
+<td>6.81E-8</td>
+<td>14.69 (17621,34,388,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0060966&amp;view=details">GO:0060966</a></td>
+<td>regulation of gene silencing by RNA</td>
+<td>1.05E-10</td>
+<td>7.34E-8</td>
+<td>6.93 (17621,118,388,18)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0060147&amp;view=details">GO:0060147</a></td>
+<td>regulation of posttranscriptional gene silencing</td>
+<td>1.05E-10</td>
+<td>7.02E-8</td>
+<td>6.93 (17621,118,388,18)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045652&amp;view=details">GO:0045652</a></td>
+<td>regulation of megakaryocyte differentiation</td>
+<td>1.08E-10</td>
+<td>6.92E-8</td>
+<td>8.85 (17621,77,388,15)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0040029&amp;view=details">GO:0040029</a></td>
+<td>regulation of gene expression, epigenetic</td>
+<td>2.61E-10</td>
+<td>1.6E-7</td>
+<td>4.58 (17621,248,388,25)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0016458&amp;view=details">GO:0016458</a></td>
+<td>gene silencing</td>
+<td>6.61E-10</td>
+<td>3.91E-7</td>
+<td>5.50 (17621,165,388,20)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071276&amp;view=details">GO:0071276</a></td>
+<td>cellular response to cadmium ion</td>
+<td>4.89E-9</td>
+<td>2.79E-6</td>
+<td>12.27 (17621,37,388,10)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006325&amp;view=details">GO:0006325</a></td>
+<td>chromatin organization</td>
+<td>6.28E-9</td>
+<td>3.45E-6</td>
+<td>2.72 (17621,684,388,41)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055072&amp;view=details">GO:0055072</a></td>
+<td>iron ion homeostasis</td>
+<td>7.27E-9</td>
+<td>3.85E-6</td>
+<td>7.98 (17621,74,388,13)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010043&amp;view=details">GO:0010043</a></td>
+<td>response to zinc ion</td>
+<td>2.1E-8</td>
+<td>1.07E-5</td>
+<td>9.25 (17621,54,388,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045653&amp;view=details">GO:0045653</a></td>
+<td>negative regulation of megakaryocyte differentiation</td>
+<td>2.29E-8</td>
+<td>1.14E-5</td>
+<td>19.87 (17621,16,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006879&amp;view=details">GO:0006879</a></td>
+<td>cellular iron ion homeostasis</td>
+<td>6.67E-8</td>
+<td>3.2E-5</td>
+<td>8.33 (17621,60,388,11)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0046686&amp;view=details">GO:0046686</a></td>
+<td>response to cadmium ion</td>
+<td>4.86E-7</td>
+<td>2.26E-4</td>
+<td>7.83 (17621,58,388,10)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010038&amp;view=details">GO:0010038</a></td>
+<td>response to metal ion</td>
+<td>5.77E-7</td>
+<td>2.61E-4</td>
+<td>3.21 (17621,340,388,24)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0016233&amp;view=details">GO:0016233</a></td>
+<td>telomere capping</td>
+<td>5.96E-7</td>
+<td>2.62E-4</td>
+<td>13.25 (17621,24,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045637&amp;view=details">GO:0045637</a></td>
+<td>regulation of myeloid cell differentiation</td>
+<td>6.11E-7</td>
+<td>2.61E-4</td>
+<td>3.68 (17621,247,388,20)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071248&amp;view=details">GO:0071248</a></td>
+<td>cellular response to metal ion</td>
+<td>6.41E-7</td>
+<td>2.66E-4</td>
+<td>4.22 (17621,183,388,17)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010039&amp;view=details">GO:0010039</a></td>
+<td>response to iron ion</td>
+<td>1.44E-6</td>
+<td>5.84E-4</td>
+<td>11.77 (17621,27,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0032200&amp;view=details">GO:0032200</a></td>
+<td>telomere organization</td>
+<td>1.5E-6</td>
+<td>5.92E-4</td>
+<td>5.13 (17621,115,388,13)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034622&amp;view=details">GO:0034622</a></td>
+<td>cellular protein-containing complex assembly</td>
+<td>1.71E-6</td>
+<td>6.57E-4</td>
+<td>2.24 (17621,812,388,40)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0065003&amp;view=details">GO:0065003</a></td>
+<td>protein-containing complex assembly</td>
+<td>1.92E-6</td>
+<td>7.19E-4</td>
+<td>1.94 (17621,1262,388,54)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0022607&amp;view=details">GO:0022607</a></td>
+<td>cellular component assembly</td>
+<td>3.32E-6</td>
+<td>1.22E-3</td>
+<td>1.66 (17621,2162,388,79)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034755&amp;view=details">GO:0034755</a></td>
+<td>iron ion transmembrane transport</td>
+<td>3.52E-6</td>
+<td>1.26E-3</td>
+<td>18.92 (17621,12,388,5)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071241&amp;view=details">GO:0071241</a></td>
+<td>cellular response to inorganic substance</td>
+<td>4.29E-6</td>
+<td>1.5E-3</td>
+<td>3.68 (17621,210,388,17)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0043933&amp;view=details">GO:0043933</a></td>
+<td>protein-containing complex subunit organization</td>
+<td>5.12E-6</td>
+<td>1.75E-3</td>
+<td>1.79 (17621,1544,388,61)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0060586&amp;view=details">GO:0060586</a></td>
+<td>multicellular organismal iron ion homeostasis</td>
+<td>7.69E-6</td>
+<td>2.57E-3</td>
+<td>25.95 (17621,7,388,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010035&amp;view=details">GO:0010035</a></td>
+<td>response to inorganic substance</td>
+<td>1.06E-5</td>
+<td>3.47E-3</td>
+<td>2.53 (17621,485,388,27)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006336&amp;view=details">GO:0006336</a></td>
+<td>DNA replication-independent nucleosome assembly</td>
+<td>1.43E-5</td>
+<td>4.58E-3</td>
+<td>7.12 (17621,51,388,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045934&amp;view=details">GO:0045934</a></td>
+<td>negative regulation of nucleobase-containing compound metabolic process</td>
+<td>1.46E-5</td>
+<td>4.58E-3</td>
+<td>1.78 (17621,1457,388,57)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034724&amp;view=details">GO:0034724</a></td>
+<td>DNA replication-independent nucleosome organization</td>
+<td>1.66E-5</td>
+<td>5.1E-3</td>
+<td>6.99 (17621,52,388,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055065&amp;view=details">GO:0055065</a></td>
+<td>metal ion homeostasis</td>
+<td>1.8E-5</td>
+<td>5.41E-3</td>
+<td>2.32 (17621,587,388,30)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0016584&amp;view=details">GO:0016584</a></td>
+<td>nucleosome positioning</td>
+<td>1.8E-5</td>
+<td>5.33E-3</td>
+<td>14.19 (17621,16,388,5)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045926&amp;view=details">GO:0045926</a></td>
+<td>negative regulation of growth</td>
+<td>2.23E-5</td>
+<td>6.46E-3</td>
+<td>3.24 (17621,238,388,17)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0038111&amp;view=details">GO:0038111</a></td>
+<td>interleukin-7-mediated signaling pathway</td>
+<td>2.74E-5</td>
+<td>7.8E-3</td>
+<td>9.73 (17621,28,388,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0034080&amp;view=details">GO:0034080</a></td>
+<td>CENP-A containing nucleosome assembly</td>
+<td>2.8E-5</td>
+<td>7.83E-3</td>
+<td>7.75 (17621,41,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055080&amp;view=details">GO:0055080</a></td>
+<td>cation homeostasis</td>
+<td>3.47E-5</td>
+<td>9.52E-3</td>
+<td>2.17 (17621,669,388,32)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006536&amp;view=details">GO:0006536</a></td>
+<td>glutamate metabolic process</td>
+<td>4.16E-5</td>
+<td>1.12E-2</td>
+<td>9.08 (17621,30,388,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006875&amp;view=details">GO:0006875</a></td>
+<td>cellular metal ion homeostasis</td>
+<td>4.4E-5</td>
+<td>1.17E-2</td>
+<td>2.33 (17621,526,388,27)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0031936&amp;view=details">GO:0031936</a></td>
+<td>negative regulation of chromatin silencing</td>
+<td>4.55E-5</td>
+<td>1.18E-2</td>
+<td>11.95 (17621,19,388,5)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0098771&amp;view=details">GO:0098771</a></td>
+<td>inorganic ion homeostasis</td>
+<td>4.61E-5</td>
+<td>1.18E-2</td>
+<td>2.14 (17621,679,388,32)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0031055&amp;view=details">GO:0031055</a></td>
+<td>chromatin remodeling at centromere</td>
+<td>5.24E-5</td>
+<td>1.32E-2</td>
+<td>7.06 (17621,45,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0007166&amp;view=details">GO:0007166</a></td>
+<td>cell surface receptor signaling pathway</td>
+<td>5.33E-5</td>
+<td>1.32E-2</td>
+<td>1.57 (17621,2109,388,73)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0051276&amp;view=details">GO:0051276</a></td>
+<td>chromosome organization</td>
+<td>6.2E-5</td>
+<td>1.51E-2</td>
+<td>2.55 (17621,392,388,22)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0030003&amp;view=details">GO:0030003</a></td>
+<td>cellular cation homeostasis</td>
+<td>7.83E-5</td>
+<td>1.88E-2</td>
+<td>2.18 (17621,605,388,29)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0036017&amp;view=details">GO:0036017</a></td>
+<td>response to erythropoietin</td>
+<td>1.03E-4</td>
+<td>2.42E-2</td>
+<td>27.25 (17621,5,388,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006873&amp;view=details">GO:0006873</a></td>
+<td>cellular ion homeostasis</td>
+<td>1.13E-4</td>
+<td>2.64E-2</td>
+<td>2.13 (17621,618,388,29)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045892&amp;view=details">GO:0045892</a></td>
+<td>negative regulation of transcription, DNA-templated</td>
+<td>1.38E-4</td>
+<td>3.16E-2</td>
+<td>1.74 (17621,1224,388,47)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0042592&amp;view=details">GO:0042592</a></td>
+<td>homeostatic process</td>
+<td>1.43E-4</td>
+<td>3.23E-2</td>
+<td>1.67 (17621,1438,388,53)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1903507&amp;view=details">GO:1903507</a></td>
+<td>negative regulation of nucleic acid-templated transcription</td>
+<td>1.43E-4</td>
+<td>3.19E-2</td>
+<td>1.74 (17621,1226,388,47)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0050801&amp;view=details">GO:0050801</a></td>
+<td>ion homeostasis</td>
+<td>1.44E-4</td>
+<td>3.16E-2</td>
+<td>1.99 (17621,754,388,33)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1902679&amp;view=details">GO:1902679</a></td>
+<td>negative regulation of RNA biosynthetic process</td>
+<td>1.49E-4</td>
+<td>3.22E-2</td>
+<td>1.74 (17621,1228,388,47)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0051252&amp;view=details">GO:0051252</a></td>
+<td>regulation of RNA metabolic process</td>
+<td>1.56E-4</td>
+<td>3.32E-2</td>
+<td>1.38 (17621,3595,388,109)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006303&amp;view=details">GO:0006303</a></td>
+<td>double-strand break repair via nonhomologous end joining</td>
+<td>1.8E-4</td>
+<td>3.79E-2</td>
+<td>5.05 (17621,72,388,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0043486&amp;view=details">GO:0043486</a></td>
+<td>histone exchange</td>
+<td>1.94E-4</td>
+<td>4.03E-2</td>
+<td>5.78 (17621,55,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006826&amp;view=details">GO:0006826</a></td>
+<td>iron ion transport</td>
+<td>1.94E-4</td>
+<td>3.98E-2</td>
+<td>5.78 (17621,55,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:2001141&amp;view=details">GO:2001141</a></td>
+<td>regulation of RNA biosynthetic process</td>
+<td>2.16E-4</td>
+<td>4.37E-2</td>
+<td>1.39 (17621,3342,388,102)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0000726&amp;view=details">GO:0000726</a></td>
+<td>non-recombinational repair</td>
+<td>2.18E-4</td>
+<td>4.35E-2</td>
+<td>4.91 (17621,74,388,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0009889&amp;view=details">GO:0009889</a></td>
+<td>regulation of biosynthetic process</td>
+<td>2.69E-4</td>
+<td>5.31E-2</td>
+<td>1.33 (17621,4054,388,119)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0048878&amp;view=details">GO:0048878</a></td>
+<td>chemical homeostasis</td>
+<td>2.78E-4</td>
+<td>5.41E-2</td>
+<td>1.77 (17621,1052,388,41)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0019725&amp;view=details">GO:0019725</a></td>
+<td>cellular homeostasis</td>
+<td>2.79E-4</td>
+<td>5.37E-2</td>
+<td>1.89 (17621,815,388,34)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0098754&amp;view=details">GO:0098754</a></td>
+<td>detoxification</td>
+<td>2.82E-4</td>
+<td>5.34E-2</td>
+<td>3.85 (17621,118,388,10)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0031326&amp;view=details">GO:0031326</a></td>
+<td>regulation of cellular biosynthetic process</td>
+<td>2.93E-4</td>
+<td>5.5E-2</td>
+<td>1.34 (17621,3980,388,117)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006355&amp;view=details">GO:0006355</a></td>
+<td>regulation of transcription, DNA-templated</td>
+<td>3.03E-4</td>
+<td>5.62E-2</td>
+<td>1.38 (17621,3332,388,101)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1903506&amp;view=details">GO:1903506</a></td>
+<td>regulation of nucleic acid-templated transcription</td>
+<td>3.07E-4</td>
+<td>5.62E-2</td>
+<td>1.38 (17621,3333,388,101)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0019219&amp;view=details">GO:0019219</a></td>
+<td>regulation of nucleobase-containing compound metabolic process</td>
+<td>3.23E-4</td>
+<td>5.84E-2</td>
+<td>1.34 (17621,3907,388,115)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1903706&amp;view=details">GO:1903706</a></td>
+<td>regulation of hemopoiesis</td>
+<td>3.83E-4</td>
+<td>6.85E-2</td>
+<td>2.19 (17621,476,388,23)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0002385&amp;view=details">GO:0002385</a></td>
+<td>mucosal immune response</td>
+<td>3.87E-4</td>
+<td>6.85E-2</td>
+<td>7.83 (17621,29,388,5)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0051253&amp;view=details">GO:0051253</a></td>
+<td>negative regulation of RNA metabolic process</td>
+<td>4.09E-4</td>
+<td>7.14E-2</td>
+<td>1.65 (17621,1320,388,48)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0055082&amp;view=details">GO:0055082</a></td>
+<td>cellular chemical homeostasis</td>
+<td>4.1E-4</td>
+<td>7.08E-2</td>
+<td>1.95 (17621,700,388,30)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1902871&amp;view=details">GO:1902871</a></td>
+<td>positive regulation of amacrine cell differentiation</td>
+<td>4.84E-4</td>
+<td>8.26E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:1902868&amp;view=details">GO:1902868</a></td>
+<td>positive regulation of retina development in camera-type eye</td>
+<td>4.84E-4</td>
+<td>8.17E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0061075&amp;view=details">GO:0061075</a></td>
+<td>positive regulation of neural retina development</td>
+<td>4.84E-4</td>
+<td>8.08E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0021893&amp;view=details">GO:0021893</a></td>
+<td>cerebral cortex GABAergic interneuron fate commitment</td>
+<td>4.84E-4</td>
+<td>7.99E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0009439&amp;view=details">GO:0009439</a></td>
+<td>cyanate metabolic process</td>
+<td>4.84E-4</td>
+<td>7.91E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0009440&amp;view=details">GO:0009440</a></td>
+<td>cyanate catabolic process</td>
+<td>4.84E-4</td>
+<td>7.83E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0046712&amp;view=details">GO:0046712</a></td>
+<td>GDP catabolic process</td>
+<td>4.84E-4</td>
+<td>7.74E-2</td>
+<td>45.41 (17621,2,388,2)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010556&amp;view=details">GO:0010556</a></td>
+<td>regulation of macromolecule biosynthetic process</td>
+<td>5.18E-4</td>
+<td>8.21E-2</td>
+<td>1.33 (17621,3789,388,111)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0071281&amp;view=details">GO:0071281</a></td>
+<td>cellular response to iron ion</td>
+<td>5.46E-4</td>
+<td>8.57E-2</td>
+<td>17.03 (17621,8,388,3)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0006323&amp;view=details">GO:0006323</a></td>
+<td>DNA packaging</td>
+<td>5.49E-4</td>
+<td>8.53E-2</td>
+<td>5.80 (17621,47,388,6)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0043044&amp;view=details">GO:0043044</a></td>
+<td>ATP-dependent chromatin remodeling</td>
+<td>5.65E-4</td>
+<td>8.68E-2</td>
+<td>4.27 (17621,85,388,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0009064&amp;view=details">GO:0009064</a></td>
+<td>glutamine family amino acid metabolic process</td>
+<td>6.64E-4</td>
+<td>1.01E-1</td>
+<td>4.74 (17621,67,388,7)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0010558&amp;view=details">GO:0010558</a></td>
+<td>negative regulation of macromolecule biosynthetic process</td>
+<td>7.14E-4</td>
+<td>1.08E-1</td>
+<td>1.59 (17621,1427,388,50)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0002251&amp;view=details">GO:0002251</a></td>
+<td>organ or tissue specific immune response</td>
+<td>7.2E-4</td>
+<td>1.08E-1</td>
+<td>6.88 (17621,33,388,5)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0045638&amp;view=details">GO:0045638</a></td>
+<td>negative regulation of myeloid cell differentiation</td>
+<td>7.68E-4</td>
+<td>1.14E-1</td>
+<td>4.08 (17621,89,388,8)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0031935&amp;view=details">GO:0031935</a></td>
+<td>regulation of chromatin silencing</td>
+<td>8.29E-4</td>
+<td>1.21E-1</td>
+<td>6.68 (17621,34,388,5)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0002042&amp;view=details">GO:0002042</a></td>
+<td>cell migration involved in sprouting angiogenesis</td>
+<td>8.48E-4</td>
+<td>1.23E-1</td>
+<td>9.08 (17621,20,388,4)</td>
+</tr>
+<tr>
+<td><a href="http://www.godatabase.org/cgi-bin/amigo/go.cgi?query=GO:0009890&amp;view=details">GO:0009890</a></td>
+<td>negative regulation of biosynthetic process</td>
+<td>9.54E-4</td>
+<td>1.37E-1</td>
+<td>1.55 (17621,1520,388,52)</td>
+</tr>
+</tbody>
+</table>
+<p>Notably, for the 56 first GO terms of the above table, we have a (true) FDR &lt; 1%.</p>
+<p><img alt="" src="images_go_enrichment_md/GO_FDR/all_genes_wo_orig/GO_1Mb.jpg" /></p>
+<p><img alt="" src="images_go_enrichment_md/GO_FDR/all_genes_wo_orig/treemap.png" /></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2020 - 2022 Tristan Hoellinger
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/TristanHoellin1" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://fr.linkedin.com/in/tristan-hoellinger" target="_blank" rel="noopener" title="fr.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:sarah.djebali@inserm.fr" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480v-83.6c0-4 1.5-7.8 4.2-10.7l167.6-182.9c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8l-88.3-44.2C7.1 311.3.3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "navigation.top"], "search": "../../../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.6df46069.min.js"></script>
+      
+    
+  </body>
+</html>

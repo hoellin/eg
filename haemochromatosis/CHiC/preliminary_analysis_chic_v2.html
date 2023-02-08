@@ -1,0 +1,2435 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Tristan Hoellinger">
+      
+      
+        <link rel="canonical" href="https://eg.github.io/haemochromatosis/CHiC/preliminary_analysis_chic_v2.html">
+      
+      
+        <link rel="prev" href="preprocess_data.html">
+      
+      
+        <link rel="next" href="go_enrichment.html">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.11">
+    
+    
+      
+        <title>Analysis of E-G Networks starting from genes involved in hemochromatosis / iron metabolism ; based on element-gene relation obtained with CHiC data - Genome-wide identification of E/G interactions</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0d440cfe.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#notice" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Genome-wide identification of E/G interactions" class="md-header__button md-logo" aria-label="Genome-wide identification of E/G interactions" data-md-component="logo">
+      
+  <img src="../../logo/logo-inserm-blc.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Genome-wide identification of E/G interactions
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Analysis of E-G Networks starting from genes involved in hemochromatosis / iron metabolism ; based on element-gene relation obtained with CHiC data
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/hoellin/eg" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    hoellin/eg
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../guidebooks/introduction.html" class="md-tabs__link">
+        Guidebooks
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../introduction.html" class="md-tabs__link md-tabs__link--active">
+        Haemochromatosis
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../notes_BENGI/introduction.html" class="md-tabs__link">
+        BENGI
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../notes_ABC/introduction.html" class="md-tabs__link">
+        ABC
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../index.html" class="md-tabs__link">
+        About
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Genome-wide identification of E/G interactions" class="md-nav__button md-logo" aria-label="Genome-wide identification of E/G interactions" data-md-component="logo">
+      
+  <img src="../../logo/logo-inserm-blc.png" alt="logo">
+
+    </a>
+    Genome-wide identification of E/G interactions
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/hoellin/eg" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    hoellin/eg
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+          Guidebooks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Guidebooks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guidebooks/introduction.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guidebooks/script_bedpe_summary/script_bedpe_summary.html" class="md-nav__link">
+        Compute summary stats of a bedpe
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+          Basics
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          Basics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guidebooks/shell.html" class="md-nav__link">
+        Shell
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guidebooks/conda_environments.html" class="md-nav__link">
+        Conda basics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guidebooks/git.html" class="md-nav__link">
+        Git
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guidebooks/genotoul.html" class="md-nav__link">
+        Genotoul cluster
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guidebooks/notebooks_ssh.html" class="md-nav__link">
+        How to use Jupyter through ssh tunneling?
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_4" id="__nav_1_4_label" tabindex="0">
+          Misc
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          Misc
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guidebooks/compute_correlations.html" class="md-nav__link">
+        Compute correlations
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Haemochromatosis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Haemochromatosis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_format.html" class="md-nav__link">
+        Data format
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ABC/custom_go.html" class="md-nav__link">
+        Custom script GO
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../main_results.html" class="md-nav__link">
+        Main results
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          CHiC data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          CHiC data
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="preprocess_data.html" class="md-nav__link">
+        Preprocessing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="preliminary_analysis_chic_v2.html" class="md-nav__link md-nav__link--active">
+        Networks
+      </a>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="go_enrichment.html" class="md-nav__link">
+        GO enrichment
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+          ABC data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_6">
+          <span class="md-nav__icon md-icon"></span>
+          ABC data
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ABC/data_processing.html" class="md-nav__link">
+        Preprocessing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ABC/preliminary_analysis_v9.html" class="md-nav__link">
+        Networks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ABC/summary_statistics_eg_pairs.html" class="md-nav__link">
+        Summary statistics enhancers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ABC/go_enrichment.html" class="md-nav__link">
+        GO enrichment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ABC/gorilla.html" class="md-nav__link">
+        GOrilla
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ABC/compute_avg_nb_of_connections_per_gene.html" class="md-nav__link">
+        Avg nb connections per gene
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ABC/gwas.html" class="md-nav__link">
+        GWAS (13 initial genes)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ABC/gwas_10.html" class="md-nav__link">
+        GWAS (10 initial genes)
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          BENGI
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          BENGI
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/introduction.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+          Notebooks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Notebooks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/BENGI_to_custom_bedpe.html" class="md-nav__link">
+        Convert BENGI datasets to custom bedpe
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+          Summary statistics
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Summary statistics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/summary_statistics/summary_statistics.html" class="md-nav__link">
+        Summary statistics on BENGI GM12878 benchmarks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/summary_statistics_BENGI/summary_BENGI_bedpe.html" class="md-nav__link">
+        (R code) Compute summary statistics over BENGI
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+          Evaluation of a few methods over BENGI GM12878
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_4">
+          <span class="md-nav__icon md-icon"></span>
+          Evaluation of a few methods over BENGI GM12878
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4_1" id="__nav_3_4_1_label" tabindex="0">
+          Distance method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Distance method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/distance_method/distance_evaluation_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/distance_method/summary_distance_evaluation.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4_2" id="__nav_3_4_2_label" tabindex="0">
+          DNase-expression correlation method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          DNase-expression correlation method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/dnase_expression_correlation/correlation_method_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/dnase_expression_correlation/summary_correlation_method.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4_3" id="__nav_3_4_3_label" tabindex="0">
+          Average rank method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Average rank method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/avg_rank_method/avg_rank_method_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/avg_rank_method/summary_avg_rank_method.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+          Evaluation of a few methods over Fulco et al 2019 CRISPRi-FlowFISH
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Evaluation of a few methods over Fulco et al 2019 CRISPRi-FlowFISH
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_5_1" id="__nav_3_5_1_label" tabindex="0">
+          Distance method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          Distance method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/CRISPRi_FlowFISH/distance_method/distance_over_fulco_et_al_crispri.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/CRISPRi_FlowFISH/distance_method/summary_distance_over_fulco_et_al_crispri.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_5_2" id="__nav_3_5_2_label" tabindex="0">
+          DNase-expression correlation method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_5_2">
+          <span class="md-nav__icon md-icon"></span>
+          DNase-expression correlation method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/correlation_method_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/CRISPRi_FlowFISH/dnase_expression_correlation/summary_correlation_method.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_5_3" id="__nav_3_5_3_label" tabindex="0">
+          Average rank method
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Average rank method
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/CRISPRi_FlowFISH/avg_rank_method/avg_rank_method_with_code.html" class="md-nav__link">
+        Full code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_BENGI/CRISPRi_FlowFISH/avg_rank_method/summary_avg_rank.html" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          ABC
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          ABC
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/introduction.html" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/BENGI/ABC_BENGI_results.html" class="md-nav__link">
+        ABC over BENGI for GM12878, main results
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+          CRISPRi-FlowFISH
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          CRISPRi-FlowFISH
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/K562/ABC_K562_CRISPRi_FlowFISH.html" class="md-nav__link">
+        Original ABC predictions over K562
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/K562/recap_investigations_ABC_over_CRiFF.html" class="md-nav__link">
+        Summary ABC over CRiFF
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+          Notebooks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Notebooks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/K562/april_K562_56_genes/april_K562_56_genes.html" class="md-nav__link">
+        ABC over K562 cCRiFF
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/K562/april_K562_59_genes/april_K562_59_genes.html" class="md-nav__link">
+        ABC over K562 CRiFF
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/K562/april_K562_candidates_not_in_whitelist_56_genes/april_K562_candidates_NOT_in_whitelist.html" class="md-nav__link">
+        ABC over K562 cCRiFF, no whitelist
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/generic_notebooks/turnkey_notebook_to_run_ABC_with_example_over_GM12878.html" class="md-nav__link">
+        Generic notebook to run ABC method & Example over GM12878
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/BENGI/notebook_ABC_over_BENGI_GM12878.html" class="md-nav__link">
+        ABC over GM12878 with same accessions as for BENGI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/BENGI/notebook_ABC_over_BENGI_GM12878_from_ccRE_ELSs.html" class="md-nav__link">
+        ABC over GM12878 with same accessions as for BENGI, starting with ccRE-dELS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+          Full codes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_5">
+          <span class="md-nav__icon md-icon"></span>
+          Full codes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/test_abc_pipeline.html" class="md-nav__link">
+        Test of ABC pipeline over chr22
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/BENGI/ABC_over_BENGI_GM12878.html" class="md-nav__link">
+        ABC over GM12878 with same accessions as for BENGI
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes_ABC/differences_example_chr22.html" class="md-nav__link">
+        Meld of results over chr22 vs authors' results
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        Getting started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about_me.html" class="md-nav__link">
+        About me
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<style type="text/css">
+.badCode {
+background-color: #C9DDE4;
+}
+</style>
+
+<h1 id="notice">Notice<a class="headerlink" href="#notice" title="Permanent link">&para;</a></h1>
+<p>The current page essentially corresponds to a markdown knitted from a Rmd document. It does not render very well because of html widgets not handled, but one should better refer to the correct rendering available <a href="../../../data_and_results/haemochromatosis/promoter_capture_hic/preliminary_analysis_chic_v2.html">here</a>.</p>
+<h1 id="libraries-version">Libraries &amp; Version<a class="headerlink" href="#libraries-version" title="Permanent link">&para;</a></h1>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">visNetwork</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>R version 4.0.3 (2020-10-10)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 20.04.1 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+
+locale:
+ [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8    
+ [5] LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8   
+ [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] visNetwork_2.1.0 forcats_0.5.1    stringr_1.4.0    dplyr_1.0.7     
+ [5] purrr_0.3.4      readr_2.0.2      tidyr_1.1.4      tibble_3.1.6    
+ [9] ggplot2_3.3.5    tidyverse_1.3.1  knitr_1.36      
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_1.1.1  xfun_0.28         bslib_0.3.1       haven_2.4.3      
+ [5] colorspace_2.0-2  vctrs_0.3.8       generics_0.1.1    htmltools_0.5.2  
+ [9] yaml_2.2.1        utf8_1.2.2        rlang_0.4.12      jquerylib_0.1.4  
+[13] pillar_1.6.4      withr_2.4.2       glue_1.5.0        DBI_1.1.1        
+[17] dbplyr_2.1.1      modelr_0.1.8      readxl_1.3.1      lifecycle_1.0.1  
+[21] munsell_0.5.0     gtable_0.3.0      cellranger_1.1.0  rvest_1.0.2      
+[25] htmlwidgets_1.5.4 evaluate_0.14     tzdb_0.2.0        fastmap_1.1.0    
+[29] fansi_0.5.0       broom_0.7.10      Rcpp_1.0.7        backports_1.3.0  
+[33] scales_1.1.1      formatR_1.11      jsonlite_1.7.2    fs_1.5.0         
+[37] hms_1.1.1         digest_0.6.28     stringi_1.7.5     grid_4.0.3       
+[41] cli_3.1.0         tools_4.0.3       magrittr_2.0.1    sass_0.4.0       
+[45] crayon_1.4.2      pkgconfig_2.0.3   ellipsis_0.3.2    xml2_1.3.2       
+[49] reprex_2.0.1      lubridate_1.8.0   rstudioapi_0.13   assertthat_0.2.1 
+[53] rmarkdown_2.11    httr_1.4.2        R6_2.5.1          compiler_4.0.3   
+</code></pre></div>
+<h1 id="preliminary-work">Preliminary work<a class="headerlink" href="#preliminary-work" title="Permanent link">&para;</a></h1>
+<p>The documentation on <code>visNetwork</code> is available <a href="https://datastorm-open.github.io/visNetwork/nodes.html">here</a>.</p>
+<h2 id="data-importation">Data importation<a class="headerlink" href="#data-importation" title="Permanent link">&para;</a></h2>
+<p>All the files imported here can be found on Genotoul, in (private access) <code>/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/</code> and (private access) <code>/work2/project/regenet/results/phic/homo_sapiens/hg19/jung.ren.2019/LI11/nofilter/pp</code>, or for some <a href="../../../data_and_results/haemochromatosis/promoter_capture_hic/">here (public access)</a>.</p>
+<p>The full code itself is available here: <code>/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/</code> (as <code>preliminary_analysis_v1.Rmd</code>). Please do not modify directly this repository as it is backed up between multiple computers on a regular basis.</p>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">rm</span><span class="p">(</span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ls</span><span class="p">())</span>
+
+<span class="c1"># wd = &#39;data/&#39;</span>
+<span class="n">wd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/home/thoellinger/Documents/shared/2022/promoter_capture_hic/data/&quot;</span>
+<span class="c1"># wd =</span>
+<span class="c1"># &#39;/home/hoellinger/Documents/INSERM/shared/2022/promoter_capture_hic/data/&#39;</span>
+<span class="n">egfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">wd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;liver.all_putative_enhancers.overlapping_ccRE-ELS.sorted.bedpe&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">)</span>
+<span class="n">merged_efile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">wd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;list_all_enhancers.overlapping_ccRE-ELS.bed&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1">############# Enhancers #</span>
+<span class="n">me</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.data.frame</span><span class="p">(</span><span class="nf">read.table</span><span class="p">(</span><span class="n">merged_efile</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;\t&quot;</span><span class="p">))</span>
+
+<span class="c1">############ E-G list #</span>
+
+<span class="n">eg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.data.frame</span><span class="p">(</span><span class="nf">read.table</span><span class="p">(</span><span class="n">egfile</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">F</span><span class="p">,</span><span class="w"> </span><span class="n">col.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;chrom1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;start1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;end1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chrom2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;start2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;end2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;score.contact&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;strand1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;strand2&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;tissue&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gene.symbol&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;original.distance&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gene.id&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;\t&quot;</span><span class="p">))</span>
+
+<span class="c1">############### known genes #</span>
+<span class="n">gene_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;HFE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;TFR2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;HFE2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;HAMP&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SLC40A1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;BMP6&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;TMPRSS6&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;TFRC&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;SLC11A2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;CYBRD1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NEO1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;CIAPIN1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SLC39A14&quot;</span><span class="p">)</span>
+
+<span class="c1"># genes known to be causally involved in hemochromatosis: &#39;HFE&#39;, &#39;TFR2&#39;,</span>
+<span class="c1"># &#39;HFE2&#39;, &#39;HAMP&#39;, &#39;SLC40A1&#39;, &#39;BMP6&#39; (the other genes are involved in iron</span>
+<span class="c1"># metabolism regulation) genes co-expressed in the liver: HFE + TFR2 + HJV +</span>
+<span class="c1"># HAMP + TMPRSS6 genes co-expressed in intestine: DCYTB + DMT1 + SLC40A1</span>
+</code></pre></div>
+<h2 id="data-preprocessing">Data preprocessing<a class="headerlink" href="#data-preprocessing" title="Permanent link">&para;</a></h2>
+<h3 id="conversion-to-factors">Conversion to factors<a class="headerlink" href="#conversion-to-factors" title="Permanent link">&para;</a></h3>
+<div class="badCode highlight"><pre><span></span><code><span class="c1"># to_factor_cols = c(&#39;chrom1&#39;, &#39;chrom2&#39;, &#39;name&#39;, &#39;strand1&#39;, &#39;strand2&#39;,</span>
+<span class="c1"># &#39;tissue&#39;, &#39;gene.symbol&#39;, &#39;gene.id&#39;)</span>
+<span class="n">to_factor_cols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;chrom1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chrom2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;strand1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;strand2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;tissue&quot;</span><span class="p">)</span>
+<span class="n">eg</span><span class="p">[</span><span class="n">to_factor_cols</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lapply</span><span class="p">(</span><span class="n">eg</span><span class="p">[</span><span class="n">to_factor_cols</span><span class="p">],</span><span class="w"> </span><span class="n">factor</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="exploration">Exploration<a class="headerlink" href="#exploration" title="Permanent link">&para;</a></h2>
+<h3 id="summary-statistics-on-enhancer-lists">Summary statistics on enhancer lists<a class="headerlink" href="#summary-statistics-on-enhancer-lists" title="Permanent link">&para;</a></h3>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">length</span><span class="p">(</span><span class="n">me</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[1] 25600
+</code></pre></div>
+<p>Warning: we shall pay attention to the fact that those 25,600 putative enhancers correspond to those, among the 31,749 initial putative regulatory elements in the CHiC data, that intersect at least one ccRE-ELS. We filtered out the other elements / the E-G pairs involving such elements. We did so because they are pretty large (see next cell), so it is very unlikely for such large element to be an enhancer but not to intersect any ccRE-ELS.</p>
+<div class="badCode highlight"><pre><span></span><code><span class="n">me</span><span class="o">$</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">abs</span><span class="p">(</span><span class="n">me</span><span class="o">$</span><span class="n">V3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">me</span><span class="o">$</span><span class="n">V2</span><span class="p">)</span>
+
+<span class="nf">summary</span><span class="p">(</span><span class="n">me</span><span class="o">$</span><span class="n">length</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1571    4386    5843    7324    8198  122914 
+</code></pre></div>
+<h3 id="e-g-pairs">E-G pairs<a class="headerlink" href="#e-g-pairs" title="Permanent link">&para;</a></h3>
+<p>We extract the subsample of the E-G bedpe input list, where genes are contained in our list of genes involved either directly in hemochromatosis or in iron metabolism. In the variable name, "dist0" stands for "distance is 0 between the genes in <code>eg_dist0</code> and the list of initial genes".</p>
+<div class="badCode highlight"><pre><span></span><code><span class="n">eg_dist0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eg</span><span class="p">[</span><span class="n">eg</span><span class="o">$</span><span class="n">gene.symbol</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">gene_list</span><span class="p">,</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">length</span><span class="p">(</span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[1] 49
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">gene.symbol</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[1] 12
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">print</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">gene.symbol</span><span class="p">)))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code> [1] &quot;HFE2&quot;     &quot;CYBRD1&quot;   &quot;SLC40A1&quot;  &quot;TFRC&quot;     &quot;BMP6&quot;     &quot;HFE&quot;     
+ [7] &quot;TFR2&quot;     &quot;SLC39A14&quot; &quot;SLC11A2&quot;  &quot;NEO1&quot;     &quot;CIAPIN1&quot;  &quot;TMPRSS6&quot; 
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">print</span><span class="p">(</span><span class="n">gene_list</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code> [1] &quot;HFE&quot;      &quot;TFR2&quot;     &quot;HFE2&quot;     &quot;HAMP&quot;     &quot;SLC40A1&quot;  &quot;BMP6&quot;    
+ [7] &quot;TMPRSS6&quot;  &quot;TFRC&quot;     &quot;SLC11A2&quot;  &quot;CYBRD1&quot;   &quot;NEO1&quot;     &quot;CIAPIN1&quot; 
+[13] &quot;SLC39A14&quot;
+</code></pre></div>
+<p>We have element-gene pairs in our data for 12 out of 13 initial genes.</p>
+<h3 id="genes">Genes<a class="headerlink" href="#genes" title="Permanent link">&para;</a></h3>
+<p>Chromosomes where the genes are located:</p>
+<div class="highlight"><pre><span></span><code>     HFE     TFR2     HFE2     HAMP  SLC40A1     BMP6  TMPRSS6     TFRC 
+  &quot;chr6&quot;   &quot;chr7&quot;   &quot;chr1&quot;   &quot;HAMP&quot;   &quot;chr2&quot;   &quot;chr6&quot;  &quot;chr22&quot;   &quot;chr3&quot; 
+ SLC11A2   CYBRD1     NEO1  CIAPIN1 SLC39A14 
+ &quot;chr12&quot;   &quot;chr2&quot;  &quot;chr15&quot;  &quot;chr16&quot;   &quot;chr8&quot; 
+</code></pre></div>
+<h1 id="networks">Networks<a class="headerlink" href="#networks" title="Permanent link">&para;</a></h1>
+<p>Note: in all subsequent graphs, size of nodes of type "gene" (and not "known_gene", for which the size is fixed) is proportional to the number of distinct enhancers regulating them.</p>
+<h2 id="find-all-genes-regulated-by-the-initial-enhancers">Find all genes regulated by the initial enhancers<a class="headerlink" href="#find-all-genes-regulated-by-the-initial-enhancers" title="Permanent link">&para;</a></h2>
+<p>The "initial enhancers" are the enhancers involved in eg_dist0, ie all the enhancers regulating the initial genes in <code>gene_list</code>.</p>
+<p><code>genes</code> is the subset of <code>gene_list</code> for which we have data (12 out of 13 genes here), and <code>enhancers</code> is the list of enhancers regulating those initial known genes.</p>
+<div class="badCode highlight"><pre><span></span><code><span class="n">enhancers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">chrom1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">start1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">end1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">))</span>
+<span class="n">genes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">gene.symbol</span><span class="p">)</span>
+</code></pre></div>
+<p>Now we compute the list of all genes regulated by enhancers in <code>eg_dist0</code>. Specifically, we extract, from the full E-G list <code>eg</code>, the list <code>eg_dist1</code> containing only the enhancers-genes pairs for which the gene G is regulated by any of the enhancers regulating a gene in <code>gene_list</code> ("dist1" stands for "distance is at most 1 between the genes in <code>eg_dist1</code> and the list of initial genes").</p>
+<div class="badCode highlight"><pre><span></span><code><span class="n">eg_enhancers_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">eg</span><span class="o">$</span><span class="n">chrom1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">eg</span><span class="o">$</span><span class="n">start1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">eg</span><span class="o">$</span><span class="n">end1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">eg</span><span class="p">[,</span><span class="w"> </span><span class="o">-</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)])</span><span class="w">  </span><span class="c1"># same as eg but columns 1-3 have been concatenated to make unique enhancers id</span>
+<span class="n">eg_dist1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eg_enhancers_id</span><span class="p">[</span><span class="n">eg_enhancers_id</span><span class="o">$</span><span class="n">source</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">chrom1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;:&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">start1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">end1</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
+<span class="n">eg_dist1</span><span class="o">$</span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lapply</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">eg_dist0</span><span class="p">[</span><span class="nf">paste</span><span class="p">(</span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">chrom1</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">start1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">end1</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gene.symbol&quot;</span><span class="p">])))</span>
+<span class="n">eg_dist1</span><span class="o">$</span><span class="n">from.id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lapply</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">eg_dist0</span><span class="p">[</span><span class="nf">paste</span><span class="p">(</span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">chrom1</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">start1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">eg_dist0</span><span class="o">$</span><span class="n">end1</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gene.id&quot;</span><span class="p">])))</span>
+<span class="n">eg_dist1</span><span class="o">$</span><span class="n">score.contact.IE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">left_join</span><span class="p">(</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">from.id</span><span class="p">,</span>
+<span class="w">    </span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">from</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;::&quot;</span><span class="p">)),</span><span class="w"> </span><span class="n">eg_enhancers_id</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;name&quot;</span><span class="p">)</span><span class="o">$</span><span class="n">score.contact</span><span class="w">  </span><span class="c1"># max ABC score of the I-E pair (initialGene-Enhancer) corresponding to the E-G pair</span>
+<span class="n">genes_dist1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">gene.symbol</span><span class="p">)</span>
+</code></pre></div>
+<p><code>genes_dist1</code> is the list of genes regulated by <code>enhancers</code>.</p>
+<p>Compute "contact product", ie the product of the contact scores of:
+- the initial gene - enhancer pair (I-E)
+- the enhancer - gene pair (E-G)</p>
+<div class="badCode highlight"><pre><span></span><code><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">score.contact</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">score.contact.IE</span>
+<span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product</span><span class="o">/</span><span class="nf">max</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product</span><span class="p">)</span>
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">print</span><span class="p">(</span><span class="nf">min</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[1] 0.1613721
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">print</span><span class="p">(</span><span class="nf">mean</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[1] 0.3154293
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">print</span><span class="p">(</span><span class="nf">max</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[1] 1
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">print</span><span class="p">(</span><span class="nf">quantile</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.1</span><span class="p">,</span><span class="w"> </span><span class="m">0.4</span><span class="p">,</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="m">0.6</span><span class="p">,</span><span class="w"> </span><span class="m">0.8</span><span class="p">,</span><span class="w"> </span><span class="m">0.9</span><span class="p">)))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>      10%       40%       50%       60%       80%       90% 
+0.1853717 0.2340752 0.2457107 0.2883543 0.4243637 0.5197058 
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product.label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="n">eg_dist1</span><span class="p">[</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="nf">median</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product</span><span class="p">),</span><span class="w"> </span><span class="p">]</span><span class="o">$</span><span class="n">contact.product.label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span>
+<span class="n">eg_dist1</span><span class="p">[</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="nf">quantile</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product</span><span class="p">,</span><span class="w"> </span><span class="m">0.9</span><span class="p">)[[</span><span class="m">1</span><span class="p">]],</span>
+<span class="w">    </span><span class="p">]</span><span class="o">$</span><span class="n">contact.product.label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span>
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">table</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">contact.product.label</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code> 1  2  3 
+50 39 12 
+</code></pre></div>
+<p>In the following cell we re-organize <code>genes_dist1</code> into <code>genes_dist1.more</code> which is in a well-suited format for further "concatenation" with inferences made with other type of data (ABC or QTL -based).</p>
+<div class="badCode highlight"><pre><span></span><code><span class="n">genes_dist1.more</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eg_dist1</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">    </span><span class="nf">group_by</span><span class="p">(</span><span class="n">gene.symbol</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">    </span><span class="nf">mutate</span><span class="p">(</span><span class="n">CHiC.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;,&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">    </span><span class="nf">mutate</span><span class="p">(</span><span class="n">CHiC.count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nf">str_split</span><span class="p">(</span><span class="n">CHiC.sources</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;,&quot;</span><span class="p">)[[</span><span class="m">1</span><span class="p">]]))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">    </span><span class="nf">slice</span><span class="p">(</span><span class="nf">which.max</span><span class="p">(</span><span class="n">contact.product.label</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">    </span><span class="nf">ungroup</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">    </span><span class="nf">select</span><span class="p">(</span><span class="n">gene.symbol</span><span class="p">,</span><span class="w"> </span><span class="n">gene.id</span><span class="p">,</span><span class="w"> </span><span class="n">CHiC.sources</span><span class="p">,</span><span class="w"> </span><span class="n">contact.product.label</span><span class="p">,</span><span class="w"> </span><span class="n">CHiC.count</span><span class="p">,</span>
+<span class="w">        </span><span class="n">from</span><span class="p">)</span>
+
+<span class="n">genes_dist1.more</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">subset</span><span class="p">(</span><span class="n">genes_dist1.more</span><span class="p">,</span><span class="w"> </span><span class="o">!</span><span class="p">(</span><span class="n">genes_dist1.more</span><span class="o">$</span><span class="n">gene.symbol</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">genes</span><span class="p">))</span>
+<span class="n">genes_dist1.more</span><span class="o">$</span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="n">genes_dist1.more</span><span class="o">$</span><span class="n">from</span><span class="p">)</span>
+<span class="n">genes_dist1.more</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code># A tibble: 42 × 6
+   gene.symbol gene.id            CHiC.sources contact.product… CHiC.count from 
+   &lt;chr&gt;       &lt;chr&gt;              &lt;chr&gt;                   &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;
+ 1 ACTL6B      ENSG00000077080.5  chr7:100151…                1          2 TFR2 
+ 2 ADPGK       ENSG00000159322.13 chr15:73089…                3          2 NEO1 
+ 3 AGFG2       ENSG00000106351.8  chr7:100151…                1          1 TFR2 
+ 4 ANKRD34A    ENSG00000181039.7  chr1:145508…                2          1 HFE2 
+ 5 ARL2BP      ENSG00000102931.3  chr16:57256…                2          1 CIAP…
+ 6 ATF1        ENSG00000123268.4  chr12:51316…                2          1 SLC1…
+ 7 C1QTNF6     ENSG00000133466.9  chr22:37461…                2          2 TMPR…
+ 8 C7orf61     ENSG00000185955.4  chr7:100151…                1          1 TFR2 
+ 9 CCDC135     ENSG00000159625.10 chr16:57491…                3          2 CIAP…
+10 CCL22       ENSG00000102962.4  chr16:57428…                2          1 CIAP…
+# … with 32 more rows
+</code></pre></div>
+<p>We re-arrange <code>eg_dist1</code> as an edge list <code>edges_list_dist1</code>, which will be more suitable to later construct the edges list for visualization as a graph.</p>
+<div class="badCode highlight"><pre><span></span><code><span class="n">edges_list_dist1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">gene.symbol</span><span class="p">,</span>
+<span class="w">    </span><span class="n">distance_kb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">floor</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">original.distance</span><span class="o">/</span><span class="m">1000</span><span class="p">),</span><span class="w"> </span><span class="n">inv_dist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="o">/</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">original.distance</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="m">1</span><span class="p">),</span><span class="w"> </span><span class="n">rescaled_log_inv_dist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">min</span><span class="p">(</span><span class="nf">log</span><span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">original.distance</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">)))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="nf">log</span><span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">original.distance</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">)))</span>
+<span class="n">edges_list_dist1</span>
+</code></pre></div>
+<p>Now we can compute the list <code>nodes_dist1</code> of (colored) nodes required for our graphs. There are 3 types of nodes: <code>enhancer</code>, <code>known_gene</code> and (unknown) <code>gene</code>.</p>
+<div class="badCode highlight"><pre><span></span><code><span class="n">nodes_dist1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">full_join</span><span class="p">(</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">source</span><span class="p">),</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;enhancer&quot;</span><span class="p">),</span>
+<span class="w">    </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="n">eg_dist1</span><span class="o">$</span><span class="n">gene.symbol</span><span class="p">),</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gene&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">    </span><span class="nf">rowid_to_column</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">)</span>
+<span class="n">nodes_dist1</span><span class="p">[</span><span class="n">nodes_dist1</span><span class="o">$</span><span class="n">label</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">genes</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="o">$</span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;known_gene&quot;</span>
+<span class="n">nodes_dist1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="n">nodes_dist1</span><span class="p">)</span>
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">table</span><span class="p">(</span><span class="n">nodes_dist1</span><span class="o">$</span><span class="n">group</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>  enhancer       gene known_gene 
+        49         42         12 
+</code></pre></div>
+<p>In the list of edges of the graph, <code>edges_dist1</code>, the <code>sample</code> column indicates in which family of tissues (liver, intestine or both) each E-G pair has been found.</p>
+<p>We add to <code>nodes_dist1</code> a column <code>d_in</code> for plotting purpose: it contains 1 for each node of type <code>enhancer</code>, the number of incoming enhancers for each node of type <code>gene</code>, and the max of the latter for each node of type <code>known_gene</code>.</p>
+<h2 id="edge-weight-based-on-distance">Edge weight based on distance<a class="headerlink" href="#edge-weight-based-on-distance" title="Permanent link">&para;</a></h2>
+<p>Width proportional to distance. For each enhancer-gene pair $E$-$G$, the distance indicated in the <code>eg</code> dataframe as <code>original_distance.mean</code> is given in in base pairs. Here, <code>distance_kb</code> is the very same quantity but expressed in <code>kb</code>.</p>
+<p><a href="https://genoweb.toulouse.inra.fr/~thoellinger/2022/CHiC_inferred_genes/preliminary_analysis_chic_v2.html#32_Edge_weight_based_on_distance"><img alt="" src="images_Rmd/distance.png" /></a></p>
+<p>Width proportional to inverse distance:</p>
+<p><a href="https://genoweb.toulouse.inra.fr/~thoellinger/2022/CHiC_inferred_genes/preliminary_analysis_chic_v2.html#32_Edge_weight_based_on_distance"><img alt="" src="images_Rmd/inverse_distance.png" /></a></p>
+<p>Width proportional to rescaled and translated log inverse distance:</p>
+<p><a href="https://genoweb.toulouse.inra.fr/~thoellinger/2022/CHiC_inferred_genes/preliminary_analysis_chic_v2.html#32_Edge_weight_based_on_distance"><img alt="" src="images_Rmd/log_inverse_distance.png" /></a></p>
+<h1 id="results">Results<a class="headerlink" href="#results" title="Permanent link">&para;</a></h1>
+<p>The list of the initial genes + all genes regulated by enhancers regulating the 12 initial genes (12 found among 13), can be found here: <code>/work2/project/regenet/workspace/thoellinger/shared/automne_2021/promoter_capture_hic/results/new_genes_v1.list</code>.</p>
+<div class="badCode highlight"><pre><span></span><code><span class="c1"># write.table(genes_dist1, file=&#39;results/new_genes_v1.list&#39;, quote=FALSE,</span>
+<span class="c1"># sep=&#39;\t&#39;, row.names=F, col.names=F)</span>
+</code></pre></div>
+<p>The list all genes regulated by enhancers regulating the 12 initial genes, with useful info, can be found here: <code>/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/results/new_genes_chic_v2_more_info.list</code>.</p>
+<div class="badCode highlight"><pre><span></span><code><span class="c1"># write.table(genes_dist1.more,</span>
+<span class="c1"># file=&#39;results/new_genes_chic_v2_more_info.list&#39;, quote=FALSE, sep=&#39;\t&#39;,</span>
+<span class="c1"># row.names=F, col.names=T)</span>
+</code></pre></div>
+<p>For each one of the 12 initial genes, the list of genes regulated by enhancers regulating that initial gene, can be found here:</p>
+<div class="badCode highlight"><pre><span></span><code><span class="c1"># for (gene in genes){ current_gene_dist1 =</span>
+<span class="c1"># unique(eg_dist1[eg_dist1$from==gene,&#39;gene.symbol&#39;])</span>
+<span class="c1"># write.table(current_gene_dist1, file=paste(&#39;results/separate/&#39;,gene,&#39;.list&#39;,</span>
+<span class="c1"># sep=&#39;&#39;), quote=FALSE, sep=&#39;\t&#39;, row.names=F, col.names=F) }</span>
+</code></pre></div>
+<p>The list of the enhancers regulating the 12 initial genes, can be found here: <code>/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/results/enhancers.list</code></p>
+<div class="badCode highlight"><pre><span></span><code><span class="c1"># write.table(enhancers, file=&#39;results/enhancers.list&#39;, quote=FALSE, sep=&#39;\t&#39;,</span>
+<span class="c1"># row.names=F, col.names=F)</span>
+</code></pre></div>
+<p>The list of E-G pairs involving the 12 initial genes, can be found here: <code>/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/results/eg_dist0.bedpe</code></p>
+<div class="badCode highlight"><pre><span></span><code><span class="c1"># write.table(eg_dist0, file=&#39;results/eg_dist0.bedpe&#39;, quote=FALSE, sep=&#39;\t&#39;,</span>
+<span class="c1"># row.names=F, col.names=F)</span>
+</code></pre></div>
+<p>The list of the enhancers regulating the 54 initial+new genes, can be found here: <code>/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/results/enhancers.new_genes.list</code></p>
+<div class="badCode highlight"><pre><span></span><code><span class="c1"># eg_dist2 = eg[eg$gene.symbol %in% genes_dist1,] enhancers.new_genes =</span>
+<span class="c1"># unique(paste(eg_dist2$chrom1, &#39;:&#39;, eg_dist2$start1, &#39;-&#39;, eg_dist2$end1,</span>
+<span class="c1"># sep=&#39;&#39;)) write.table(enhancers.new_genes,</span>
+<span class="c1"># file=&#39;results/enhancers.new_genes.list&#39;, quote=FALSE, sep=&#39;\t&#39;, row.names=F,</span>
+<span class="c1"># col.names=F)</span>
+</code></pre></div>
+<p>The list of E-G pairs involving the 54 initial+new genes, can be found here: <code>/work2/project/regenet/workspace/thoellinger/shared/2022/promoter_capture_hic/results/eg_dist2.bedpe</code></p>
+<div class="badCode highlight"><pre><span></span><code><span class="c1"># write.table(eg_dist2, file=&#39;results/eg_dist2.bedpe&#39;, quote=FALSE, sep=&#39;\t&#39;,</span>
+<span class="c1"># row.names=F, col.names=F)</span>
+</code></pre></div>
+<h1 id="appendix">Appendix<a class="headerlink" href="#appendix" title="Permanent link">&para;</a></h1>
+<h2 id="tables">Tables<a class="headerlink" href="#tables" title="Permanent link">&para;</a></h2>
+<h3 id="table-of-the-initial-abc-predicted-e-g-pairs-involving-the-initial-genes">Table of the initial ABC-predicted E-G pairs involving the initial genes<a class="headerlink" href="#table-of-the-initial-abc-predicted-e-g-pairs-involving-the-initial-genes" title="Permanent link">&para;</a></h3>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">options</span><span class="p">(</span><span class="n">max.print</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">)</span>
+<span class="n">eg_dist0</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>      chrom1    start1      end1 chrom2    start2      end2
+1602    chr1 144995955 144999800   chr1 145413094 145417545
+1613    chr1 145382770 145387982   chr1 145413094 145417545
+1620    chr1 145445045 145450003   chr1 145413094 145417545
+1622    chr1 145471844 145478745   chr1 145413094 145417545
+1626    chr1 145508505 145515028   chr1 145413094 145417545
+1627    chr1 145519579 145527792   chr1 145413094 145417545
+3982    chr2 171868841 171871980   chr2 172378756 172414643
+3983    chr2 172052913 172056719   chr2 172378756 172414643
+3985    chr2 172244003 172248890   chr2 172378756 172414643
+3986    chr2 172359194 172365051   chr2 172378756 172414643
+3987    chr2 172396460 172401984   chr2 172378756 172414643
+4074    chr2 190325771 190329372   chr2 190425304 190448484
+4075    chr2 190329373 190334233   chr2 190425304 190448484
+4076    chr2 190360995 190365156   chr2 190425304 190448484
+4077    chr2 190390528 190393955   chr2 190425304 190448484
+4078    chr2 190410593 190416234   chr2 190425304 190448484
+4079    chr2 190416235 190421209   chr2 190425304 190448484
+4080    chr2 190421210 190425029   chr2 190425304 190448484
+4081    chr2 190475143 190478818   chr2 190425304 190448484
+4085    chr2 190496245 190499388   chr2 190425304 190448484
+6360    chr3 195829327 195839503   chr3 195754053 195809060
+6361    chr3 195904445 195910895   chr3 195754053 195809060
+9222    chr6   7757920   7762092   chr6   7727029   7881655
+9223    chr6   8000333   8004738   chr6   7727029   7881655
+9356    chr6  26065333  26073782   chr6  26087508  26098571
+12009   chr7 100151130 100158146   chr7 100218038 100240402
+12040   chr7 100479857 100484394   chr7 100218038 100240402
+12830   chr8  22136614  22143599   chr8  22224761  22291642
+12831   chr8  22143600  22148473   chr8  22224761  22291642
+12835   chr8  22148474  22155405   chr8  22224761  22291642
+20296  chr12  50495719  50503727  chr12  51373183  51422349
+20338  chr12  51184932  51188867  chr12  51373183  51422349
+20341  chr12  51316042  51321932  chr12  51373183  51422349
+20362  chr12  51540821  51574422  chr12  51373183  51422349
+20367  chr12  51637790  51642516  chr12  51373183  51422349
+20369  chr12  51652001  51656616  chr12  51373183  51422349
+20373  chr12  51670781  51676690  chr12  51373183  51422349
+25072  chr15  73089434  73099467  chr15  73344050  73597547
+25074  chr15  73177101  73180543  chr15  73344050  73597547
+25078  chr15  73372310  73380150  chr15  73344050  73597547
+26940  chr16  57256998  57262124  chr16  57462080  57481440
+26952  chr16  57428584  57434799  chr16  57462080  57481440
+26967  chr16  57491859  57510132  chr16  57462080  57481440
+26985  chr16  57662892  57669586  chr16  57462080  57481440
+38401  chr22  36318565  36323139  chr22  37461475  37505603
+38476  chr22  37451969  37461031  chr22  37461475  37505603
+38481  chr22  37461032  37471647  chr22  37461475  37505603
+38484  chr22  37533344  37544456  chr22  37461475  37505603
+38485  chr22  37550713  37556000  chr22  37461475  37505603
+                                                      name score.contact
+1602    chr1:144995955-144999800::ENSG00000168509.13::HFE2      2.691613
+1613    chr1:145382770-145387982::ENSG00000168509.13::HFE2      3.500083
+1620    chr1:145445045-145450003::ENSG00000168509.13::HFE2      2.747677
+1622    chr1:145471844-145478745::ENSG00000168509.13::HFE2      2.173732
+1626    chr1:145508505-145515028::ENSG00000168509.13::HFE2      3.404033
+1627    chr1:145519579-145527792::ENSG00000168509.13::HFE2      3.329819
+3982   chr2:171868841-171871980::ENSG00000071967.7::CYBRD1      3.161168
+3983   chr2:172052913-172056719::ENSG00000071967.7::CYBRD1      2.180688
+3985   chr2:172244003-172248890::ENSG00000071967.7::CYBRD1      2.113738
+3986   chr2:172359194-172365051::ENSG00000071967.7::CYBRD1      2.961889
+3987   chr2:172396460-172401984::ENSG00000071967.7::CYBRD1      2.013556
+4074  chr2:190325771-190329372::ENSG00000138449.6::SLC40A1      4.556188
+4075  chr2:190329373-190334233::ENSG00000138449.6::SLC40A1      2.672282
+4076  chr2:190360995-190365156::ENSG00000138449.6::SLC40A1      3.338258
+4077  chr2:190390528-190393955::ENSG00000138449.6::SLC40A1      2.310444
+4078  chr2:190410593-190416234::ENSG00000138449.6::SLC40A1      2.833319
+4079  chr2:190416235-190421209::ENSG00000138449.6::SLC40A1      2.538705
+4080  chr2:190421210-190425029::ENSG00000138449.6::SLC40A1      2.206945
+4081  chr2:190475143-190478818::ENSG00000138449.6::SLC40A1      2.561220
+4085  chr2:190496245-190499388::ENSG00000138449.6::SLC40A1      2.306987
+6360     chr3:195829327-195839503::ENSG00000072274.8::TFRC      2.880979
+6361     chr3:195904445-195910895::ENSG00000072274.8::TFRC      2.461830
+9222         chr6:7757920-7762092::ENSG00000153162.8::BMP6      3.182610
+9223         chr6:8000333-8004738::ENSG00000153162.8::BMP6      2.373608
+9356       chr6:26065333-26073782::ENSG00000010704.14::HFE      2.104796
+12009    chr7:100151130-100158146::ENSG00000106327.8::TFR2      2.202777
+12040    chr7:100479857-100484394::ENSG00000106327.8::TFR2      2.085438
+12830  chr8:22136614-22143599::ENSG00000104635.9::SLC39A14      2.941420
+12831  chr8:22143600-22148473::ENSG00000104635.9::SLC39A14      2.234129
+12835  chr8:22148474-22155405::ENSG00000104635.9::SLC39A14      2.240686
+20296 chr12:50495719-50503727::ENSG00000110911.10::SLC11A2      2.207329
+20338 chr12:51184932-51188867::ENSG00000110911.10::SLC11A2      2.739063
+20341 chr12:51316042-51321932::ENSG00000110911.10::SLC11A2      2.933383
+20362 chr12:51540821-51574422::ENSG00000110911.10::SLC11A2      2.623970
+20367 chr12:51637790-51642516::ENSG00000110911.10::SLC11A2      2.607919
+20369 chr12:51652001-51656616::ENSG00000110911.10::SLC11A2      2.923081
+20373 chr12:51670781-51676690::ENSG00000110911.10::SLC11A2      2.106838
+25072    chr15:73089434-73099467::ENSG00000067141.12::NEO1      3.560153
+25074    chr15:73177101-73180543::ENSG00000067141.12::NEO1      2.328833
+25078    chr15:73372310-73380150::ENSG00000067141.12::NEO1      3.416054
+26940 chr16:57256998-57262124::ENSG00000005194.10::CIAPIN1      2.036134
+26952 chr16:57428584-57434799::ENSG00000005194.10::CIAPIN1      5.012442
+26967 chr16:57491859-57510132::ENSG00000005194.10::CIAPIN1      2.158098
+26985 chr16:57662892-57669586::ENSG00000005194.10::CIAPIN1      3.803306
+38401 chr22:36318565-36323139::ENSG00000187045.12::TMPRSS6      2.429089
+38476 chr22:37451969-37461031::ENSG00000187045.12::TMPRSS6      2.256193
+38481 chr22:37461032-37471647::ENSG00000187045.12::TMPRSS6      3.763882
+38484 chr22:37533344-37544456::ENSG00000187045.12::TMPRSS6      2.021822
+38485 chr22:37550713-37556000::ENSG00000187045.12::TMPRSS6      2.426097
+      strand1 strand2 tissue gene.symbol original.distance            gene.id
+1602        .       .  liver        HFE2            411368 ENSG00000168509.13
+1613        .       .  liver        HFE2             23186 ENSG00000168509.13
+1620        .       .  liver        HFE2             25241 ENSG00000168509.13
+1622        .       .  liver        HFE2             52040 ENSG00000168509.13
+1626        .       .  liver        HFE2             88701 ENSG00000168509.13
+1627        .       .  liver        HFE2             99775 ENSG00000168509.13
+3982        .       .  liver      CYBRD1            501217  ENSG00000071967.7
+3983        .       .  liver      CYBRD1            316478  ENSG00000071967.7
+3985        .       .  liver      CYBRD1            124307  ENSG00000071967.7
+3986        .       .  liver      CYBRD1              8146  ENSG00000071967.7
+3987        .       .  liver      CYBRD1             14161  ENSG00000071967.7
+4074        .       .  liver     SLC40A1            104295  ENSG00000138449.6
+4075        .       .  liver     SLC40A1             99434  ENSG00000138449.6
+4076        .       .  liver     SLC40A1             68511  ENSG00000138449.6
+4077        .       .  liver     SLC40A1             39712  ENSG00000138449.6
+4078        .       .  liver     SLC40A1             17433  ENSG00000138449.6
+4079        .       .  liver     SLC40A1             12458  ENSG00000138449.6
+4080        .       .  liver     SLC40A1              8638  ENSG00000138449.6
+4081        .       .  liver     SLC40A1             24286  ENSG00000138449.6
+4085        .       .  liver     SLC40A1             45388  ENSG00000138449.6
+6360        .       .  liver        TFRC             10918  ENSG00000072274.8
+6361        .       .  liver        TFRC             86036  ENSG00000072274.8
+9222        .       .  liver        BMP6             23130  ENSG00000153162.8
+9223        .       .  liver        BMP6            265543  ENSG00000153162.8
+9356        .       .  liver         HFE             13117 ENSG00000010704.14
+12009       .       .  liver        TFR2             71635  ENSG00000106327.8
+12040       .       .  liver        TFR2            224731  ENSG00000106327.8
+12830       .       .  liver    SLC39A14             79896  ENSG00000104635.9
+12831       .       .  liver    SLC39A14             75022  ENSG00000104635.9
+12835       .       .  liver    SLC39A14             68090  ENSG00000104635.9
+20296       .       .  liver     SLC11A2            913646 ENSG00000110911.10
+20338       .       .  liver     SLC11A2            228506 ENSG00000110911.10
+20341       .       .  liver     SLC11A2             95441 ENSG00000110911.10
+20362       .       .  liver     SLC11A2            106378 ENSG00000110911.10
+20367       .       .  liver     SLC11A2            203347 ENSG00000110911.10
+20369       .       .  liver     SLC11A2            217558 ENSG00000110911.10
+20373       .       .  liver     SLC11A2            236338 ENSG00000110911.10
+25072       .       .  liver        NEO1            242730 ENSG00000067141.12
+25074       .       .  liver        NEO1            161654 ENSG00000067141.12
+25078       .       .  liver        NEO1             20925 ENSG00000067141.12
+26940       .       .  liver     CIAPIN1            214245 ENSG00000005194.10
+26952       .       .  liver     CIAPIN1             41570 ENSG00000005194.10
+26967       .       .  liver     CIAPIN1              7286 ENSG00000005194.10
+26985       .       .  liver     CIAPIN1            178319 ENSG00000005194.10
+38401       .       .  liver     TMPRSS6           1156734 ENSG00000187045.12
+38476       .       .  liver     TMPRSS6             18842 ENSG00000187045.12
+38481       .       .  liver     TMPRSS6              8226 ENSG00000187045.12
+38484       .       .  liver     TMPRSS6             17904 ENSG00000187045.12
+38485       .       .  liver     TMPRSS6             35273 ENSG00000187045.12
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">options</span><span class="p">(</span><span class="n">max.print</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">75</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="list-of-the-infered-new-genes">List of the infered new genes<a class="headerlink" href="#list-of-the-infered-new-genes" title="Permanent link">&para;</a></h3>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">options</span><span class="p">(</span><span class="n">max.print</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">)</span>
+<span class="n">genes_dist1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code> [1] &quot;HFE2&quot;     &quot;PDE4DIP&quot;  &quot;NUDT17&quot;   &quot;POLR3GL&quot;  &quot;ANKRD34A&quot; &quot;CYBRD1&quot;  
+ [7] &quot;SLC40A1&quot;  &quot;TFRC&quot;     &quot;BMP6&quot;     &quot;HFE&quot;      &quot;C7orf61&quot;  &quot;TSC22D4&quot; 
+[13] &quot;ACTL6B&quot;   &quot;AGFG2&quot;    &quot;TFR2&quot;     &quot;NYAP1&quot;    &quot;PCOLCE&quot;   &quot;FBXO24&quot;  
+[19] &quot;CLDN15&quot;   &quot;SAP25&quot;    &quot;TRIM56&quot;   &quot;FIS1&quot;     &quot;EPO&quot;      &quot;LRCH4&quot;   
+[25] &quot;ZNHIT1&quot;   &quot;SLC39A14&quot; &quot;POLR3D&quot;   &quot;PHYHIP&quot;   &quot;XPO7&quot;     &quot;SLC11A2&quot; 
+[31] &quot;DAZAP2&quot;   &quot;CERS5&quot;    &quot;METTL7A&quot;  &quot;CSRNP2&quot;   &quot;ATF1&quot;     &quot;NR4A1&quot;   
+[37] &quot;CELA1&quot;    &quot;NEO1&quot;     &quot;ADPGK&quot;    &quot;ARL2BP&quot;   &quot;CIAPIN1&quot;  &quot;COQ9&quot;    
+[43] &quot;CCL22&quot;    &quot;CX3CL1&quot;   &quot;KATNB1&quot;   &quot;CCDC135&quot;  &quot;DOK4&quot;     &quot;TMPRSS6&quot; 
+[49] &quot;KCTD17&quot;   &quot;C1QTNF6&quot;  &quot;RAC2&quot;     &quot;IL2RB&quot;    &quot;MPST&quot;     &quot;TST&quot;     
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">length</span><span class="p">(</span><span class="n">genes_dist1</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[1] 54
+</code></pre></div>
+<div class="badCode highlight"><pre><span></span><code><span class="nf">options</span><span class="p">(</span><span class="n">max.print</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">75</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2020 - 2022 Tristan Hoellinger
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/TristanHoellin1" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://fr.linkedin.com/in/tristan-hoellinger" target="_blank" rel="noopener" title="fr.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:sarah.djebali@inserm.fr" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480v-83.6c0-4 1.5-7.8 4.2-10.7l167.6-182.9c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8l-88.3-44.2C7.1 311.3.3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "navigation.top"], "search": "../../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.6df46069.min.js"></script>
+      
+    
+  </body>
+</html>
