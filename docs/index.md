@@ -1,6 +1,6 @@
 # How to navigate through this site
 
-These pages were first intented for my personal use to organize my notes, and to share them with my colleagues. Now they could be used as guidelines to help going through the data and scripts used to reproduce the results presented in [E/G relationships: need for more reliable genome-wide reference sets](https://doi.org/10.1101/2022.10.12.511908). Yet as they were not intented to be read by another audience, they are not very user-friendly. If you have any question or suggestion, please do not hesitate to [contact me](about_me).
+These pages were first intented for my personal use to organize my notes and share them with my colleagues. They may be used as guidelines to reproduce the results presented in [Enhancer/gene relationships: need for more reliable genome-wide reference sets](https://www.frontiersin.org/articles/10.3389/fbinf.2023.1092853/abstract). Yet as they were not intented to be read by another audience, they are not user-friendly and may contain some mistakes. If you spot one or if you have any question/suggestion, please do not hesitate to [contact me](about_me).
 
 ## Context
 
